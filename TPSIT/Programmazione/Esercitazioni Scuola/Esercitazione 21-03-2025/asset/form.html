@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Domanda di Immatricolazione</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <img src="../img/logo.png" alt="Logo Università">
+            </td>
+            <td>
+                <h1>DOMANDA DI IMMATRICOLAZIONE</h1>
+                <div align="right">
+                    <h2>CORSO DI LAUREA</h2>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <form>
+        <table>
+            <tr>
+                <td>Luogo di nascita:</td>
+                <td><input type="text" name="luogo_nascita" size="170" required></td>
+                <td>Provincia:</td>
+                <td><input type="text" name="provincia_nascita" size="170" required></td>
+            </tr>
+            <tr>
+                <td>Stato:</td>
+                <td><input type="text" name="stato" size="170" required></td>
+                <td>Data:</td>
+                <td><input type="date" name="data" size="170" required></td>
+            </tr>
+            <tr>
+                <td>Sesso:</td>
+                <td>
+                    <select name="sesso" size="170">
+                        <option value="maschio">M</option>
+                        <option value="femmina">F</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Indirizzo:</td>
+                <td><input type="text" name="indirizzo" size="170" required></td>
+                <td>Comune di residenza:</td>
+                <td><input type="text" name="comune_residenza" size="170" required></td>
+            </tr>
+            <tr>
+                <td>Provincia:</td>
+                <td><input type="text" name="provincia_residenza" size="170" required></td>
+                <td>CAP:</td>
+                <td><input type="text" name="cap" size="170"></td>
+            </tr>
+            <tr>
+                <td>Cellulare:</td>
+                <td><input type="text" name="cellulare" size="170" required></td>
+                <td>Telefono:</td>
+                <td><input type="text" name="telefono" size="170"></td>
+            </tr>
+        </table>
+        <br>
+        <button type="submit">Invia i dati all'Università</button>
+    </form>
+</body>
+</html>

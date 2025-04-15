@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+    <html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Quiz sui Diritti Umani</title>
+        <link rel="stylesheet" href="./styles/quiz-diritti-umani_style.css">
+        <script src="./script/quiz-diritti-umani.js"></script>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p>Caricamento in corso...</p>
+        </div>
+        <div id="content" style="display: none;">
+             <!-- Modal istruzioni -->
+         <div id="modal-istruzioni" class="modal-istruzioni">
+            <div class="modal-content-istruzioni">
+            <h2>Metti alla prova le tue conoscenze</h2>
+            <p>Benvenuto nel nostro quiz! Per iniziare, leggi attentamente le istruzioni seguenti:</p>
+            <ul>
+                <li>Il quiz consiste in una serie di domande a risposta multipla.</li>
+                <li>Ogni domanda avrà 3 opzioni di risposta.</li>
+                <li>Scegli la risposta che ritieni corretta per ogni domanda.</li>
+                <li>Non ci sono limiti di tempo per completare il quiz.</li>
+                <li>Una volta completato il quiz, ti bastera premere invia e potrai vedere i risultati.</li>
+            </ul>
+            <button id="btn-inizia-quiz" onclick="startQuiz()">Inizia il Quiz</button>
+            </div>
+         </div>
+            
+            <!-- Header -->
+            <div class="header">
+                <h1>Quiz sui Diritti Umani</h1> 
+            </div>
+
+            <div class="content-container">
+                
+                <form onsubmit="submitQuiz(); return false;"></form>
+                <!-- Domanda 1 -->
+                <div class="quiz-question">
+                    <p><strong>1. Cosa sono i diritti umani?</strong></p>
+                    <label>
+                        <input type="radio" name="q1" value="a"> A) Libertà fondamentali garantite solo a certe categorie di persone
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="b"> B) Libertà e protezioni per tutti gli individui, senza discriminazioni
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="c"> C) Diritti concessi solo ai cittadini di un Paese
+                    </label>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="quiz-question">
+                    <p><strong>2. Quale documento stabilisce i principi fondamentali dei diritti umani a livello globale?</strong></p>
+                    <label>
+                        <input type="radio" name="q2" value="a"> A) La Costituzione Italiana
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="b"> B) La Dichiarazione Universale dei Diritti Umani
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="c"> C) La Carta dei Diritti dei Bambini
+                    </label>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="quiz-question">
+                    <p><strong>3. Quale istituzione mondiale si occupa di monitorare e prevenire le violazioni dei diritti umani?
+                    </strong></p>
+                    <label>
+                        <input type="radio" name="q3" value="a"> A) L'Organizzazione Mondiale della Sanità
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="b"> B) Il Consiglio di Sicurezza delle Nazioni Unite
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="c"> C) Il Consiglio per i Diritti Umani delle Nazioni Unite
+                    </label>
+                </div>
+
+                <!-- Domanda 4 -->
+                <div class="quiz-question">
+                    <p><strong>4. Quali diritti sono garantiti dalla Costituzione italiana?</strong></p>
+                    <label>
+                        <input type="radio" name="q4" value="a"> A) Libertà di espressione,voto, diritto alla salute e al lavoro
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="b"> B) Diritto alla ricchezza e al potere politico
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="c"> C) Diritto a viaggiare liberamente all'interno del mondo
+                    </label>
+                </div>
+
+                <!-- Domanda 5 -->
+                <div class="quiz-question">
+                    <p><strong>5. Quali sono alcune delle sfide principali nella protezione dei diritti umani oggi? </strong></p>
+                    <label>
+                        <input type="radio" name="q5" value="a"> A) Solo la povertà
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="b"> B) Povertà, guerre, discriminazioni e violenza contro le donne
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="c"> C) Solo la protezione della privacy
+                    </label>
+                </div>
+
+                <!-- Domanda 6 -->
+                <div class="quiz-question">
+                    <p><strong>6. Chi ha la responsabilità di difendere i diritti umani?</strong></p>
+                    <label>
+                        <input type="radio" name="q6" value="a"> A) Solo le istituzioni
+                    </label>
+                    <label>
+                        <input type="radio" name="q6" value="b"> B) Solo gli individui
+                    </label>
+                    <label>
+                        <input type="radio" name="q6" value="c"> C) Le istituzioni e ogni cittadino
+                    </label>
+                </div>
+
+                
+                <!-- Bottone per inviare il quiz -->
+                <button class="submit-button" onclick="submitQuiz()">Invia</button>
+
+                <p> Per testare la tua conoscenza du quello che hai inparato su questo sito, clicca sul pulsante qui sotto per accedere al quiz.
+                </p>
+
+                <a href="./quiz-finale.html" class="quiz-link"> Fai il quiz finale</a>
+
+                <p>
+                    Se desideri tornare alla pagina precedente, clicca sul link qui sotto.
+                </p>
+                <!-- Link per tornare indietro -->
+                <a href="tutela-diritti.html" class="back-link">Torna Indietro</a>
+                <!-- Link per tornare alla home -->
+                <a href="home.html" class="back-link">Torna alla Home</a>
+            </div>
+
+
+            <!-- Modal per i risultati -->
+            <div id="resultModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <p id="modalMessage"></p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>&copy; 2025 Diritti Umani e Giustizia Sociale. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </body>
+</html>

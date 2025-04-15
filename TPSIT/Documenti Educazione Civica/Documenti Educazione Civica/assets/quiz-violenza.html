@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Quiz sulla Violenza</title>
+        <link rel="stylesheet" href="./styles/quiz-violenza_style.css">
+        <script src="./script/quiz-violenza.js"></script>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p>Caricamento in corso...</p>
+        </div>
+        <div id="content" style="display: none;"></div>
+
+         <!-- Modal istruzioni -->
+         <div id="modal-istruzioni" class="modal-istruzioni">
+            <div class="modal-content-istruzioni">
+            <h2>Metti alla prova le tue conoscenze</h2>
+            <p>Benvenuto nel nostro quiz! Per iniziare, leggi attentamente le istruzioni seguenti:</p>
+            <ul>
+                <li>Il quiz consiste in una serie di domande a risposta multipla.</li>
+                <li>Ogni domanda avrà 4 opzioni di risposta.</li>
+                <li>Scegli la risposta che ritieni corretta per ogni domanda.</li>
+                <li>Non ci sono limiti di tempo per completare il quiz.</li>
+                <li>Una volta completato il quiz, ti bastera premere invia e potrai vedere i risultati.</li>
+            </ul>
+            <button id="btn-inizia-quiz" onclick="startQuiz()">Inizia il Quiz</button>
+            </div>
+        </div>
+
+            <div class="header">
+                <h1>Quiz sulla Violenza</h1>
+            </div>
+
+            <div class="content-container">
+                
+                <form onsubmit="submitQuiz(); return false;">
+                <!-- Domanda 1 -->
+                    <div class="quiz-question">
+                        <p><strong>1. Quale delle seguenti è una forma di violenza psicologica?</strong></p>
+                        <label>
+                            <input type="radio" name="q1" value="a"> A) Percosse
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="b"> B) Insulti e minacce
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="c"> C) Abusi sessuali
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="d"> D) Spese non concordate
+                        </label>
+                    </div>
+
+                    <!-- Domanda 2 -->
+                    <div class="quiz-question">
+                        <p><strong>2. La violenza economica consiste nel: </strong></p>
+                        <label>
+                            <input type="radio" name="q2" value="a"> A) Isolare la persona da familiari e amici
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="b"> B) Controllare il denaro e le risorse finanziarie
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="c"> C) Minacciare fisicamente una persona
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="d"> D) Manipolare emotivamente la vittima
+                        </label>
+                    </div>
+
+                    <!-- Domanda 3 -->
+                    <div class="quiz-question">
+                        <p><strong>3. Quale delle seguenti affermazioni è vera riguardo alla violenza domestica?</strong></p>
+                        <label>
+                            <input type="radio" name="q3" value="a"> A) Riguarda solo l'abuso fisico
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="b"> B) Coinvolge esclusivamente le donne 
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="c"> C) È una questione privata e non sociale
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="d"> D) Può includere violenza psicologica, fisica ed economica
+                        </label>
+                    </div>
+
+                    <!-- Domanda 4 -->
+                    <div class="quiz-question">
+                        <p><strong>4. Qual è la principale causa della violenza?</strong></p>
+                        <label>
+                            <input type="radio" name="q4" value="a"> A) Solo problmei psicologici
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="b"> B) Discriminazione e disuguaglianze
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="c"> C) Solo problemi economici
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="d"> D) Una sola causa non esiste, la violenza è il risultato di molteplici fattori 
+                        </label>
+                    </div>
+
+                    <!-- Domanda 5 -->
+                    <div class="quiz-question">
+                        <p><strong>5. Quale di questi comportamenti NON è una forma di violenza verbale?</strong></p>
+                        <label>
+                            <input type="radio" name="q5" value="a"> A) Insultare una persona
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="b"> B) Minacciare di fare del male a qualcuno
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="c"> C) Dire a qualcuno che non è abbastanza bravo
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="d"> D) Parlare educatamente
+                        </label>
+                    </div>
+
+                    <!-- Domanda 6 -->
+                    <div class="quiz-question">
+                        <p><strong>6. Quale degli aspetti della violenza sessuale è più importante?</strong></p>
+                        <label>
+                            <input type="radio" name="q6" value="a"> A) L’intenzione della vittima
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="b"> B) Il consenso della persona coinvolta
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="c"> C) La durata dell’atto
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="d"> D) La quantità di violenza fisica inflitta
+                        </label>
+                    </div>
+
+                    <!-- Domanda 7 -->
+                    <div class="quiz-question">
+                        <p><strong>7. Cosa possiamo fare per prevenire la violenza nella società?</strong></p>
+                        <label>
+                            <input type="radio" name="q7" value="a"> A) Ignorare le segnalazioni di abusi
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="b"> B) Sensibilizzare le persone e incoraggiare la denuncia
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="c"> C) Non parlare mai di violenza
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="d"> D) Essere passivi di fronte alle ingiustizie
+                        </label>
+                    </div>
+
+                <button class="submit-button" onclick="submitQuiz()">Invia</button>
+
+                <p>
+                    Se desideri tornare alla pagina precedente, clicca sul link qui sotto.
+                </p>
+                
+                <a href="violenza.html" class="back-link">Torna indietro</a>
+                <a href="home.html" class="back-link">Torna alla Home</a>
+                <a href="razzismo.html" class="back-link">Vai avanti</a>
+            </div>
+
+            <!-- Modal per i risultati -->
+            <div id="resultModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <p id="modalMessage"></p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>&copy; 2025 Stop alla discriminazione. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </body>
+</html>

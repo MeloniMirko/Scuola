@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diritti Umani e Giustizia Sociale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header { 
+            background-color: #0037ff; /* Blu */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: fixed; /* Aggiunta della proprietà position: fixed */
+            top: 0; /* Aggiunta della proprietà top: 0 */
+            width: 100%; /* Aggiunta della proprietà width: 100% */
+            z-index: 1000; /* Aggiunta della proprietà z-index */
+        }
+
+        .rectangle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px; /* Distanza tra i rettangoli */
+            padding: 20px;
+            margin-top: 150px; /* Distanza tra il primo rettangolo e l'header */
+            margin-bottom: 150px; /* Gap tra l'ultimo rettangolo e il footer */
+        }
+
+        .rectangle {
+            width: 80%;
+            max-width: 600px;
+            height: 200px; /* Rettangoli più alti */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+            font-size: 18px;
+            text-align: left;
+            border-radius: 10px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none; /* Rimuove il sottolineato dei link */
+        }
+
+        /* Colori diversi per ogni rettangolo */
+        .rectangle:nth-child(1) {
+            background-color: #229100; /* Verde */
+        }
+
+        .rectangle:nth-child(2) {
+            background-color: #ff0000; /* Rosso */
+        }       
+
+        .rectangle:nth-child(3) {
+            background-color: #000f71; /* Blu */
+        }
+
+        .rectangle:nth-child(4) {
+            background-color: #4cc0ff; /* Azzurro */
+        }
+
+        .rectangle:hover {
+            transform: scale(1.02);
+        }
+
+        .rectangle .content {
+            flex: 1;
+        }
+
+        .rectangle .title {
+            font-size: 36px; /* Titolo più grande */
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .rectangle .description {
+            font-size: 16px; /* Descrizione più grande */
+            opacity: 0.9;
+        }
+
+        .rectangle .arrow-text {
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        .rectangle .arrow {
+            font-size: 24px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateX(-20px);
+        }
+
+        .rectangle:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            transition: opacity 0.5s, transform 0.5s; /* Aggiunta della transizione per l'animazione */
+        }
+
+        .hidden {
+            opacity: 0; /* Nasconde il footer */
+            transform: translateY(100%); /* Sposta il footer verso il basso */
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Diritti Umani e Giustizia Sociale</h1>
+    </header>
+
+    <div class="rectangle-container">
+        <!-- Rettangolo 1: Discriminazione -->
+        <a href="discriminazione.html" class="rectangle">
+            <div class="content">
+                <div class="title">Discriminazione</div>
+                <div class="description">
+                    La discriminazione è un trattamento ingiusto basato su razza, genere, religione, ecc.
+                </div>
+            </div>
+            <div class="arrow-text">Scopri di più</div>
+            <div class="arrow">&#8594;</div>
+        </a>
+
+        <!-- Rettangolo 2: Violenza -->
+        <a href="violenza.html" class="rectangle">
+            <div class="content">
+                <div class="title">Violenza</div>
+                <div class="description">
+                    La violenza è l'uso della forza fisica o psicologica per danneggiare gli altri.
+                </div>
+            </div>
+            <div class="arrow-text">Scopri di più</div>
+            <div class="arrow">&#8594;</div>
+        </a>
+
+        <!-- Rettangolo 3: Razzismo -->
+        <a href="razzismo.html" class="rectangle">
+            <div class="content">
+                <div class="title">Razzismo</div>
+                <div class="description">
+                    Il razzismo è la convinzione che una razza sia superiore o inferiore a un'altra.
+                </div>
+            </div>
+            <div class="arrow-text">Scopri di più</div>
+            <div class="arrow">&#8594;</div>
+        </a>
+
+        <!-- Rettangolo 4: Tutela dei Diritti -->
+        <a href="tutela-diritti.html" class="rectangle">
+            <div class="content">
+                <div class="title">Tutela dei Diritti</div>
+                <div class="description">
+                    La tutela dei diritti inviolabili garantisce il rispetto e la protezione dei diritti umani fondamentali.
+                </div>
+            </div>
+            <div class="arrow-text">Scopri di più</div>
+            <div class="arrow">&#8594;</div>
+        </a>
+    </div>
+
+    <footer id="footer">
+        <p>&copy; 2025 Diritti Umani e Giustizia Sociale. Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        let lastScrollTop = 0;
+        const footer = document.getElementById('footer');
+
+        window.addEventListener('scroll', function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop) {
+                // Scroll down
+                footer.classList.remove('hidden');
+            } else {
+                // Scroll up
+                footer.classList.add('hidden');
+            }
+
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Evita che il valore diventi negativo
+        });
+    </script>
+</body>
+</html>
+
+        

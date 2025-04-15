@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz Finale</title>
+        <link rel="stylesheet" href="./styles/quiz-finale_style.css">
+        <script src="./script/quiz-finale.js"></script>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p>Caricamento in corso...</p>
+            </div>
+            <div id="content" style="display: none;">
+                <!-- Modal istruzioni -->
+         <div id="modal-istruzioni" class="modal-istruzioni">
+            <div class="modal-content-istruzioni">
+            <h2>Metti alla prova le tue conoscenze</h2>
+            <p>Benvenuto nel quiz finale! Per iniziare, leggi attentamente le istruzioni seguenti:</p>
+            <ul>
+                <li>Il quiz consiste in una serie di domande a risposta multipla.</li>
+                <li>Ogni domanda avrà 4 opzioni di risposta.</li>
+                <li>Scegli la risposta che ritieni corretta per ogni domanda.</li>
+                <li>Non ci sono limiti di tempo per completare il quiz.</li>
+                <li>Una volta completato il quiz, ti bastera premere invia e potrai vedere i risultati.</li>
+            </ul>
+            <button id="btn-inizia-quiz" onclick="startQuiz()">Inizia il Quiz</button>
+            </div>
+        </div>
+                <div class="header">
+                    <h1>Quiz Finale</h1>
+                </div>
+
+            <div class="content-container">
+                
+                <form onsubmit="submitQuiz(); return false;"></form>
+                <!-- Domanda 1 -->
+                <div class="quiz-question">
+                    <p><strong>1. Cosa significa Discriminazione?</strong></p>
+                    <label>
+                        <input type="radio" name="q1" value="a"> A) Trattare qualcuno in modo più favorevole rispetto ad altri.
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="b"> B) Trattare qualcuno in modo ingiusto o peggiore a causa di una sua caratteristica
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="c"> C) Aiutare qualcuno a migliorare in un aspetto personale.
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="d"> D) Dare opportunità a tutti senza differenze.
+                    </label>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="quiz-question">
+                    <p><strong>2. Qual è una delle conseguenze della discriminazione?</strong></p>
+                    <label>
+                        <input type="radio" name="q2" value="a"> A) Migliora la coesione sociale
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="b"> B) Le persone discriminate possono sentirsi sole, tristi o arrabbiate.
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="c"> C) Le persone discriminate diventano più ricche.
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="d"> D) Tutti i problemi vengono risolti.
+                    </label>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="quiz-question">
+                    <p><strong>3. Qual è uno dei modi per combattere la discriminazione?</strong></p>
+                    <label>
+                        <input type="radio" name="q3" value="a"> A) Ignorare il problema.
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="b"> B) Sensibilizzare gli altri sui suoi effetti.
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="c"> C) Accettare che non si può fare nulla.
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="d"> D) Dimenticare il problema.
+                    </label>
+                </div>
+
+                <!-- Domanda 4 -->
+                <div class="quiz-question">
+                    <p><strong>4. Quali sono alcune delle cause della violenza?</strong></p>
+                    <label>
+                        <input type="radio" name="q4" value="a"> A) Solo problemi economici e sociali.
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="b"> B) Problemi psicologici, disagi economici, e disuguaglianze sociali.
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="c"> C) Solo fattori culturali e familiari.
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="d"> D) Solo la rabbia e l’ansia.
+                    </label>
+                </div>
+
+                <!-- Domanda 5 -->
+                <div class="quiz-question">
+                    <p><strong>5. Qual è una delle conseguenze della violenza?</strong></p>
+                    <label>
+                        <input type="radio" name="q5" value="a"> A) Un miglioramento del benessere sociale.
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="b"> B) L’aumento della coesione familiare.
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="c"> C) Le vittime della violenza possono soffrire psicologicamente e fisicamente.
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="d"> D) La violenza porta sempre a risolvere i conflitti.
+                    </label>
+                </div>
+
+                <!-- Domanda 6 -->
+                <div class="quiz-question">
+                    <p><strong>6. Come si può combattere la violenza?</strong></p>
+                    <label>
+                        <input type="radio" name="q6" value="a"> A) Solo con la forza fisica
+                    </label>
+                    <label>
+                        <input type="radio" name="q6" value="b"> B) Ignorando il problema
+                    </label>
+                    <label>
+                        <input type="radio" name="q6" value="c"> C) Sensibilizzando gli altri, denunciando e supportando le vittime.
+                    </label>
+                    <label>
+                        <input type="radio" name="q6" value="d"> D) Accettando che la violenza è inevitabile.
+                    </label>
+                </div>
+
+                <!-- Domanda 7 -->
+                <div class="quiz-question">
+                    <p><strong>7. Cosa si intende per razzismo?</strong></p>
+                    <label>
+                        <input type="radio" name="q7" value="a"> A) Trattare le persone ugualmente indipendentemente dalla loro etnia.
+                    </label>
+                    <label>
+                        <input type="radio" name="q7" value="b"> B) Una forma di discriminazione basata sulla razza, etnia e aspetto fisico.
+                    </label>
+                    <label>
+                        <input type="radio" name="q7" value="c"> C) Ammettere tutti i gruppi etnici nelle società senza differenze.
+                    </label>
+                    <label>
+                        <input type="radio" name="q7" value="d"> D) La promozione delle diversità culturali.
+                    </label>
+                </div>
+
+                <!-- Domanda 8 -->
+                <div class="quiz-question">
+                    <p><strong>8. Qual è una delle forme principali di razzismo oggi?</strong></p>
+                    <label>
+                        <input type="radio" name="q8" value="a"> A) Razzismo sistemico e discriminazione razziale nei media.
+                    </label>
+                    <label>
+                        <input type="radio" name="q8" value="b"> B) Razzismo esclusivamente fisico.
+                    </label>
+                    <label>
+                        <input type="radio" name="q8" value="c"> C) Razzismo che si manifesta solo nel lavoro.
+                    </label>
+                    <label>
+                        <input type="radio" name="q8" value="d"> D) Razzismo di tipo culturale.
+                    </label>
+                </div>
+
+                <!-- Domanda 9 -->
+                <div class="quiz-question">
+                    <p><strong>9. Quale è uno dei modi proposti per combattere il razzismo?</strong></p>
+                    <label>
+                        <input type="radio" name="q9" value="a"> A) Ignorare le differenze etniche.
+                    </label>
+                    <label>
+                        <input type="radio" name="q9" value="b"> B) Promuovere l'educazione e l'inclusione sin dalla scuola e nella famiglia.
+                    </label>
+                    <label>
+                        <input type="radio" name="q9" value="c"> C) Accettare il razzismo come parte della cultura.
+                    </label>
+                    <label>
+                        <input type="radio" name="q9" value="d"> D) Limitare i diritti dei gruppi etnici minoritari.
+                    </label>
+                </div>
+
+                <!-- Domanda 10 -->
+                <div class="quiz-question">
+                    <p><strong>10. Perché è importante la tutela dei diritti umani?</strong></p>
+                    <label>
+                        <input type="radio" name="q10" value="a"> A) Per garantire che ogni persona viva in sicurezza e senza discriminazioni.
+                    </label>
+                    <label>
+                        <input type="radio" name="q10" value="b"> B) Per impedire alle persone di esprimere le proprie opinioni.
+                    </label>
+                    <label>
+                        <input type="radio" name="q10" value="c"> C) Per limitare l'accesso a risorse come l'istruzione.
+                    </label>
+                    <label>
+                        <input type="radio" name="q10" value="d"> D) Per evitare che le persone ricevano cure mediche.
+                    </label>
+                </div>
+
+                <!-- Domanda 11 -->
+                <div class="quiz-question">
+                    <p><strong>11. Qual è uno degli esempi di organizzazioni che difendono i diritti umani?</strong></p>
+                    <label>
+                        <input type="radio" name="q11" value="a"> A) L'Organizzazione Mondiale della Sanità.
+                    </label>
+                    <label>
+                        <input type="radio" name="q11" value="b"> B) Le Nazioni Unite e la Corte Europea dei Diritti dell'Uomo.
+                    </label>
+                    <label>
+                        <input type="radio" name="q11" value="c"> C) L'Unione Europea.
+                    </label>
+                    <label>
+                        <input type="radio" name="q11" value="d"> D) Il Comitato Olimpico Internazionale.
+                    </label>
+                </div>
+
+                <!-- Domanda 12 -->
+                <div class="quiz-question">
+                    <p><strong>12. Qual è una delle sfide attuali nella protezione dei diritti umani?</strong></p>
+                    <label>
+                        <input type="radio" name="q12" value="a"> A) L'assenza di conflitti armati.
+                    </label>
+                    <label>
+                        <input type="radio" name="q12" value="b"> B) Le difficoltà economiche e politiche nei Paesi in via di sviluppo.
+                    </label>
+                    <label>
+                        <input type="radio" name="q12" value="c"> C) La crescita della pace globale.
+                    </label>
+                    <label>
+                        <input type="radio" name="q12" value="d"> D) Il miglioramento delle condizioni di vita in tutti i Paesi.
+                    </label>
+                </div>
+
+                <button class="bottone-Invia" onclick="submitQuiz()">Invia</button>
+
+                <br>
+
+                <a href="./home.html" class="back-link">Torna alla Home</a>
+            </div>
+
+                <!-- Modal per i risultati -->
+                <div id="resultModal" class="modal">
+                    <div class="modal-content">
+                        <span id="closeModal" class="close">&times;</span>
+                        <p id="modalMessage"></p>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p>&copy; 2025 Diritti umani e giustizia sociale -- quiz finale. Tutti i diritti riservati.</p>
+                </div>
+        </div>
+    </body>
+</html>

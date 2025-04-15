@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz sul Razzismo</title>
+        <link rel="stylesheet" href="./styles/quiz-razzismo_style.css">
+        <script src="./script/quiz-razzismo.js"></script>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p>Caricamento in corso...</p>
+        </div>
+        <div id="content" style="display: none;">
+
+                        <!-- Modal istruzioni -->
+            <div id="modal-istruzioni" class="modal-istruzioni">
+                <div class="modal-content-istruzioni">
+                <h2>Metti alla prova le tue conoscenze</h2>
+                <p>Benvenuto nel nostro quiz! Per iniziare, leggi attentamente le istruzioni seguenti:</p>
+                <ul>
+                    <li>Il quiz consiste in una serie di domande a risposta multipla.</li>
+                    <li>Ogni domanda avrà 4 opzioni di risposta.</li>
+                    <li>Scegli la risposta che ritieni corretta per ogni domanda.</li>
+                    <li>Non ci sono limiti di tempo per completare il quiz.</li>
+                    <li>Una volta completato il quiz, ti bastera premere invia e potrai vedere i risultati.</li>
+                </ul>
+                <button id="btn-inizia-quiz" onclick="startQuiz()">Inizia il Quiz</button>
+                </div>
+            </div>
+            
+            <!-- Trigger per aprire il modal -->
+            <button id="btn-apri-modal">Inizia il Quiz</button>
+            
+  
+            <!-- Header -->
+            <div class="header">
+                <h1>Quiz sul Razzismo</h1>
+            </div>
+
+            <div class="content-container">
+                
+                <form onsubmit="submitQuiz(); return false;">
+                <!-- Domanda 1 -->
+                <div class="quiz-question">
+                    <p><strong>1. Cosa è il razzismo secondo il testo?</strong></p>
+                    <label>
+                        <input type="radio" name="q1" value="a"> A) Una forma di discriminazione basata sulla razza o sull'etnia di una persona
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="b"> B) Una forma di violenza fisica contro le persone
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="c"> C) Una forma di discriminazione basata sulla religione
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="d"> D) Una forma di discriminazione basata sulla nazionalità
+                    </label>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="quiz-question">
+                    <p><strong>2. Come si manifesta il razzismo secondo il testo?</strong></p>
+                    <label>
+                        <input type="radio" name="q2" value="a"> A) Attraverso pregiudizi, stereotipi e atteggiamenti ostili
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="b"> B) Attraverso violenze fisiche e verbali
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="c"> C) Attraverso discriminazioni sociali ed economiche
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="d"> D) Tutte le opzioni precedenti
+                    </label>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="quiz-question">
+                    <p><strong>3. Quando sono nate le origini del razzismo secondo il testo?</strong></p>
+                    <label>
+                        <input type="radio" name="q3" value="a"> A) Durante la prima guerra mondiale
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="b"> B) Durante la seconda guerra mondiale
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="c"> C) Ai primi periodi di colonizzazione e schiavitù
+                    </label>
+                    <label>
+                        <input type="radio" name="q3" value="d"> D) Durante la rivoluzione francese
+                    </label>
+                </div>
+
+                <!-- Domanda 4 -->
+                <div class="quiz-question">
+                    <p><strong>4. Cosa ha portato a una visione di superiorità di alcuni gruppi etnici su altri secondo il testo?</strong></p>
+                    <label>
+                        <input type="radio" name="q4" value="a"> A) La conquista di nuove terre
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="b"> B) La schiavitù e il maltrattamento dei popoli conquistati
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="c"> C) La creazione di nuove leggi
+                    </label>
+                    <label>
+                        <input type="radio" name="q4" value="d"> D) La rivoluzione industriale
+                    </label>
+                </div>
+
+                <!-- Domanda 5 -->
+                <div class="quiz-question">
+                    <p><strong>5. Quante forme principali di razzismo sono presenti oggi secondo il testo?</strong></p>
+                    <label>
+                        <input type="radio" name="q5" value=" a"> A) Due
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="b">  B) Tre
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="c">  C) Quattro
+                    </label>
+                    <label>
+                        <input type="radio" name="q5" value="d">  D) Cinque
+                    </label>
+                </div>
+
+                <button class="submit-button" onclick="submitQuiz()">Invia</button>
+
+                <p>
+                    Se desideri tornare alla pagina precedente, clicca sul link qui sotto.
+                </p>
+                <!-- Link per tornare indietro -->
+                <a href="razzismo.html" class="back-link">Torna Indietro</a>
+                <!-- Link per andare alla home -->
+                <a href="home.html" class="back-link">Torna alla Home</a>
+                <!-- Link per andare avanti-->
+                <a href="tutela-diritti.html" class="back-link">Vai Avanti</a>
+                
+                <!-- Modal per i risultati -->
+                <div id="resultModal" class="modal">
+                    <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <p id="modalMessage"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <p>&copy; 2025 Stop al razzismo. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </body>
+</html>

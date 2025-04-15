@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Quiz sulla discriminazione</title>
+        <link rel="stylesheet" href="./styles/quiz-discriminazione_style.css">
+        <script src="./script/quiz-discriminazione.js"></script>
+    </head>
+    <body>
+        <div id="loader">
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <p>Caricamento in corso...</p>
+        </div>
+        <div id="content" style="display: none;">
+
+                    <!-- Modal istruzioni -->
+        <div id="modal-istruzioni" class="modal-istruzioni">
+            <div class="modal-content-istruzioni">
+            <h2>Metti alla prova le tue conoscenze</h2>
+            <p>Benvenuto nel nostro quiz! Per iniziare, leggi attentamente le istruzioni seguenti:</p>
+            <ul>
+                <li>Il quiz consiste in una serie di domande a risposta multipla.</li>
+                <li>Ogni domanda avrà 4 opzioni di risposta.</li>
+                <li>Scegli la risposta che ritieni corretta per ogni domanda.</li>
+                <li>Non ci sono limiti di tempo per completare il quiz.</li>
+                <li>Una volta completato il quiz, ti bastera premere invia e potrai vedere i risultati.</li>
+            </ul>
+            <button id="btn-inizia-quiz" onclick="startQuiz()">Inizia il Quiz</button>
+            </div>
+        </div>
+
+            <!-- Trigger per aprire il modal -->
+            <button id="btn-apri-modal">Inizia il Quiz</button>
+
+                
+            <!-- Header -->
+            <div class="header">
+                <h1>Quiz sulla discriminazione</h1>
+            </div>
+
+            <div class="content-container">
+
+                <form onsubmit="submitQuiz(); return false;"></form>
+                <!-- Domanda 1 -->
+                    <div class="quiz-question">
+                        <p><strong>1. Cos'è la Discriminazione?</strong></p>
+                        <label>
+                            <input type="radio" name="q1" value="a"> A) Trattare tutti nello stesso modo
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="b"> B) Trattare una persona o un gruppo in modo ingiusto per una loro caratteristica
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="c"> C) Ignorare i problemi delle persone
+                        </label>
+                        <label>
+                            <input type="radio" name="q1" value="d"> D) Fare volontariato per aiutare gli altri
+                        </label>
+                    </div>
+
+                    <!-- Domanda 2 -->
+                    <div class="quiz-question">
+                        <p><strong>2. Quale delle seguenti è un esempio di discriminazione razziale? </strong></p>
+                        <label>
+                            <input type="radio" name="q2" value="a"> A) Invitare tutti i compagni di classe a una festa.
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="b"> B) Non assumere qualcuno perché ha un colore di pelle diverso.
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="c"> C) Assegnare un compito di gruppo a caso.
+                        </label>
+                        <label>
+                            <input type="radio" name="q2" value="d"> D) Chiedere l'opinione di tutti durante una riunione.
+                        </label>
+                    </div>
+
+                    <!-- Domanda 3 -->
+                    <div class="quiz-question">
+                        <p><strong>3.  La discriminazione basata sull’orientamento sessuale riguarda:</strong></p>
+                        <label>
+                            <input type="radio" name="q3" value="a"> A) Il modo in cui una persona parla
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="b"> B) Chi una persona ama o da chi è attratta.
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="c"> C) La religione di una persona.
+                        </label>
+                        <label>
+                            <input type="radio" name="q3" value="d"> D) Dove vive una persona.
+                        </label>
+                    </div>
+
+                    <!-- Domanda 4 -->
+                    <div class="quiz-question">
+                        <p><strong>4. Qual è una conseguenza della discriminazione?</strong></p>
+                        <label>
+                            <input type="radio" name="q4" value="a"> A) Miglioramento delle relazioni sociali.
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="b"> B) Più opportunità per tutti.
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="c"> C) Sentirsi esclusi e perdere occasioni importanti.
+                        </label>
+                        <label>
+                            <input type="radio" name="q4" value="d"> D) Creare un ambiente inclusivo.
+                        </label>
+                    </div>
+
+                    <!-- Domanda 5 -->
+                    <div class="quiz-question">
+                        <p><strong>5. Quale di queste azioni aiuta a combattere la discriminazione?</strong></p>
+                        <label>
+                            <input type="radio" name="q5" value="a"> A) Educare le persone al rispetto e alla diversità.
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="b"> B) Evitare di parlare del problema.
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="c"> C) Trattare solo alcuni gruppi con rispetto.
+                        </label>
+                        <label>
+                            <input type="radio" name="q5" value="d"> D) Fare finta che la discriminazione non esista.
+                        </label>
+                    </div>
+
+                    <!-- Domanda 6 -->
+                    <div class="quiz-question">
+                        <p><strong>6. Quale delle seguenti è una forma di discriminazione di genere?</strong></p>
+                        <label>
+                            <input type="radio" name="q6" value="a"> A) Dare lo stesso stipendio a uomini e donne per lo stesso lavoro.
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="b"> B) Dire che solo gli uomini possono fare i meccanici.
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="c"> C) Invitare sia ragazzi che ragazze a partecipare a uno sport.
+                        </label>
+                        <label>
+                            <input type="radio" name="q6" value="d"> D) Premiare le persone in base alle loro capacità.
+                        </label>
+                    </div>
+
+                    <!-- Domanda 7 -->
+                    <div class="quiz-question">
+                        <p><strong>7. Cosa possiamo fare per combattere la discriminazione?</strong></p>
+                        <label>
+                            <input type="radio" name="q7" value="a"> A) Ignorare il problema e sperare che scompaia da solo.
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="b"> B) Sensibilizzare gli altri e prendere azione.
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="c"> C) Trattare solo alcune persone con rispetto.
+                        </label>
+                        <label>
+                            <input type="radio" name="q7" value="d"> D) Non fare nulla e aspettare che qualcun altro risolva il problema.
+                        </label>
+                    </div>
+
+                    <!-- Pulsante Invia -->
+                <button class="submit-button" onclick="submitQuiz()">Invia</button>
+
+                <p>
+                    Se desideri tornare alla pagina precedente, clicca sul link qui sotto.
+                </p>
+                <a href="discriminazione.html" class="back-link">Torna indietro</a>
+                <a href="home.html" class="back-link">Torna alla Home</a>
+                <a href="violenza.html" class="back-link">Vai avanti</a>
+            </div>
+
+            <!-- Modal per i risultati -->
+            <div id="resultModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <p id="modalMessage"></p>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="footer">
+                <p>&copy; 2025 Stop alla discriminazione. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </body>
+</html>

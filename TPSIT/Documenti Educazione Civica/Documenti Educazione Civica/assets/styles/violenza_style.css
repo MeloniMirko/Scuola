@@ -1,0 +1,143 @@
+/* Stili generali */
+body {
+    font-family: Arial, sans-serif; /* Font generico */
+    margin: 0; /* Rimozione del margine predefinito */
+    padding: 0; /* Rimozione del padding predefinito */
+    background-color: #f4f4f4; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    line-height: 1.6; /* Altezza della riga */
+}
+
+/* Header */
+.header {
+    background-color: #3f6178; /* blu */
+    color: white; /* Colore del testo */
+    padding: 20px; /* Spaziatura interna */
+    text-align: center; /* Allineamento del testo */
+    position: fixed; /* Posizione fissa */
+    top: 0; /* Posizionamento in alto */     
+    width: 100%; /* Larghezza del 100% */
+    z-index: 1000; /* Posizionamento in primo piano */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+/* Contenitore principale */
+.content-container {
+    padding: 20px; /* Spaziatura interna */
+    margin-top: 150px; /* Distanza dall'header */
+    margin-bottom: 150px; /* Distanza dal footer */
+    text-align: center; /* Allineamento del testo */
+}
+
+.content-container h2 {
+    font-size: 36px; /* Dimensione del testo */
+    margin-bottom: 20px; /* Spaziatura inferiore */
+}
+
+.content-container p {
+    font-size: 18px; /* Dimensione del testo */    
+    margin-bottom: 30px; /* Spaziatura inferiore */
+    text-align: justify; /* Allineamento del testo */
+    max-width: 800px; /* Larghezza massima */
+    margin-left: auto; /* Margine sinistro */
+    margin-right: auto; /* Margine destro */
+    line-height: 1.6; /* Altezza della riga */
+}
+
+.content-container img {
+    max-width: 40%; /* Larghezza massima */
+    height: auto; /* Altezza automatica */
+    border-radius: 10px; /* Bordo arrotondato */
+    margin: 20px 0; /* Spaziatura */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+/* Linea di separazione */
+.separator {
+    border-bottom: 2px solid #3f6178; /* Rosso scuro */
+    margin: 40px auto; /* Spaziatura */
+    width: 80%; /* Larghezza */
+}
+
+/* Bottoni */
+.quiz-link {
+    display: inline-block; /* Blocco inline */
+    padding: 15px 30px; /* Spaziatura interna */
+    background-color: #3f6178; /* Rosso scuro */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-decoration: none; /* Rimozione del sottolineato */
+    border-radius: 10px; /* Bordo arrotondato */
+    transition: background-color 0.3s, transform 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.quiz-link:hover {
+    background-color: #3f6178; /* Rosso più scuro */
+    transform: scale(1.05); /* Ingrandimento */
+}
+
+.back-link {
+    display: inline-block;   
+    margin-top: 20px;  /* Spaziatura superiore */
+    padding: 10px 20px;  /* Spaziatura interna */
+    background-color: #333; /* Grigio scuro */
+    color: white; /* Colore del testo */
+    font-size: 16px; /* Dimensione del testo */
+    text-decoration: none; /* Rimozione del sottolineato */
+    border-radius: 5px; /* Bordo arrotondato */
+    transition: background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.back-link:hover {
+    background-color: #555; /* Sfondo quando passo il mouse */
+}
+
+/* Bottoni personalizzati */
+.quiz-button {
+    background-color: #8B0000; /* Rosso scuro */
+    color: white; /* Colore del testo */
+    padding: 10px 20px; /* Spaziatura interna */
+    border: none; /* Nessun bordo */
+    border-radius: 5px; /* Bordo arrotondato */
+    cursor: pointer; /* Cambio del cursore */
+    font-size: 16px; /* Dimensione del testo */
+    transition: background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.quiz-button:hover {
+    background-color: #6B0000; /* Rosso più scuro */
+}
+
+.home-button {
+    background-color: #333; /* Grigio scuro */
+    color: white; /* Colore del testo */
+    padding: 10px 20px; /* Spaziatura interna */
+    border: none; /* Nessun bordo */
+    border-radius: 5px; /* Bordo arrotondato */
+    cursor: pointer; /* Cambio del cursore */
+    font-size: 16px; /* Dimensione del testo */
+    transition: background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.home-button:hover {
+    background-color: #555; /* Grigio più chiaro */
+}
+
+/* Contenitore dei bottoni */
+.button-container {
+    display: flex; /* Flexbox */
+    justify-content: space-between; /* Spaziatura tra i bottoni */     
+    margin-top: 20px; /* Spaziatura superiore */
+}
+
+.footer {
+    background-color: #1c1c1c; /* Grigio scuro */
+    color: white; /* Colore del testo */
+    text-align: center; /* Allineamento del testo */
+    padding: 10px; /* Spaziatura interna */
+    bottom: 0; /* Posizionamento in basso */
+    width: 100%; /* Larghezza del 100% */
+    transition: opacity 0.5s, transform 0.5s; /* Aggiunta della transizione per l'animazione */
+    
+}
+

@@ -1,0 +1,105 @@
+/* Stili di base */
+body {
+    font-family: Arial, sans-serif; /* Font di default */
+    margin: 0; /* Rimozione del margine predefinito */
+    padding: 0; /* Rimozione del padding predefinito */
+    background-color: #f9f9f9; /* Sfondo più chiaro per un aspetto pulito */
+    color: #333; /* Colore del testo */
+}
+
+.header {
+    background-color: #3f6178; /* Blu */
+    color: white; /* Colore del testo */
+    padding: 20px; /* Spazio interno */
+    text-align: center; /* Allineamento del testo */
+    position: fixed; /* Posizione fissa */
+    top: 0; /* Posizione in alto */
+    width: 100%; /* Larghezza */
+    z-index: 1000; /* Posizione sopra gli altri elementi */
+}
+
+/* Contenitore principale */
+.content-container {
+    padding: 20px;  /* Spaziatura interna */
+    margin-top: 150px; /* Distanza dall'header */
+    margin-bottom: 150px; /* Distanza dal footer */
+    text-align: center; /* Allineamento al centro */
+}
+
+.content-container h2 {
+    font-size: 36px; /* Dimensione del titolo */
+    margin-bottom: 20px; /* Spaziatura inferiore */
+}
+
+.content-container p {
+    font-size: 18px; /* Dimensione del testo */
+    margin-bottom: 30px; /* Spaziatura inferiore */
+    text-align: justify; /* Allineamento giustificato */
+    max-width: 800px; /* Larghezza massima */
+    margin-left: auto; /* Allineamento a sinistra */
+    margin-right: auto; /* Allineamento a destra */
+    line-height: 1.6; /* Altezza della riga */
+}
+
+.content-container img {
+    max-width: 40%; /* Larghezza massima */
+    height: auto; /* Altezza automatica */
+    border-radius: 10px; /* Bordo arrotondato */
+    margin: 20px 0; /* Spaziatura sopra e sotto */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra */
+    display: block; /* Elemento blocco */
+    margin: 0 auto; /* Allineamento al centro */
+    
+    
+}
+
+.separator {
+    border-bottom: 2px solid #3f6178; /* Linea di separazione blu */
+    margin: 20px 0; /* Spaziatura sopra e sotto */
+}
+
+/* Stili per i bottoni */
+.quiz-link {
+    display: inline-block; /* Blocco inline */
+    padding: 15px 30px; /* Spaziatura interna */
+    background-color: #3f6178; /* Rosso scuro */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-decoration: none; /* Rimozione del sottolineato */
+    border-radius: 10px; /* Bordo arrotondato */
+    transition: background-color 0.3s, transform 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.quiz-link:hover {
+    background-color: #3f6178; /* Rosso più scuro */
+    transform: scale(1.05); /* Ingrandimento */
+}
+
+.back-link {
+    display: inline-block;   
+    margin-top: 20px;  /* Spaziatura superiore */
+    padding: 10px 20px;  /* Spaziatura interna */
+    background-color: #333; /* Grigio scuro */
+    color: white; /* Colore del testo */
+    font-size: 16px; /* Dimensione del testo */
+    text-decoration: none; /* Rimozione del sottolineato */
+    border-radius: 5px; /* Bordo arrotondato */
+    transition: background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.back-link:hover {
+    background-color: #555; /* Sfondo quando passo il mouse */
+}
+
+
+.footer {
+    background-color: #1c1c1c; /* Grigio scuro */
+    color: white; /* Testo bianco */
+    text-align: center; /* Allineamento al centro */
+    padding: 10px; /* Spaziatura interna */
+    bottom: 0; /* Posizionamento in basso */
+    width: 100%; /* Larghezza al 100% */
+    transition: opacity 0.5s, transform 0.5s; /* Aggiunta della transizione per l'animazione */
+    
+}
+

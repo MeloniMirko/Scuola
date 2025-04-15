@@ -1,0 +1,291 @@
+body {
+    font-family: Arial, sans-serif; /* Font generico */
+    margin: 0; /* Rimuove i margini di default */
+    padding: 0;/* Rimuove il padding di default */
+    background-color: #f4f4f4; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+}
+
+.header { 
+    background-color: #3f6178; /* Blu */
+    color: white; /* Colore del testo */
+    padding: 20px; /* Spazio interno */
+    text-align: center; /* Allinea il testo al centro */
+    position: fixed; /* Posiziona l'header in modo fisso */
+    top: 0; /* Posiziona l'header in alto */
+    width: 100%; /* Larghezza al 100% */
+    z-index: 1000; /* Sopra tutto */
+}
+
+.content-container {
+    padding: 20px; /* Spazio interno */
+    margin-top: 150px; /* Distanza tra il contenuto e l'header */
+    margin-bottom: 150px; /* Distanza tra il contenuto e il footer */
+    text-align: center; /* Allinea il testo al centro */
+} 
+
+.content-container h2 {
+    font-size: 36px; /* Dimensione del titolo */
+    margin-bottom: 20px; /* Spazio tra il titolo e il paragrafo */
+}
+
+.content-container p {
+    font-size: 18px; /* Dimensione del testo */
+    margin-bottom: 30px; /* Spazio tra il paragrafo e il prossimo elemento */
+    text-align: left; /* Allinea il testo a sinistra */
+    max-width: 800px; /* Larghezza massima */
+    margin-left: auto; /* Allinea a destra */
+    margin-right: auto; /* Allinea a sinistra */
+    line-height: 1.6; /* Altezza della riga */
+}
+
+.quiz-question {
+    margin-bottom: 30px; /* Spazio tra le domande */
+    text-align: left; /* Allinea il testo a sinistra */
+    max-width: 800px; /* Larghezza massima */
+    margin-left: auto; /* Allinea a destra */
+    margin-right: auto; /* Allinea a sinistra */
+}
+
+.quiz-question label {
+    display: block; /* Mostra il label come blocco */
+    margin: 10px 0; /* Spazio tra i label */
+    font-size: 18px; /* Dimensione del testo */
+}
+
+.quiz-question input[type="radio"] {
+    margin-right: 10px; /* Spazio tra il radio button e il testo */
+}
+
+.submit-button {
+    display: inline-block; /* Mostra il bottone come blocco */
+    padding: 15px 30px; /* Spazio interno */
+    background-color: #3f6178; /* colore sfondo bottore*/ /* Rosso */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-decoration: none; /* Rimuove il sottolineato */
+    border-radius: 10px; /* Bordo arrotondato */
+    border: none; /* Nessun bordo */
+    cursor: pointer; /* Cambia il cursore al passaggio */
+    transition: background-color 0.3s, transform 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.submit-button:hover {
+    background-color: #3f6178; /* sfondo quando passo con il mouse */ /* Rosso scuro */
+    transform: scale(1.05); /* Ingrandisce il bottone */
+}
+
+.quiz-link {
+    display: inline-block; /* Elemento blocco */
+    padding: 15px 30px; /* Spazio interno */
+    background-color: #3f6178; /* Azzurro */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-decoration: none; /* Nessun trattino */
+    border-radius: 10px;    /* Arrotondamento degli angoli */
+    transition: background-color 0.3s, transform 0.3s; /* Transizione */
+}
+
+.quiz-link:hover { 
+    background-color: #3f6178; /* Sfondo quando passo sopra con il mouse */
+    transform: scale(1.05); /* Ingrandimento */
+}
+
+.back-link {
+    display: inline-block; /* Mostra il link come blocco */
+    margin-top: 20px; /* Spazio sopra il link */
+    padding: 10px 20px; /* Spazio interno */
+    background-color: #333; /* Nero */
+    color: white; /* Colore del testo */
+    font-size: 16px;    /* Dimensione del testo */
+    text-decoration: none; /* Rimuove il sottolineato */
+    border-radius: 5px; /* Bordo arrotondato */
+    transition: background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+}
+
+.back-link:hover {
+    background-color: #555; /* Grigio scuro */
+}
+
+.footer {
+    background-color: #1c1c1c; /* Grigio scuro */
+    color: white; /* Colore del testo */
+    text-align: center; /* Allinea il testo al centro */
+    padding: 10px; /* Spazio interno */
+    bottom: 0; /* Posiziona il footer in basso */ 
+    width: 100%; /* Larghezza al 100% */
+    transition: opacity 0.5s, transform 0.5s; /* Aggiunta della transizione per l'animazione */
+    
+}
+
+/* Stile per il modal */
+.modal {
+    display: none; /* Nascondi il modal di default */
+    position: fixed; /* Posiziona il modal in modo fisso */
+    z-index: 1001; /* Sopra tutto */
+    left: 0; /* Posiziona il modal a sinistra */
+    top: 0; /* Posiziona il modal in alto */
+    width: 100%; /* Larghezza al 100% */
+    height: 100%; /* Altezza al 100% */
+    transform: translateY(-150px); /* Sposta il modal in alto */
+}
+
+.modal-content {
+    background-color: white; /* Sfondo bianco */
+    margin: 15% auto; /* Centrato verticalmente */
+    padding: 20px; /* Spazio interno */
+    border: 1px solid #888; /* Bordo grigio */
+    width: 80%; /* Larghezza al 80% */
+    max-width: 500px; /* Larghezza massima */
+    border-radius: 10px; /* Bordo arrotondato */
+    text-align: center; /* Allinea il testo al centro */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ombra */
+}
+
+.close {
+    color: #aaa; /* Colore grigio */
+    float: right; /* Allinea a destra */
+    font-size: 28px; /* Dimensione del testo */
+    font-weight: bold; /* Grassetto */
+    cursor: pointer; /* Cambia il cursore al passaggio */
+} 
+
+.close:hover {
+    color: #333; /* Colore del testo */
+}
+
+            /* Caricamento per il quiz */
+
+/* Stile per il contenitore del loader */
+#loader {
+    display: flex; /* Disposizione orizzontale */
+    flex-direction: column; /* Posiziona gli elementi in colonna */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra orizzontalmente */
+    height: 100vh; /* Schermo intero */
+    background-color: #ffffff; /* Sfondo bianco */
+    position: fixed; /* Posiziona il loader in modo fisso */
+    top: 0;  /* Posiziona il loader in alto */
+    left: 0; /* Posiziona il loader a sinistra */
+    width: 100%; /* Larghezza al 100% */
+    z-index: 9999; /* Sopra tutto */
+    font-family: Arial, sans-serif; /* Font generico */
+}
+
+/* Contenitore dei pallini */
+.dots {
+    display: flex; /* Disposizione orizzontale dei pallini */
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 20px; /* Spazio tra pallini e testo */
+}
+
+/* Stile per i pallini */
+.dot { 
+    width: 15px; /* Larghezza */
+    height: 15px; /* Altezza */
+    margin: 5px; /* Spazio tra i pallini */
+    background-color: #1331da; /* Colore blu */
+    border-radius: 50%; /* Bordo arrotondato */
+    animation: bounce 1.5s infinite ease-in-out; /* Animazione */
+}
+
+.dot:nth-child(2) {
+    background-color: #eb1111; /* Rosso */
+    animation-delay: 0.2s; /* Ritardo dell'animazione */
+}
+.dot:nth-child(3) {
+    background-color: #fb5f05; /* Giallo */
+    animation-delay: 0.4s; /* Ritardo dell'animazione */
+}
+.dot:nth-child(4) {
+    background-color: #34a853; /* Verde */
+    animation-delay: 0.6s; /* Ritardo dell'animazione */
+}
+
+/* Animazione per il movimento dei pallini */
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1); 
+    }
+}
+
+/* Stile per il testo */
+#loader p {
+    font-size: 18px; /* Dimensione del testo */
+    color: #333; /* Colore del testo */
+    text-align: center; /* Allinea il testo al centro */
+    margin: 0; /* Rimuove i margini di default */
+}
+
+
+
+/* Stile per il modal */
+.modal-istruzioni {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  /* Stile per il contenuto del modal */
+  .modal-content-istruzioni {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+  }
+  
+  /* Stile per il titolo del modal */
+  .modal-content-istruzioni h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Stile per il testo del modal */
+  .modal-content-istruzioni p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #666;
+  }
+  
+  /* Stile per la lista del modal */
+  .modal-content-istruzioni ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Stile per gli elementi della lista del modal */
+  .modal-content-istruzioni ul li {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #666;
+  }
+  
+  /* Stile per il pulsante di inizio del quiz */
+  #btn-inizia-quiz {
+    background-color: #3f6178;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Stile per il pulsante di inizio del quiz al passaggio del mouse */
+  #btn-inizia-quiz:hover,
+  #btn-inizia-quiz:focus {
+    background-color: #3f6178;
+  }

@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif; /* Font generico */
+    margin: 0; /* Rimuove il margine di default */
+    padding: 0; /* Rimuove il padding di default */
+    background-color: #f4f4f4; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+}
+
+.header { 
+    background-color: #3f6178; /* rosa */
+    color: white; /* Colore del testo */
+    padding: 20px; /* Spazio interno */
+    text-align: center; /* Allineamento del testo */
+    position: fixed; /* Posizione fissa */
+    top: 0; /* Posizionamento in alto */
+    width: 100%; /* Larghezza del 100% */
+    z-index: 1000; /* Z-index per sovrapporre l'header */
+}
+
+.content-container {
+    padding: 20px; /* Spazio interno */
+    margin-top: 150px; /* Distanza tra il contenuto e l'header */
+    margin-bottom: 150px; /* Distanza tra il contenuto e il footer */
+    text-align: center; /* Allineamento del testo */
+}
+
+.content-container h2 {
+    font-size: 36px; /* Dimensione del testo */
+    margin-bottom: 20px; /* Margine inferiore */
+}
+
+.content-container p {
+    font-size: 18px; /* Dimensione del testo */
+    margin-bottom: 30px; /* Margine inferiore */
+    text-align: justify; /* Allineamento del testo */
+    max-width: 800px; /* Larghezza massima */
+    margin-left: auto; /* Margine sinistro */
+    margin-right: auto; /* Margine destro */
+    line-height: 1.6; /* Altezza della riga */
+}
+
+.content-container img {
+    max-width: 40%; /* Larghezza massima */
+    height: auto; /* Altezza automatica */
+    border-radius: 10px; /* Bordo arrotondato */
+    margin: 20px 0; /* Margine */
+}
+
+.separator {
+    border-bottom: 2px solid #3f6178; /* Linea di separazione */
+    margin: 40px auto; /* Margine */
+    width: 80%; /* Larghezza */
+}
+
+.frase-importante h2{
+    text-align: center; /* Allineamento del testo */
+}
+
+
+.frase-importante p{
+    text-align: right; /* Allineamento del testo */
+}
+
+
+
+.quiz-link {
+    display: inline-block; /* Elemento in linea */
+    padding: 15px 30px; /* Spaziatura interna */
+    background-color: #3f6178; /* Sfondo viola */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-decoration: none; /* Nessuna decorazione */
+    border-radius: 10px; /* Bordo arrotondato */
+    transition: background-color 0.3s, transform 0.3s; /* transizione per l'animazione */
+}
+
+.quiz-link:hover {
+    background-color: #3f6178;  /* Cambio colore al passaggio del mouse */
+    transform: scale(1.05); /* Effetto di ingrandimento */
+}
+
+#quiz-link:hover {
+    cursor: pointer; /* Cambio del cursore al passaggio del mouse */
+}
+
+.back-link {
+    display: inline-block; /* Elemento in linea */
+    margin-top: 20px; /* Margine superiore */
+    padding: 10px 20px; /* Spaziatura interna */
+    background-color: #333; /* Sfondo nero */
+    color: white; /* Colore del testo */
+    font-size: 16px; /* Dimensione del testo */
+    text-decoration: none; /* Nessuna decorazione */
+    border-radius: 5px; /* Bordo arrotondato */
+    transition: background-color 0.3s; /* transizione per l'animazione */
+    
+}
+
+.back-link:hover {
+    background-color: #555; /* Cambio colore al passaggio del mouse */
+}
+
+.footer {
+    background-color: #1c1c1c; /* Colore di sfondo */
+    color: white;  /* Colore del testo */
+    text-align: center; /* Allineamento del testo */
+    padding: 10px; /* Spaziatura interna */
+    bottom: 0; /* Posizionamento in basso */
+    width: 100%; /* Larghezza del 100% */
+    transition: opacity 0.5s, transform 0.5s; /* Aggiunta della transizione per l'animazione */
+}
+
+
+ 

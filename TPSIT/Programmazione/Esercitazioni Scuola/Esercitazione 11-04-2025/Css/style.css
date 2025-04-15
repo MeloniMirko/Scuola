@@ -1,0 +1,86 @@
+/* -------------------------
+   Stile base
+------------------------- */
+
+body {
+    background-color: #000000;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+p {
+    color: orange;
+    text-align: left;
+    font-size: 20px;
+}
+
+
+/* -------------------------
+   Immagini generiche
+------------------------- */
+
+img {
+    float: right;
+    width: 600px;
+}
+
+#img-london {
+    float: left;
+    width: 600px;
+}
+
+
+/* -------------------------
+   Liste
+------------------------- */
+
+ul {
+    color: orange;
+    font-size: 20px;
+    list-style-type: square;
+}
+
+
+/* -------------------------
+   Container per immagini e liste
+------------------------- */
+
+.content-container {
+    display: flex;
+    flex-direction: column;  
+    align-items: left;    
+    gap: 20px;  /* Aggiunge spazio tra l'immagine e l'elenco */
+}
+
+.container-button {
+    display: flex;
+    justify-content: left; /* Centra il bottone */
+    margin-top: 12%; /* Aggiunge spazio sopra il bottone */
+}
+
+
+/* -------------------------
+   Museum Page 
+------------------------- */
+
+.museum {
+    background-color: red;
+}
+
+.british-museum {
+    color: white;
+    text-align: center;
+}
+
+.img-museum {
+    float: left;
+    width: 600px;
+}
+
+.clear {
+    clear: both;
+}

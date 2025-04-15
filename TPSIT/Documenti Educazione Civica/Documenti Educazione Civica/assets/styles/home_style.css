@@ -1,0 +1,148 @@
+
+
+body {
+    font-family: Arial, sans-serif; /* Font di default */
+    margin: 0; /* Rimuove il margine */
+    padding: 0; /* Rimuove il padding */
+    background-color: #f4f4f4; /* Colore di sfondo */
+    color: #333; /* Colore dello sfondo */
+}
+
+.header { 
+    background-color: #1c1c1c;  /* Colore di sfondo dell'header */
+    color: white; /* Colore del testo */
+    padding: 20px; /* Spazio interno */
+    text-align: center; /* Allinea il testo al centro */
+    position: fixed;  /* Fissa l'header in alto */
+    top: 0;  /* Posiziona l'header in alto */
+    width: 100%;  /* Larghezza dell'header */
+    z-index: 1000; /* Posiziona l'header sopra gli altri elementi */
+}
+
+
+.rectangle-container {
+    display: flex; /* Rende i rettangoli in linea */
+    flex-direction: column; /* Allinea i rettangoli in colonna */
+    align-items: center; /* Allinea i rettangoli al centro */
+    gap: 40px; /* Distanza tra i rettangoli */
+    padding: 20px; /* Spazio interno */
+    margin-top: 150px; /* Distanza tra il primo rettangolo e l'header */
+    margin-bottom: 150px; /* Gap tra l'ultimo rettangolo e il footer */
+}
+
+.rectangle {
+    width: 80%; /* Larghezza del rettangolo */
+    max-width: 600px; /* Larghezza massima */
+    height: 200px; /* Rettangoli più alti */
+    display: flex; /* Rende i rettangoli in linea */
+    align-items: center; /* Allinea i rettangoli al centro */
+    justify-content: space-between; /* Allinea il testo a sinistra e la freccia a destra */
+    padding: 0 20px; /* Spazio interno */
+    color: white; /* Colore del testo */
+    font-size: 18px; /* Dimensione del testo */
+    text-align: left; /* Allinea il testo a sinistra */
+    border-radius: 10px; /* Bordo arrotondato */
+    transition: transform 0.3s, background-color 0.3s; /* Aggiunta della transizione per l'animazione */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+    text-decoration: none; /* Rimuove il sottolineato dei link */
+}
+
+/* Colori diversi per ogni rettangolo */
+.rectangle:nth-child(1) {
+    background-color: #3f6178; /* rosa */
+}
+
+.rectangle:nth-child(2) {
+    background-color: #3f6178; /* blu */
+}       
+
+.rectangle:nth-child(3) {
+    background-color: #3f6178; /* verde */
+}
+
+.rectangle:nth-child(4) {
+    background-color: #3f6178; /* rosso */
+}
+
+.rectangle:hover {
+    transform: scale(1.02); /* Effetto di zoom al passaggio del mouse */
+}
+
+.rectangle .content {
+    flex: 1; /* Espande il contenuto */
+}
+
+.rectangle .title {
+    font-size: 36px; /* Titolo più grande */
+    font-weight: bold; /* Testo in grassetto */
+    margin-bottom: 10px; /* Spazio inferiore */
+}
+
+.rectangle .description {
+    font-size: 16px; /* Descrizione più grande */
+    opacity: 0.9; /* Opacità del testo */
+}
+
+.rectangle .arrow-text {
+    font-size: 18px; /* Dimensione del testo */
+    margin-left: 10px; /* Spazio a sinistra */
+}
+
+.rectangle .arrow {
+    font-size: 24px; /* Dimensione della freccia */
+    margin-left: 10px; /* Spazio a sinistra */
+    opacity: 0; /* Nasconde la freccia */
+    transition: opacity 0.3s, transform 0.3s; /*transizione per l'animazione */
+    transform: translateX(-20px); /* Sposta la freccia a sinistra */
+}
+
+.rectangle:hover .arrow {
+    opacity: 1; /* Mostra la freccia al passaggio del mouse */
+    transform: translateX(0); /* Sposta la freccia a destra */
+}
+
+.footer {
+    background-color: #1c1c1c; /* Colore di sfondo del footer */
+    color: white; /* Colore del testo */
+    text-align: center; /* Allinea il testo al centro */
+    padding: 10px; /* Spazio interno */
+    bottom: 0; /* Posiziona il footer in basso */
+    width: 100%; /* Larghezza del footer */
+    transition: opacity 0.5s, transform 0.5s; /* transizione per l'animazione */
+    
+}
+
+
+.hidden {
+    opacity: 0; /* Nasconde il footer */
+    transform: translateY(100%); /* Sposta il footer verso il basso */
+}
+
+/* Stile del banner dei cookie */
+
+#cookie-banner {
+    position: fixed; /* Posiziona il banner in alto */
+    bottom: 0; /* Posiziona il banner in basso */
+    left: 0; /* Posiziona il banner a sinistra */
+    right: 0; /* Posiziona il banner a destra */
+    background-color: #333; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    padding: 15px; /* Spazio interno */
+    text-align: center; /* Allinea il testo al centro */
+    font-size: 16px; /* Dimensione del testo */
+    z-index: 9999; /* Posiziona il banner sopra gli altri elementi */
+    display: none; /* Nasconde il banner */
+}
+
+#cookie-banner a {
+    color: #FFD700; /* Colore del link */
+    text-decoration: none; /* Rimuove il sottolineato */
+    font-weight: bold; /* Testo in grassetto */
+    margin-left: 10px; /* Spazio a sinistra */
+}
+
+#cookie-banner p {
+    margin: 0; /* Rimuove il margine */
+}
+
+
