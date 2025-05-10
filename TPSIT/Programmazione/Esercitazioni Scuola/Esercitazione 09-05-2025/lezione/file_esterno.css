@@ -1,0 +1,27 @@
+body{
+	background-color:orange; 
+}
+
+#testodiverso {
+	color:white; 
+	background:magenta;
+}
+h1{
+	color:white;
+	background-color:gray;
+	text-align: center
+}
+
+h2 {
+	text-indent: 50px;
+}
+
+p {
+	font-size:100%; 
+	color:blue; 
+	background:green;
+	font-family: Arial, Helvetica, sans-serif; 
+	text-align: center;
+	font-weight:bold;
+	font-style:italic
+}
