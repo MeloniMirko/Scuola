@@ -2,9 +2,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fdfdfd;
+    background-color: whitesmoke;
     color: #000;
 }
+
 
 header {
     background-color: #222;
@@ -55,7 +56,7 @@ section {
 
 .bio-content aside {
     background-color: #eee08b;
-    padding: 10px;
+    padding: 20px 0 100px 10px;
     font-style: italic;
     font-size: 0.9em;
     max-width: 200px;
