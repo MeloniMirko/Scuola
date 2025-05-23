@@ -1,0 +1,136 @@
+/* Impostazioni di base */
+body {
+    background-color: #fefefe;
+    font-family: Arial, sans-serif;
+    margin: 10px solid #ffff; 
+}
+
+/* Header */
+header {
+    background-color: #2e3f2f;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.titoletti{
+    text-align: center;
+}
+
+/* Collaborazioni */
+.collaborazioni {
+    background-color: #d4ecd0;  /* Verde chiaro come nella tua immagine */
+    padding: 20px 20px;
+    max-width: 1000px;           /* Rimpicciolisce la larghezza del rettangolo */
+    margin: 40px auto;          /* Centra e aggiunge spazio sopra e sotto */
+    text-align: center;
+}
+
+.box-collab {
+    display: flex;
+    justify-content: center;
+    gap: 250px;
+    margin-top: 10px;
+}
+
+.box-collab span {
+    background-color: #e0f0dc;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Chi sono */
+.chi-sono {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.citazione {
+    font-style: italic;
+    background-color: #85c18517;
+    color: #589858;
+    border-left: 4px solid #50bb50;
+    margin: 20px auto;
+    padding: 10px;
+    width: fit-content;
+}
+
+/* Spedizioni */
+.spedizioni {
+    text-align: center;
+    padding: 20px 20px;
+    background-color: #d1c1c1;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.elenco-affiancato {
+    display: flex;
+    justify-content: center;
+    gap: 60px; /* distanza tra i due elenchi */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.spedizioni ol {
+    list-style: decimal inside;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.spedizioni .titoli li,
+.spedizioni .date li {
+    margin-bottom: 10px;
+}
+
+
+/* Galleria immagini */
+.galleria {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.galleria img {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 30px;
+    border-radius: 6px;
+}
+
+.didascalia {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Diario */
+.diario {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.testo-diario {
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-left: 4px solid #aaa;
+    font-style: italic;
+}
+
+/* Footer */
+footer {
+    background-color: #2e3f2f;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer a {
+    color: #f5e842;
+    text-decoration: none;
+    font-weight: bold;
+}
