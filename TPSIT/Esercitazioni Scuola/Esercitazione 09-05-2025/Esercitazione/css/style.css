@@ -1,137 +1,59 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: whitesmoke;
-    color: #000;
+    background-color: rgb(255, 254, 254);
 }
 
-
-header {
-    background-color: #222;
-    color: white;
+.blocco-nero {
+    background-color: black;
+    color: white;   
     text-align: center;
-    padding: 30px 10px;
+    padding: 20px;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2.5em;
-}
-
-header h2 {
+.blocco-bianco {
+    background-color: white;
+    border: 2px solid rgb(157, 157, 157);
     margin-top: 10px;
-    font-weight: normal;
-    font-size: 1.2em;
 }
 
-h3 {
+.centrato {
     text-align: center;
 }
 
-section {
-    margin: 40px auto;
-    padding: 30px 20px;
-    max-width: 1000px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+#img_profilo {
+    width: 200px;
 }
 
-.bio-content {
+.sezione {
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 30px;
 }
 
-.bio-content img {
-    width: 150px;
-    height: auto;
-    border-radius: 4px;
-}
-
-.bio-content p {
-    flex: 1;
-}
-
-.bio-content aside {
-    background-color: #eee08b;
-    padding: 20px 0 100px 10px;
+.citazione {
+    background-color: rgb(244, 226, 120);
     font-style: italic;
-    font-size: 0.9em;
-    max-width: 200px;
-    border-left: 5px solid #c9b72f;
-}
-
-.albums .album-grid {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    border-left: 3px solid gray;
+    text-align: center;
+    margin-left: 5px;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .album {
     text-align: center;
-    background-color: #eee;
-    border-radius: 20px;
-    padding: 15px;
-    width: 150px;
+    background-color: rgb(193, 195, 191);
+    margin: 10px;
+    border-radius: 20%;
 }
 
-.album img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
+ul {
+    list-style-type: square;
 }
 
-.concerts ul {
-    list-style: square;
-    padding-left: 20px;
+a {
+    color: violet
 }
 
-.concerts li {
-    margin-bottom: 10px;
+#su {
+    color: yellow;
 }
-
-.interview .highlight {
-    color: #000;
-    background-color: #ffffcc;
-    padding: 2px 4px;
-    border-radius: 4px;
-    border-left: 5px solid #c9b72f;
-}
-
-.interview a {
-    color: #8a0ee9;
-    text-decoration: none;
-    
-}
-
-.interview a:hover {
-    text-decoration: underline;
-}
-
-.media-grid {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-footer {
-    background-color: #222;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9em;
-}
-
-footer a {
-    color: #f0e85b;
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    
-}
-
-
