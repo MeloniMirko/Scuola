@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  background-color: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.topbar {
+  background-color: #70db70;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  color: black;
+  margin: 0;
+}
+
+.menu h2 {
+  display: inline-block;
+  margin: 0 10px;
+  color: black;
+  cursor: pointer;
+}
+
+.intro {
+  background-color: #111;
+  text-align: center;
+  padding: 20px;
+}
+
+.intro h2 {
+  color: white;
+  font-size: 20px;
+}
+
+section h2 {
+  text-align: center;
+  margin-top: 40px;
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+.about, .progetti, .risultati, .contatti {
+  background-color: #d3d3d3;
+  padding: 30px 20px;
+}
+
+.about-content, .project-content, .risultati-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.about-content img, .project-content img, .risultati-content img {
+  max-width: 250px;
+  border-radius: 5px;
+}
+
+.project-content ul {
+  list-style: disc;
+  padding-left: 20px;
+  color: black;
+}
+
+.risultati-content p, .about-content p {
+  max-width: 600px;
+  color: black;
+}
+
+.contatti {
+  text-align: center;
+  background-color: #000;
+  color: white;
+}
+
+footer {
+  background-color: black;
+  color: green;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px;
+}
