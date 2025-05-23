@@ -1,92 +1,76 @@
 #include <stdio.h>
-#include <stdlib.h>  // Per rand() e srand()
-#include <time.h>    // Per inizializzare il generatore di numeri casuali
+#include <stdlib.h>
+#include <time.h>
 
-#define SIZE 10
+// Dimensione degli array (10 elementi)
+#define DIM 10
 
-// Funzione per generare un numero casuale da 0 a 99
-int generaNumeroCasuale() {
-    return rand() % 100;
+// Funzione per generare un numero casuale tra 1 e 50
+int generaNumero() {
+    return rand() % 50 + 1;
 }
 
 // Funzione per contare i pari in un array
-int contaPari(int array[], int dimensione) {
+int contaPari(int arr[]) {
     int contatore = 0;
-    for(int i = 0; i < dimensione; i++) {
-        if(array[i] % 2 == 0) {
+    for(int i = 0; i < DIM; i++) {
+        if(arr[i] % 2 == 0) {
             contatore++;
         }
     }
     return contatore;
 }
 
-// Funzione per contare i dispari in un array
-int contaDispari(int array[], int dimensione) {
-    int contatore = 0;
-    for(int i = 0; i < dimensione; i++) {
-        if(array[i] % 2 != 0) {
-            contatore++;
-        }
-    }
-    return contatore;
-}
-
-// Funzione per ordinare un array in ordine decrescente
-void ordinaDecrescente(int array[], int dimensione) {
-    for(int i = 0; i < dimensione - 1; i++) {
-        for(int j = i + 1; j < dimensione; j++) {
-            if(array[i] < array[j]) {
-                // Scambia i due elementi
-                int temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
+// Funzione per ordinare in modo decrescente (usando un algoritmo semplice)
+void ordina(int arr[]) {
+    int temp;
+    for(int i = 0; i < DIM-1; i++) {
+        for(int j = i+1; j < DIM; j++) {
+            if(arr[i] < arr[j]) {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
         }
     }
 }
 
-// Funzione principale
 int main() {
-    int array1[SIZE];
-    int array2[SIZE];
-    int arraySomme[SIZE];
-
-    // Inizializza il generatore di numeri casuali
+    int arrayA[DIM], arrayB[DIM], arraySomma[DIM];
+    int i;
+    
+    // Inizializzo il generatore di numeri casuali
     srand(time(NULL));
-
-    // Genera numeri casuali, li inserisce nei due array e calcola la somma
-    for(int i = 0; i < SIZE; i++) {
-        array1[i] = generaNumeroCasuale();
-        array2[i] = generaNumeroCasuale();
-        arraySomme[i] = array1[i] + array2[i];
+    
+    // 1. RIEMPIO GLI ARRAY CON NUMERI CASUALI
+    printf("Generazione numeri casuali:\n");
+    for(i = 0; i < DIM; i++) {
+        arrayA[i] = generaNumero();
+        arrayB[i] = generaNumero();
+        printf("Coppia %d: %d e %d\n", i+1, arrayA[i], arrayB[i]);
     }
-
-    // Conta pari e dispari nei primi due array
-    int pari1 = contaPari(array1, SIZE);
-    int dispari1 = contaDispari(array1, SIZE);
-    int pari2 = contaPari(array2, SIZE);
-    int dispari2 = contaDispari(array2, SIZE);
-
-    // Ordina il terzo array in ordine decrescente
-    ordinaDecrescente(arraySomme, SIZE);
-
-    // Stampa i risultati
-    printf("Array 1: ");
-    for(int i = 0; i < SIZE; i++) {
-        printf("%d ", array1[i]);
+    
+    // 2. CONTO I PARI E I DISPARI
+    int pariA = contaPari(arrayA);
+    int pariB = contaPari(arrayB);
+    
+    printf("\nStatistiche:\n");
+    printf("Array A: %d pari e %d dispari\n", pariA, DIM - pariA);
+    printf("Array B: %d pari e %d dispari\n", pariB, DIM - pariB);
+    
+    // 3. CREO L'ARRAY SOMMA
+    for(i = 0; i < DIM; i++) {
+        arraySomma[i] = arrayA[i] + arrayB[i];
     }
-    printf("\nPari: %d, Dispari: %d\n", pari1, dispari1);
-
-    printf("Array 2: ");
-    for(int i = 0; i < SIZE; i++) {
-        printf("%d ", array2[i]);
+    
+    // 4. ORDINO L'ARRAY SOMMA
+    ordina(arraySomma);
+    
+    // STAMPO I RISULTATI
+    printf("\nArray somma ordinato:\n");
+    for(i = 0; i < DIM; i++) {
+        printf("%d ", arraySomma[i]);
     }
-    printf("\nPari: %d, Dispari: %d\n", pari2, dispari2);
-
-    printf("Array Somme (ordinato decrescente): ");
-    for(int i = 0; i < SIZE; i++) {
-        printf("%d ", arraySomme[i]);
-    }
-
+    
     return 0;
 }
