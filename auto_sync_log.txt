@@ -138,3 +138,6 @@ Sincronizzazione avviata: 25/09/2025  1:39:30,68
 warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
 ^C------------------------------- 
 Sincronizzazione avviata: 25/09/2025  1:39:42,82 
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+^C------------------------------- 
+Sincronizzazione avviata: 25/09/2025  1:39:55,84 
