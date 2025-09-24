@@ -1,2 +1,8 @@
 ------------------------------- 
 Sincronizzazione avviata: 25/09/2025  1:37:12,89 
+To https://github.com/MeloniMirko/Scuola.git
+   ff1da26..03d57f5  master -> master
+Sincronizzazione completata: 25/09/2025  1:37:15,52 
+------------------------------- 
+------------------------------- 
+Sincronizzazione avviata: 25/09/2025  1:37:15,55 
