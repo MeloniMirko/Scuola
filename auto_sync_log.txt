@@ -345,3 +345,21 @@ Sincronizzazione completata: 26/09/2025  0:17:31,88
 ------------------------------- 
 ------------------------------- 
 Sincronizzazione avviata: 26/09/2025  0:17:31,91 
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+Applying autostash resulted in conflicts.
+Your changes are safe in the stash.
+You can run "git stash pop" or "git stash drop" at any time.
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+error: unable to unlink old 'auto_sync_log.txt': Invalid argument
+fatal: could not reset --hard
+To https://github.com/MeloniMirko/Scuola.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/MeloniMirko/Scuola.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+Sincronizzazione completata: 26/09/2025  0:17:33,78 
+------------------------------- 
+------------------------------- 
+Sincronizzazione avviata: 26/09/2025  0:17:33,81 
