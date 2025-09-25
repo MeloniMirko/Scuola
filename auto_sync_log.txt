@@ -558,6 +558,7 @@ warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF
 error: unable to unlink old 'auto_sync_log.txt': Invalid argument
 fatal: could not reset --hard
 Created autostash: 1a90375
+<<<<<<< Updated upstream
 =======
 ------------------------------- 
 Sincronizzazione avviata: 25/09/2025  9:05:44,95 
@@ -3707,3 +3708,20 @@ Sincronizzazione completata: 25/09/2025  9:29:49,37
 ------------------------------- 
 Sincronizzazione avviata: 25/09/2025  9:29:49,37 
 >>>>>>> e7bf88f37f33ee66c5ba09cf535297e149717501
+=======
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+[master ea85ac3] Auto-sync commit 26/09/2025  0:20:23,89
+ 1 file changed, 21 insertions(+)
+Applying autostash resulted in conflicts.
+Your changes are safe in the stash.
+You can run "git stash pop" or "git stash drop" at any time.
+To https://github.com/MeloniMirko/Scuola.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/MeloniMirko/Scuola.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+[26/09/2025  0:20:25,01] Sincronizzazione completata 
+============================== 
+>>>>>>> Stashed changes
