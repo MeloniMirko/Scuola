@@ -525,3 +525,14 @@ Sincronizzazione completata: 26/09/2025  0:17:51,09
 ------------------------------- 
 ------------------------------- 
 Sincronizzazione avviata: 26/09/2025  0:17:51,13 
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+Applying autostash resulted in conflicts.
+Your changes are safe in the stash.
+You can run "git stash pop" or "git stash drop" at any time.
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+error: unable to unlink old 'auto_sync_log.txt': Invalid argument
+fatal: could not reset --hard
+^C============================== 
+[26/09/2025  0:19:42,70] Avvio sincronizzazione 
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+fatal: update_ref failed for ref 'MERGE_AUTOSTASH': cannot lock ref 'MERGE_AUTOSTASH': reference already exists
