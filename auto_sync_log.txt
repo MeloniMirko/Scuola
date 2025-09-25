@@ -157,3 +157,9 @@ Sincronizzazione completata: 25/09/2025  1:39:59,87
 Sincronizzazione avviata: 25/09/2025  1:39:59,90 
 ------------------------------- 
 Sincronizzazione avviata: 25/09/2025  9:05:44,95 
+To https://github.com/MeloniMirko/Scuola.git
+   64c9cd9..7e873da  master -> master
+Sincronizzazione completata: 25/09/2025  9:06:40,20 
+------------------------------- 
+------------------------------- 
+Sincronizzazione avviata: 25/09/2025  9:06:40,20 
