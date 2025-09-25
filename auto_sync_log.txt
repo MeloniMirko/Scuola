@@ -177,3 +177,10 @@ Sincronizzazione completata: 25/09/2025  9:06:45,91
 ------------------------------- 
 ------------------------------- 
 Sincronizzazione avviata: 25/09/2025  9:06:45,92 
+warning: in the working copy of 'auto_sync_log.txt', LF will be replaced by CRLF the next time Git touches it
+To https://github.com/MeloniMirko/Scuola.git
+   dbc2ac9..f7ef6dc  master -> master
+Sincronizzazione completata: 25/09/2025  9:06:48,84 
+------------------------------- 
+------------------------------- 
+Sincronizzazione avviata: 25/09/2025  9:06:48,84 
