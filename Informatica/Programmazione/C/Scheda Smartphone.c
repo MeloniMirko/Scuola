@@ -67,6 +67,16 @@ int main(){
         printf("RAM (GB): %d\n", s.ramGB);
         printf("Peso (grammi): %.2f\n", s.peso);
     }
+
+    // Modifica della memoria del primo smartphone
+    // Supponiamo che la memoria corretta sia 128 GB
+    s1.memoriaGB = 128;
+    printf("\nDati del primo smartphone dopo la correzione della memoria:\n");
+    stampaSmartphone(Smartphone s);
+    
+    
+
+
      
    
     
