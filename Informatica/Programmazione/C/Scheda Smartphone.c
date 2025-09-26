@@ -51,13 +51,8 @@ int main(){
     scanf("%d", &s2.ramGB);
     printf("Peso (grammi): ");
     scanf("%lf", &s2.peso);
-
+    printf("\n");
     // Stampa dei dati inseriti
-
-
-
-
-
     printf ("risultati primo smartphone:\n");
     stampaSmartphone(s1);
     printf ("\nrisultati secondo smartphone:\n");
