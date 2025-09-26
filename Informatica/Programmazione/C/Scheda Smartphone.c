@@ -19,7 +19,7 @@ typedef struct{
     double peso;       // peso in grammi
 }Smartphone;
 
-void stampaSmartphone(Smartphone s)
+void stampaSmartphone(Smartphone s);
 
 
 
@@ -29,7 +29,7 @@ int main(){
     // Input per il primo smartphone
     printf("Inserisci i dati del primo smartphone:\n");
     printf("Modello: ");
-    scanf("%s[^\n]%*c", s1.modello);
+    scanf("%[^\n]s", s.modello);
     printf("Marca: ");
     scanf("%s", s1.marca);
     printf("Memoria (GB): ");
@@ -53,7 +53,7 @@ int main(){
     scanf("%lf", &s2.peso);
 
     // Stampa dei dati inseriti
-  
+
 
     void stampaSmartphone(Smartphone s1){
     printf("Modello: %s\n", s1.modello);
@@ -61,14 +61,15 @@ int main(){
     printf("Memoria (GB): %d\n", s1.memoriaGB);
     printf("RAM (GB): %d\n", s1.ramGB);
     printf("Peso (grammi): %.2f\n", s1.peso);
-}
-
     printf("\nDati del secondo smartphone:\n");
     printf("Modello: %s\n", s2.modello);
     printf("Marca: %s\n", s2.marca);
     printf("Memoria (GB): %d\n", s2.memoriaGB);
     printf("RAM (GB): %d\n", s2.ramGB);
     printf("Peso (grammi): %.2f\n", s2.peso);
+}
+
+
 
     
 
