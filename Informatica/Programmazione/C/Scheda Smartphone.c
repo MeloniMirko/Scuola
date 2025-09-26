@@ -42,7 +42,7 @@ int main(){
     // Input per il secondo smartphone
     printf("\nInserisci i dati del secondo smartphone:\n");
     printf("Modello: ");
-    scanf("%s", s2.modello);
+    scanf("%[^\n]s", s2.modello);
     printf("Marca: ");
     scanf("%s", s2.marca);
     printf("Memoria (GB): ");
