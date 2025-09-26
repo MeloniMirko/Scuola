@@ -42,7 +42,7 @@ int main(){
     // Input per il secondo smartphone
     printf("\nInserisci i dati del secondo smartphone:\n");
     printf("Modello: ");
-    scanf("%[^\n]s", s2.modello);
+    scanf("%s", s2.modello);
     printf("Marca: ");
     scanf("%s", s2.marca);
     printf("Memoria (GB): ");
@@ -58,6 +58,12 @@ int main(){
     printf ("\nrisultati secondo smartphone:\n");
     stampaSmartphone(s2);
 
+    printf("\nModifica della memoria del primo smartphone:\n");
+    s1.memoriaGB = 128; // Nuovo valore di memoria
+    printf("Nuova memoria del primo smartphone: %d GB\n", s1.memoriaGB);
+    printf("Dati aggiornati del primo smartphone:\n");
+    stampaSmartphone(s1);
+
     return 0;
 }
     void stampaSmartphone(Smartphone s){
@@ -67,6 +73,7 @@ int main(){
         printf("RAM (GB): %d\n", s.ramGB);
         printf("Peso (grammi): %.2f\n", s.peso);
     }
+  
 
 
     
