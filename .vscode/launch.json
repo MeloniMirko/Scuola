@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/cella/Desktop/Scuola/Informatica/Programmazione/C",
-      "program": "c:/Users/cella/Desktop/Scuola/Informatica/Programmazione/C/build/Debug/outDebug",
+      "cwd": "c:/Users/User/Desktop/Scuola/Informatica/Programmazione/C/output",
+      "program": "c:/Users/User/Desktop/Scuola/Informatica/Programmazione/C/output/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
