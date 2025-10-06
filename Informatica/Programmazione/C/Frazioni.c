@@ -11,82 +11,119 @@ ATTENZIONE: La frazione non può avere 0 come denominatore! Prevedi un sistema p
 
 #include <stdio.h>
 
+// Struttura per rappresentare una frazione
 typedef struct {
     int numeratore;
     int denominatore;
 } Frazione;
 
+// Funzione per leggere una frazione (controlla che il denominatore non sia zero)
+Frazione leggiFrazione() {
+    Frazione f;
+    printf("Numeratore: ");
+    scanf("%d", &f.numeratore);
+    do {
+        printf("Denominatore (diverso da zero): ");
+        scanf("%d", &f.denominatore);
+        if (f.denominatore == 0)
+            printf("Il denominatore non può essere zero.\n");
+    } while (f.denominatore == 0);
+    return f;
+}
+
+// Moltiplicazione tra due frazioni
+Frazione moltiplica(Frazione a, Frazione b) {
+    Frazione risultato;
+    risultato.numeratore = a.numeratore * b.numeratore;
+    risultato.denominatore = a.denominatore * b.denominatore;
+    return risultato;
+}
+
+// Divisione tra due frazioni
+Frazione dividi(Frazione a, Frazione b) {
+    Frazione risultato;
+    risultato.numeratore = a.numeratore * b.denominatore;
+    risultato.denominatore = a.denominatore * b.numeratore;
+    return risultato;
+}
+
+// Addizione tra due frazioni
+Frazione somma(Frazione a, Frazione b) {
+    Frazione risultato;
+    risultato.numeratore = a.numeratore * b.denominatore + b.numeratore * a.denominatore;
+    risultato.denominatore = a.denominatore * b.denominatore;
+    return risultato;
+}
+
+// Sottrazione tra due frazioni
+Frazione sottrai(Frazione a, Frazione b) {
+    Frazione risultato;
+    risultato.numeratore = a.numeratore * b.denominatore - b.numeratore * a.denominatore;
+    risultato.denominatore = a.denominatore * b.denominatore;
+    return risultato;
+}
+
+// Stampa una frazione
+void stampaFrazione(Frazione f) {
+    printf("Risultato: %d/%d\n", f.numeratore, f.denominatore);
+}
+
 int main() {
-    Frazione frazione1, frazione2;
-    int risultato_numeratore, risultato_denominatore;
-    int scelta, continua;
+    int scelta;
+    Frazione frazione1, frazione2, risultato;
 
-    printf("Inserisci il numeratore della frazione:");
-    scanf("%d", &frazione1.numeratore);
-
-    printf("Inserisci il denominatore della frazione (diverso da 0):");
-
-    do{scanf("%d", &frazione1.denominatore);
-        if(frazione1.denominatore==0){
-            printf("Il denominatore non può essere 0, riprova\n");}
-    }while (frazione1.denominatore==0);
-
-    printf("Inserisci il numeratore della seconda frazione:");
-    scanf("%d", &frazione2.numeratore);
-
-    printf("Inserisci il denominatore della seconda frazione (diverso da 0):");
-
-    do{scanf("%d", &frazione2.denominatore);
-        if(frazione2.denominatore==0){
-            printf("Il denominatore non può essere 0, riprova\n");}
-    }while(frazione2.denominatore==0);
-
-
-    do{
-
-        printf("\n===============================\n");
-        printf("Scegli l'operazione:\n");
+    do {
+        printf("\nMenu:\n");
         printf("1) Moltiplicazione\n");
         printf("2) Divisione\n");
         printf("3) Addizione\n");
         printf("4) Sottrazione\n");
-        printf("===============================\n");
+        printf("0) Esci\n");
+        printf("Cosa vuoi fare? ");
         scanf("%d", &scelta);
 
-        switch (scelta){
-        case 1:
-            risultato_numeratore = frazione1.numeratore * frazione2.numeratore;
-            risultato_denominatore = frazione1.denominatore * frazione2.denominatore;
-            printf("Il risultato della moltiplicazione è: %d/%d\n", risultato_numeratore, risultato_denominatore);
-            break;
-        case 2:
-            if(frazione2.numeratore == 0) {
-                printf("Errore: impossibile dividere per una frazione con numeratore 0.\n");
-            }else{
-                risultato_numeratore = frazione1.numeratore * frazione2.denominatore;
-                risultato_denominatore = frazione1.denominatore * frazione2.numeratore;
-                printf("Il risultato della divisione è: %d/%d\n", risultato_numeratore, risultato_denominatore);
-            }
-            break;
-        case 3:
-            risultato_numeratore = (frazione1.numeratore * frazione2.denominatore) + (frazione2.numeratore * frazione1.denominatore);
-            risultato_denominatore = frazione1.denominatore * frazione2.denominatore;
-            printf("Il risultato dell'addizione è: %d/%d\n", risultato_numeratore, risultato_denominatore);
-            break;
+        switch (scelta) {
+            case 1:
+                printf("\nPrima frazione:\n");
+                frazione1 = leggiFrazione();
+                printf("Seconda frazione:\n");
+                frazione2 = leggiFrazione();
+                risultato = moltiplica(frazione1, frazione2);
+                stampaFrazione(risultato);
+                break;
+            case 2:
+                printf("\nPrima frazione:\n");
+                frazione1 = leggiFrazione();
+                printf("Seconda frazione:\n");
+                frazione2 = leggiFrazione();
+                risultato = dividi(frazione1, frazione2);
+                stampaFrazione(risultato);
+                break;
+            case 3:
+                printf("\nPrima frazione:\n");
+                frazione1 = leggiFrazione();
+                printf("Seconda frazione:\n");
+                frazione2 = leggiFrazione();
+                risultato = somma(frazione1, frazione2);
+                stampaFrazione(risultato);
+                break;
+            case 4:
+                printf("\nPrima frazione:\n");
+                frazione1 = leggiFrazione();
+                printf("Seconda frazione:\n");
+                frazione2 = leggiFrazione();
+                risultato = sottrai(frazione1, frazione2);
+                stampaFrazione(risultato);
+                break;
+            case 0:
+                printf("Fine programma\n");
+                break;
+            default:
+                printf("Scelta non valida!\n");
+        }
+    } while (scelta != 0);
 
-        case 4:
-            risultato_numeratore = (frazione1.numeratore * frazione2.denominatore) - (frazione2.numeratore * frazione1.denominatore);
-            risultato_denominatore = frazione1.denominatore * frazione2.denominatore;
-            printf("Il risultato della sottrazione è: %d/%d\n", risultato_numeratore, risultato_denominatore);
-            break;
-
-        default:
-            printf("Scelta non valida.\n");
-            break;}
-        
-        printf("Vuoi fare un'altra operazione? 1 = sì, 0 = no: ");
-        scanf("%d", &continua);
-    }while(continua == 1);
-
+    return 0;
 }
+
 
