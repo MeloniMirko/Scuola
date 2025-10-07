@@ -33,4 +33,29 @@ typedef struct {
     char nome_prodotto[50];
     int quantita_venduta;
     float prezzo_unitario;
+    Data dataV;
 } Vendita;
+
+
+int main(){
+    //richiesta dati
+    Vendita v1;
+    printf("Inserisci il codice della vendita: ");
+    scanf("%d", &v1.codice_vendita);
+    printf("Inserisci il nome del prodotto: ");
+    scanf("%s", v1.nome_prodotto);
+    printf("Inserisci la quantita venduta: ");
+    scanf("%d", &v1.quantita_venduta);
+    printf("Inserisci il prezzo unitario del prodotto: ");
+    scanf("%f", &v1.prezzo_unitario);
+    printf("Inserisci la data della vendita (giorno mese anno): ");
+    scanf("%d %d %d", &v1.dataV.giorno, &v1.dataV.mese, &v1.dataV.anno);
+    //stampa dati
+    printf("\nDati della vendita:\n");
+    printf("Codice vendita: %d\n", v1.codice_vendita);
+    printf("Nome prodotto: %s\n", v1.nome_prodotto);
+    printf("Quantita venduta: %d\n", v1.quantita_venduta);
+    printf("Prezzo unitario: %.2f\n", v1.prezzo_unitario);
+    printf("Data vendita: %02d/%02d/%04d\n", v1.dataV.giorno, v1.dataV.mese, v1.dataV.anno);
+    return 0;
+}
