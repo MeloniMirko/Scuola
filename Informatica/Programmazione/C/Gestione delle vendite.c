@@ -21,7 +21,6 @@ Calcolare il totale delle vendite effettuate in un determinato anno.*/
 #include <stdio.h>
 #include <string.h>
 
-
 typedef struct {
     int giorno;
     int mese;
@@ -36,26 +35,36 @@ typedef struct {
     Data dataV;
 } Vendita;
 
-
-int main(){
-    //richiesta dati
-    Vendita v1;
-    printf("Inserisci il codice della vendita: ");
-    scanf("%d", &v1.codice_vendita);
+// Funzione per caricare i dati (restituisce la struttura)
+Vendita caricaVendita() {
+    Vendita v;
+    printf("Gestione delle vendite\n");
+    printf("Inserisci il codice vendita: ");
+    scanf("%d", &v.codice_vendita);
     printf("Inserisci il nome del prodotto: ");
-    scanf("%s", v1.nome_prodotto);
+    scanf("%s", v.nome_prodotto);
     printf("Inserisci la quantita venduta: ");
-    scanf("%d", &v1.quantita_venduta);
+    scanf("%d", &v.quantita_venduta);
     printf("Inserisci il prezzo unitario del prodotto: ");
-    scanf("%f", &v1.prezzo_unitario);
+    scanf("%f", &v.prezzo_unitario);
     printf("Inserisci la data della vendita (giorno mese anno): ");
-    scanf("%d %d %d", &v1.dataV.giorno, &v1.dataV.mese, &v1.dataV.anno);
-    //stampa dati
+    scanf("%d %d %d", &v.dataV.giorno, &v.dataV.mese, &v.dataV.anno);
+    return v;
+}
+
+// Funzione per stampare i dati (passa la struttura per valore)
+void stampaVendita(Vendita v) {
     printf("\nDati della vendita:\n");
-    printf("Codice vendita: %d\n", v1.codice_vendita);
-    printf("Nome prodotto: %s\n", v1.nome_prodotto);
-    printf("Quantita venduta: %d\n", v1.quantita_venduta);
-    printf("Prezzo unitario: %.2f\n", v1.prezzo_unitario);
-    printf("Data vendita: %02d/%02d/%04d\n", v1.dataV.giorno, v1.dataV.mese, v1.dataV.anno);
+    printf("Codice vendita: %d\n", v.codice_vendita);
+    printf("Nome prodotto: %s\n", v.nome_prodotto);
+    printf("Quantita venduta: %d\n", v.quantita_venduta);
+    printf("Prezzo unitario: %.2f\n", v.prezzo_unitario);
+    printf("Data vendita: %02d/%02d/%04d\n", v.dataV.giorno, v.dataV.mese, v.dataV.anno);
+}
+
+int main() {
+    Vendita v1 = caricaVendita();
+    stampaVendita(v1);
     return 0;
 }
+
