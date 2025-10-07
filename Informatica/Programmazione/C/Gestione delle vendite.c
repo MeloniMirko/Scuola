@@ -16,3 +16,21 @@ Implementare un array per memorizzare più vendite e permettere le seguenti oper
 Aggiungere una nuova vendita all'array.
 Visualizzare le informazioni relative a tutte le vendite effettuate.
 Calcolare il totale delle vendite effettuate in un determinato anno.*/
+
+
+#include <stdio.h>
+#include <string.h>
+
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int codice_vendita;
+    char nome_prodotto[50];
+    int quantita_venduta;
+    float prezzo_unitario;
+} Vendita;
