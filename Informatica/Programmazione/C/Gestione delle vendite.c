@@ -67,4 +67,3 @@ int main() {
     stampaVendita(v1);
     return 0;
 }
-
