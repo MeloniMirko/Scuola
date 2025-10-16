@@ -12,3 +12,4 @@ public class App {
         System.out.println("Il fattoriale di " + numero + " è: " + fattoriale);
     }
 }
+
