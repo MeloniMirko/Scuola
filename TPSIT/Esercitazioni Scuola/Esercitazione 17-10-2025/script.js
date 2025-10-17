@@ -1,13 +1,13 @@
-function verificaAccessoDefraiaManolo() {
-    let password = prompt("Inserisci la password");
-    let codice = prompt("Inserisci il codice segreto");
+function verificaAccesso() {
+    let psw = document.getElementById('password').value;
+    let codice = document.getElementById('codice').value;
 
-    if (password === "admin" && codice === "0000") {
-        alert("Accesso speciale come mirko");
-    } else if (password === "admin") {
+    if (psw === "admin" && codice === "0000") {
+        alert("Accesso speciale ");
+    } else if (psw === "admin") {
         alert("Codice errato");
     } else {
         alert("Accesso negato");
     }
-    alert("Mirko sei speciale come Manolo");
+    alert("Operazione terminata");
 }
