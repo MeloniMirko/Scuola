@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "elenco.Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
       "name": "App",
       "request": "launch",
       "mainClass": "fattoriale.App",
