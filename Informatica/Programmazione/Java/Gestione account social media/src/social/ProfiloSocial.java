@@ -57,18 +57,18 @@ public class ProfiloSocial {
     //Metodi
 
     String pubblica(){
-        post=post+1;
+       this.post++;
         return "Nuovo post pubblicato";
     }
     
     void aggiungiFollower(){
-        follower=follower+1;
+        this.follower++;
     }
 
     void rimuoviFollower(){
       
         if(follower > 0){
-           follower=follower-1;
+           this.follower--;
         }
     }
 
