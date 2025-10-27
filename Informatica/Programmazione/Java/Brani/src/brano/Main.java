@@ -10,31 +10,40 @@ public class Main {
 
     //stampa
     System.out.println(A.stampaDettagli());
-
-    System.out.println("\n");
-
     System.out.println(B.stampaDettagli());
-
-    System.out.println("\n");
-
     System.out.println(C.stampaDettagli());
-
-    System.out.println("\n");
 
     //riproduci
 
     System.out.println(A.riproduci());
-
     System.out.println(B.riproduci());
-
     System.out.println(A.riproduci());
-
     System.out.println(B.riproduci());
-
+    System.out.println(C.riproduci());
     System.out.println(C.riproduci());
 
-    System.out.println(C.riproduci());
 
+    //test getter
+      System.out.println("\n--- TEST GETTER ---");
+      System.out.println("Durata di A (secondi): " + A.getDurata());
+      System.out.println("Genere di B: " + B.getGenere());
+      System.out.println("Riproduzioni di C: " + C.getRiproduzioni());
 
+    //test setter
+    System.out.println("\n--- MODIFICA GENERE ---");
+    C.setGenere("Opera Rock");
+    System.out.println("Nuovo genere di C: " + C.getGenere());
+    
+    //categoria durata
+    System.out.println("\n--- CATEGORIA DURATA ---");
+    System.out.println(A.getTitolo() + ": " + A.getCategoriaDurata());
+    System.out.println(B.getTitolo() + ": " + B.getCategoriaDurata());
+    System.out.println(C.getTitolo() + ": " + C.getCategoriaDurata());
+
+    //tostring finale
+      System.out.println("\n--- DETTAGLI COMPLETI ---");
+      System.out.println(A);
+      System.out.println("\n" + B);
+      System.out.println("\n" + C);
   }
 }

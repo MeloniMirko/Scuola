@@ -55,7 +55,7 @@ public class Canzone {
     this.durata=durata;
    }
 
-   private void setGenere(String genere){
+   public void setGenere(String genere){
     this.genere=genere;
    }
 
@@ -75,7 +75,7 @@ public class Canzone {
         int minuti = durata / 60;
         int secondi = durata % 60;
 
-       return "la durata del brano e "+minuti+"e"+secondi;
+        return String.format("%d:%02d", minuti, secondi);
      
    }
 
@@ -89,7 +89,7 @@ public class Canzone {
    String getCategoriaDurata(){
        if (durata < 180){
          return"Canzone breve";
-       }else if(durata >= 180 && durata <=300){
+       }else if( durata <=300){
         return "Canzone media";
        }else{
         return "Canzone lunga";
@@ -99,8 +99,8 @@ public class Canzone {
 
    //tostring 
 
-   public string toString(){
-    return "Titolo=" + this.titolo+"\n artista =" + this.artista +"\n Durata =" + this.durata +"\nGenere =" + this.genere +"\nRiproduzioni ="+ this.riproduzionis;
+   public String toString(){
+    return "Titolo=" + this.titolo+"\n artista =" + this.artista +"\n Durata =" + getDurataFormattata() +"\nGenere =" + this.genere +"\n Categoria ="+getCategoriaDurata()+"\nRiproduzioni ="+ this.riproduzioni;
    }
 
 
