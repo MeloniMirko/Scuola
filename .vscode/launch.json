@@ -5,6 +5,20 @@
       "type": "java",
       "name": "Main",
       "request": "launch",
+      "mainClass": "Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "brano.Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
       "mainClass": "elenco.Main",
       "projectName": "Scuola_aba515b7"
     },
