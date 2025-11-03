@@ -4,17 +4,17 @@ public class Software {
     private String denominazione; //il nome del programma
     private String produttore; //chi lo ha realizzato  
     private String versione; //la versione attuale del programma
-    private String sistemaoperativo; //l'OS che serve per il quale e compatibile il programma
+    private String sistemaOperativo; //l'OS che serve per il quale e compatibile il programma
     private int anno; // anno di rilascio del programma
 
     //creazione del costruttore
 
     public Software(String denominazione,String produttore,String versione,String sistemaoperativo, int anno){
-        this.denominazione=denominazione;
-        this.produttore=produttore;
-        this.versione=versione;
-        this.sistemaoperativo=sistemaoperativo;
-        this.anno=anno;
+        this.setDenominazione(denominazione);
+        this.setProduttore(produttore);
+        this.setVersione(versione);
+        this.setSistemaoperativo(sistemaoperativo);
+        this.setAnno(anno);
     }
 
     //getter
@@ -31,8 +31,8 @@ public class Software {
         return this.versione;
     }
 
-    public String getSistemaoperativo(){
-        return this.sistemaoperativo;
+    public String getSistemaOperativo(){
+        return this.sistemaOperativo;
     }
 
     public int getAnno(){
@@ -41,23 +41,23 @@ public class Software {
 
     //setter
 
-    private void setDenominazione(){
+    private void setDenominazione(String denominazione){
         this.denominazione=denominazione;
     }
 
-    private void setProduttore(){
+    private void setProduttore(String produttore){
         this.produttore=produttore;
     }
 
-    private void setVersione(){
+    private void setVersione(String versione){
         this.versione=versione;
     }
     
-    private void setSistemaoperativo(){
-        this.sistemaoperativo=sistemaoperativo;
+    private void setSistemaoperativo(String sistemaOperativo){
+        this.sistemaOperativo=sistemaOperativo;
     }
 
-    private void setAnno(){
+    private void setAnno(int anno){
         this.anno=anno;
     }
 
@@ -69,6 +69,7 @@ public class Software {
     // positivo e recente 
     //zero e dello stesso anno 
     //negativo e piu vecccio
+
     public int compareAnno(Software altro) {
     return this.anno - altro.getAnno();
 }
@@ -77,11 +78,7 @@ public class Software {
     //toString
 
       public String toString() {
-        return "Programma: " + denominazione +
-               " | Produttore: " + produttore +
-               " | Versione: " + versione +
-               " | Sistema Operativo: " + sistemaoperativo +
-               " | Anno: " + anno;
+        return "Programma: " + denominazione +" | Produttore: " + produttore +" | Versione: " + versione +" | Sistema Operativo: " + sistemaOperativo +" | Anno: " + anno;
     }
 
 
