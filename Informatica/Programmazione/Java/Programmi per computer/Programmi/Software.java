@@ -77,6 +77,8 @@ public class Software {
 
     //toString
 
+    
+    @Override
       public String toString() {
         return "Programma: " + denominazione +" | Produttore: " + produttore +" | Versione: " + versione +" | Sistema Operativo: " + sistemaOperativo +" | Anno: " + anno;
     }
