@@ -1,7 +1,7 @@
 package Elaboratori;
 
 public class main {
-    public static void main(String[] args) {
+    public static void Main(String[] args) {
         Computer c1 = new Computer( "Dell", "XPS 15", 1500.00, "Intel i7", 16, 512 );
         Computer c2 = new Computer( "Apple", "MacBook Pro", 2000.00, "M1", 16, 1024 );
 
@@ -36,4 +36,5 @@ public class main {
         } else {
             System.out.println("I due computer sono equivalenti");
         }
-    }                                                                                                                      
+    }           
+}                                                                                                           

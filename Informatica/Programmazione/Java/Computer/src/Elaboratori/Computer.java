@@ -59,7 +59,8 @@ private void setStorage(int storage){
 }
 
 //toString
-public String toString(){
+    @Override
+    public String toString(){
     return "Marca: " + marca + 
     " | Modello: " + modello + 
     " | Prezzo: " + prezzo + 
