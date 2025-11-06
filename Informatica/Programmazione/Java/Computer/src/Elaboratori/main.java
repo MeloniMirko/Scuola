@@ -16,10 +16,11 @@ public class Main {
         c2.upgradeRam(32);
         System.out.println("RAM aggiornata del secondo computer: " + c2.getRam() + "GB");
 
+       
         // stampo i dettagli dei computer
-        System.out.println("Dettagli Computer 1:");
+        System.out.println("=== DETTAGLI COMPUTER 1 ===");
         System.out.println(c1.ottieniInfoDettagliata());
-        System.out.println("Dettagli Computer 2:");
+        System.out.println("\n=== DETTAGLI COMPUTER 2 ===");
         System.out.println(c2.ottieniInfoDettagliata());
 
         // confronto i due computer per vedere quale è migliore
