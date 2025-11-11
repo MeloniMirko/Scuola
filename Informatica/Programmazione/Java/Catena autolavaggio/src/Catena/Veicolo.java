@@ -94,10 +94,16 @@ public class Veicolo {
             return null; // stessa potenza
     }
 
-    // Metodo noleggio: verifica se i posti sono sufficienti
-    public boolean noleggio(int persone) {
-        return persone <= numPosti;
+    public boolean noleggio(int personeRichieste) {
+    if (personeRichieste <= numeroPosti) {
+        System.out.println("Noleggio possibile: posti sufficienti.");
+        return true;
+    } else {
+        System.out.println("Noleggio non possibile: posti insufficienti.");
+        return false;
     }
+}
+
 }
 
 
@@ -107,31 +113,5 @@ public class Veicolo {
 
 
 
-+--------------------------------+
-|            Veicolo             |
-+--------------------------------+
-| - targa: String                |
-| - marca: String                |
-| - modello: String              |
-| - cilindrata: int              |
-| - annoAcquisto: int            |
-| - numeroPosti: int             |
-+--------------------------------+
-| + Veicolo(targa, marca, modello, cilindrata, annoAcquisto, numeroPosti) |
-| + Veicolo(v: Veicolo)          |
-| + getTarga(): String           |
-| + getMarca(): String           |
-| + getModello(): String         |
-| + getCilindrata(): int         |
-| + getAnnoAcquisto(): int       |
-| + getNumeroPosti(): int        |
-| + setTarga(t: String): void    |
-| + setMarca(m: String): void    |
-| + setModello(m: String): void  |
-| + setCilindrata(c: int): void  |
-| + setAnnoAcquisto(a: int): void|
-| + setNumeroPosti(n: int): void |
-| + toString(): String           |
-| + confronta(v: Veicolo): Veicolo |
-| + noleggio(persone: int): boolean |
-+--------------------------------+
+
+
