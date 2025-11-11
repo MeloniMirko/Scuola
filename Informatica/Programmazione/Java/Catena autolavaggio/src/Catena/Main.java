@@ -6,16 +6,16 @@ public class Main {
         Veicolo V2 = new Veicolo("EF456GH", "Ford", "Focus", 1600, 2021, 5);
 
         // Creazione di V3 (copia del riferimento di V1)
-        Veicolo V3 = V1; // stessa istanza
+        Veicolo V3 = V1; 
 
         // Creazione di V4 (copia dei valori di V2)
-        Veicolo V4 = new Veicolo(V2); // nuovo oggetto con stessi dati
+        Veicolo V4 = new Veicolo(V2); 
 
         // Modifica di un attributo in V3 e V4
         V3.setModello("Panda Cross");
         V4.setModello("Focus Sport");
 
-        // Stampa dei veicoli per verificare gli effetti
+        // Stampa dei veicoli per verificare 
         System.out.println("V1: " + V1);
         System.out.println("V2: " + V2);
         System.out.println("V3: " + V3);
