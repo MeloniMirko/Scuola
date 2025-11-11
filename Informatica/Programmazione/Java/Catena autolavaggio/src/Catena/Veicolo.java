@@ -99,3 +99,39 @@ public class Veicolo {
         return persone <= numPosti;
     }
 }
+
+
+
+
+
+
+
+
++--------------------------------+
+|            Veicolo             |
++--------------------------------+
+| - targa: String                |
+| - marca: String                |
+| - modello: String              |
+| - cilindrata: int              |
+| - annoAcquisto: int            |
+| - numeroPosti: int             |
++--------------------------------+
+| + Veicolo(targa, marca, modello, cilindrata, annoAcquisto, numeroPosti) |
+| + Veicolo(v: Veicolo)          |
+| + getTarga(): String           |
+| + getMarca(): String           |
+| + getModello(): String         |
+| + getCilindrata(): int         |
+| + getAnnoAcquisto(): int       |
+| + getNumeroPosti(): int        |
+| + setTarga(t: String): void    |
+| + setMarca(m: String): void    |
+| + setModello(m: String): void  |
+| + setCilindrata(c: int): void  |
+| + setAnnoAcquisto(a: int): void|
+| + setNumeroPosti(n: int): void |
+| + toString(): String           |
+| + confronta(v: Veicolo): Veicolo |
+| + noleggio(persone: int): boolean |
++--------------------------------+
