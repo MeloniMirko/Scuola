@@ -94,13 +94,11 @@ public class Veicolo {
             return null; // stessa potenza
     }
 
-    public boolean noleggio(int personeRichieste) {
-    if (personeRichieste <= numeroPosti) {
-        System.out.println("Noleggio possibile: posti sufficienti.");
-        return true;
+    public String noleggio(int personeRichieste) {
+    if (personeRichieste <= numPosti) {
+        return "Noleggio possibile: posti sufficienti.";
     } else {
-        System.out.println("Noleggio non possibile: posti insufficienti.");
-        return false;
+        return "Noleggio non possibile: posti insufficienti.";
     }
 }
 

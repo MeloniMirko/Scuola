@@ -8,7 +8,7 @@ public class Main {
         // Creazione di V3 (copia del riferimento di V1)
         Veicolo V3 = V1; 
 
-        // Creazione di V4 (copia dei valori di V2)
+        // Creazione di V4 (copia dei valori di V2
         Veicolo V4 = new Veicolo(V2); 
 
         // Modifica di un attributo in V3 e V4
@@ -29,7 +29,8 @@ public class Main {
             System.out.println("L'auto più potente è: " + piuPotente.getModello());
 
         // Verifica noleggio
-        int personeRichieste = 6;
-        System.out.println("Il veicolo V1 può trasportare " + personeRichieste + " persone? " + V1.noleggio(personeRichieste));
+        V1.noleggio(4);  // stampa "Noleggio possibile: posti sufficienti."
+        V2.noleggio(6);  // stampa "Noleggio non possibile: posti insufficienti."
+
     }
 }
