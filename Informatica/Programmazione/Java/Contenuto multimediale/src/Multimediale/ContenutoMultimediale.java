@@ -1,104 +1,115 @@
 package Multimediale;
-
-public class ContenutoMultimediale {
-
-    // Attributi privati
+class ContenutoMultimediale {
     private String titolo;
     private String genere;
-    private Double durata; // in minuti
-    private int annouscita;
-    private Double valutazione;
+    private int durata; // in minuti
+    private int annoUscita;
+    private double valutazione; // 0.0 - 5.0
 
-    // Costruttore
-    public ContenutoMultimediale(String titolo, String genere, Double durata, int annouscita, Double valutazione) {
+    // Costruttore principale
+    public ContenutoMultimediale(String titolo, String genere, int durata, int annoUscita, double valutazione) {
         this.titolo = titolo;
         this.genere = genere;
         this.durata = durata;
-        this.annouscita = annouscita;
+        this.annoUscita = annoUscita;
         this.valutazione = valutazione;
     }
 
-    // Getter
-    public String getTitolo(){
-        return titolo; 
-    }
-    public String getGenere(){ 
-        return genere; 
-    }
-    public Double getDurata(){
-        return durata;
-    }
-    public int getAnnouscita(){
-        return annouscita; 
-    }
-    public Double getValutazione(){
-        return valutazione;
+    // Costruttore di copia
+    public ContenutoMultimediale(ContenutoMultimediale altro) {
+        this.titolo = altro.titolo;
+        this.genere = altro.genere;
+        this.durata = altro.durata;
+        this.annoUscita = altro.annoUscita;
+        this.valutazione = altro.valutazione;
     }
 
-    // Setter
-    public void setTitolo(String titolo){ 
-        this.titolo = titolo;
-    }
-    public void setGenere(String genere){ 
-        this.genere = genere;
-    }
-    public void setDurata(Double durata){ 
-        this.durata = durata; 
-    }
-    public void setAnnouscita(int annouscita){ 
-        this.annouscita = annouscita; 
-    }
-    public void setValutazione(Double valutazione){ 
-        this.valutazione = valutazione; 
-    }
-
-    // ottieniCategoria()
-    public String ottieniCategoria() {
-        int annoCorrente = 2025; // imposto manualmente
-        if (annouscita == annoCorrente) {
-            return "Nuova Uscita";
-        } else if (annoCorrente - annouscita > 20) {
-            return "Classico";
-        } else {
-            return "Catalogo Standard";
+    // Getter 
+    public String getTitolo() {
+         return titolo; 
         }
+    public String getGenere() {
+         return genere;
+         }
+    public int getDurata() {
+         return durata; 
+        }
+    public int getAnnoUscita() { 
+        return annoUscita; 
+    }
+    public double getValutazione() {
+         return valutazione; 
+        }
+
+    // Setter 
+    private void setTitolo(String titolo) {
+         this.titolo = titolo; 
+        }
+    private void setGenere(String genere) {
+         this.genere = genere; 
+        }
+    private void setDurata(int durata) {
+         this.durata = durata; 
+        }
+    private void setAnnoUscita(int annoUscita) {
+         this.annoUscita = annoUscita;
+         }
+    private void setValutazione(double valutazione) { 
+        this.valutazione = valutazione;
+     }
+
+    // toString
+    @Override
+    public String toString() {
+        return "Titolo: " + titolo +
+               "  Genere: " + genere +
+               "  Durata: " + durata + " minuti" +
+               "  Anno: " + annoUscita +
+               "  Valutazione: " + valutazione;
     }
 
-    // durataOreMinuti()
+    // Ottieni categoria
+    public String ottieniCategoria() {
+        int annoCorrente = 2025; 
+        if (annoUscita == annoCorrente) return "Nuova Uscita";
+        else if (annoUscita <= annoCorrente - 20) return "Classico";
+        else return "Catalogo Standard";
+    }
+
+    // Durata in ore e minuti
     public String durataOreMinuti() {
-        int minutiTotali = durata.intValue();
-        int ore = minutiTotali / 60;
-        int minuti = minutiTotali % 60;
+        int ore = durata / 60;
+        int minuti = durata % 60;
         return ore + " ore e " + minuti + " minuti";
     }
 
-    // aggiornaValutazione(nuovaValutazione)
-    public boolean aggiornaValutazione(Double nuovaValutazione) {
+    // Aggiorna valutazione
+    public boolean aggiornaValutazione(double nuovaValutazione) {
         if (nuovaValutazione >= 0.0 && nuovaValutazione <= 5.0) {
-            this.valutazione = nuovaValutazione;
+            setValutazione(nuovaValutazione);
             return true;
         }
         return false;
     }
 
-    // confrontaValutazione(altroContenuto)
-    public String confrontaValutazione(ContenutoMultimediale altroContenuto) {
-        if (this.valutazione > altroContenuto.getValutazione()) {
-            return "Migliore";
-        } else if (this.valutazione < altroContenuto.getValutazione()) {
-            return "Peggiore";
-        } else {
-            return "Uguale";
-        }
+    // Confronta valutazione
+    public String confrontaValutazione(ContenutoMultimediale altro) {
+        if (this.valutazione > altro.valutazione) return "Migliore";
+        else if (this.valutazione < altro.valutazione) return "Peggiore";
+        else return "Uguale";
     }
 
-    // Metodo toString()
-    @Override
-    public String toString() {
-        return "Titolo: " + titolo +
-               "\nGenere: " + genere +
-               "\nDurata: " + durata + " minuti" +
-               "\nAnno di uscita: " + annouscita +
-               "\nValutazione: " + valutazione + "/5.0";
+    // Metodi pubblici per modifiche 
+    public void modificaTitolo(String nuovoTitolo) { 
+        setTitolo(nuovoTitolo);
+     }
+    public void modificaGenere(String nuovoGenere) {
+         setGenere(nuovoGenere); 
+        }
+    public void modificaDurata(int nuovaDurata) {
+         setDurata(nuovaDurata); 
+        }
+    public void modificaAnnoUscita(int nuovoAnno) { 
+        setAnnoUscita(nuovoAnno); 
     }
 }

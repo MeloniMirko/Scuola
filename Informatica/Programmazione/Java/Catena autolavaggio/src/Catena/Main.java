@@ -1,36 +1,35 @@
 package Catena;
 public class Main {
+   
     public static void main(String[] args) {
-        // Creazione di due veicoli
-        Veicolo V1 = new Veicolo("AB123CD", "Fiat", "Panda", 1200, 2020, 5);
-        Veicolo V2 = new Veicolo("EF456GH", "Ford", "Focus", 1600, 2021, 5);
+        // Creazione dei veicoli
+        Veicolo v1 = new Veicolo("AB123CD", "Fiat", "Panda", 1100, 2020, 4);
+        Veicolo v2 = new Veicolo("EF456GH", "Ford", "Focus", 1600, 2019, 5);
 
-        // Creazione di V3 (copia del riferimento di V1)
-        Veicolo V3 = V1; 
+        // V3 copia solo il riferimento a V1
+        Veicolo v3 = v1;
 
-        // Creazione di V4 (copia dei valori di V2
-        Veicolo V4 = new Veicolo(V2); 
+        // V4 copia i valori di V2
+        Veicolo v4 = new Veicolo(v2);
 
-        // Modifica di un attributo in V3 e V4
-        V3.setModello("Panda Cross");
-        V4.setModello("Focus Sport");
+        // Modifica attributi usando metodi della classe
+        v3.modificaModello("Panda 4x4");
+        v4.modificaNumeroPosti(2);
 
-        // Stampa dei veicoli per verificare 
-        System.out.println("V1: " + V1);
-        System.out.println("V2: " + V2);
-        System.out.println("V3: " + V3);
-        System.out.println("V4: " + V4);
+        // Stampa effetti
+        System.out.println("V1: " + v1); 
+        System.out.println("V2: " + v2); 
+        System.out.println("V3: " + v3);
+        System.out.println("V4: " + v4);
 
-        // Confronto potenza
-        Veicolo piuPotente = V1.confronta(V2);
-        if (piuPotente == null)
-            System.out.println("Le due auto hanno la stessa cilindrata.");
-        else
-            System.out.println("L'auto più potente è: " + piuPotente.getModello());
+        // Test confronta potenza
+        System.out.println("Confronto v1 vs v2: " + v1.confrontaPotenza(v2));
 
-        // Verifica noleggio
-        V1.noleggio(4);  // stampa "Noleggio possibile: posti sufficienti."
-        V2.noleggio(6);  // stampa "Noleggio non possibile: posti insufficienti."
-
+        // Test noleggio
+        System.out.println("V1 noleggio per 3 persone: " + v1.noleggio(3));
+        System.out.println("V2 noleggio per 6 persone: " + v2.noleggio(6));
     }
-}
+  }
+
+
+

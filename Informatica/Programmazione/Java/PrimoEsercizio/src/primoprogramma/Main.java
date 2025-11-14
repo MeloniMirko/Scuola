@@ -2,7 +2,7 @@
 // In seguito, scambi il valore di tali variabili e stampi a schermo il nuovo contenuto.
 
 package primoprogramma;
-public class App {
+public class Main {
     public static void main(String[] args) {
         int varA = 5;
         int varB = 10;

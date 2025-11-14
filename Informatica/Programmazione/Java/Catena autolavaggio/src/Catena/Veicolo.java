@@ -1,115 +1,72 @@
 package Catena;
-public class Veicolo {
-    // Attributi
+class Veicolo {
     private String targa;
     private String marca;
     private String modello;
     private int cilindrata;
     private int annoAcquisto;
-    private int numPosti;
+    private int numeroPosti;
 
-    // Costruttore
-    public Veicolo(String targa, String marca, String modello, int cilindrata, int annoAcquisto, int numPosti) {
+    // Costruttore principale
+    public Veicolo(String targa, String marca, String modello, int cilindrata, int annoAcquisto, int numeroPosti) {
         this.targa = targa;
         this.marca = marca;
         this.modello = modello;
         this.cilindrata = cilindrata;
         this.annoAcquisto = annoAcquisto;
-        this.numPosti = numPosti;
+        this.numeroPosti = numeroPosti;
     }
 
-    // Costruttore di copia
-    public Veicolo(Veicolo v) {
-        this.targa = v.targa;
-        this.marca = v.marca;
-        this.modello = v.modello;
-        this.cilindrata = v.cilindrata;
-        this.annoAcquisto = v.annoAcquisto;
-        this.numPosti = v.numPosti;
+    // Costruttore di copia 
+    public Veicolo(Veicolo altro) {
+        this.targa = altro.targa;
+        this.marca = altro.marca;
+        this.modello = altro.modello;
+        this.cilindrata = altro.cilindrata;
+        this.annoAcquisto = altro.annoAcquisto;
+        this.numeroPosti = altro.numeroPosti;
     }
 
-    // Getter e Setter
-    public String getTarga() { 
-        return targa;
-     }
-    public void setTarga(String targa) { 
-        this.targa = targa; 
-    }
+    // Getter 
+    public String getTarga() { return targa; }
+    public String getMarca() { return marca; }
+    public String getModello() { return modello; }
+    public int getCilindrata() { return cilindrata; }
+    public int getAnnoAcquisto() { return annoAcquisto; }
+    public int getNumeroPosti() { return numeroPosti; }
 
-    public String getMarca() {
-         return marca;
-         }
-    public void setMarca(String marca) {
-         this.marca = marca;
-         }
-
-    public String getModello() {
-         return modello; 
-        }
-    public void setModello(String modello) {
-         this.modello = modello; 
-        }
-
-    public int getCilindrata() {
-         return cilindrata; 
-        }
-    public void setCilindrata(int cilindrata) {
-         this.cilindrata = cilindrata;
-         }
-
-    public int getAnnoAcquisto() {
-         return annoAcquisto; 
-        }
-    public void setAnnoAcquisto(int annoAcquisto) {
-         this.annoAcquisto = annoAcquisto;
-         }
-
-    public int getNumPosti() {
-         return numPosti; 
-        }
-    public void setNumPosti(int numPosti) {
-         this.numPosti = numPosti; 
-        }
+    // Setter 
+    private void setTarga(String targa) { this.targa = targa; }
+    private void setMarca(String marca) { this.marca = marca; }
+    private void setModello(String modello) { this.modello = modello; }
+    private void setCilindrata(int cilindrata) { this.cilindrata = cilindrata; }
+    private void setAnnoAcquisto(int annoAcquisto) { this.annoAcquisto = annoAcquisto; }
+    private void setNumeroPosti(int numeroPosti) { this.numeroPosti = numeroPosti; }
 
     // toString
     @Override
     public String toString() {
-        return "Veicolo{" +
-                "targa='" + targa + '\'' +
-                ", marca='" + marca + '\'' +
-                ", modello='" + modello + '\'' +
-                ", cilindrata=" + cilindrata +
-                ", annoAcquisto=" + annoAcquisto +
-                ", numPosti=" + numPosti +
-                '}';
+        return "Targa: " + targa + " - Marca: " + marca + "  Modello: " + modello +"  Cilindrata: " + cilindrata + "  Anno Acquisto: " + annoAcquisto +"  Numero Posti: " + numeroPosti;
     }
 
-    // Metodo confronta: restituisce il veicolo più potente
-    public Veicolo confronta(Veicolo altro) {
-        if (this.cilindrata > altro.cilindrata)
-            return this;
-        else if (this.cilindrata < altro.cilindrata)
-            return altro;
-        else
-            return null; // stessa potenza
+    // Confronta potenza
+    public String confrontaPotenza(Veicolo altro) {
+        if (this.cilindrata > altro.cilindrata) return "Questo veicolo è più potente";
+        else if (this.cilindrata < altro.cilindrata) return "L'altro veicolo è più potente";
+        else return "Entrambi i veicoli hanno la stessa potenza";
     }
 
-    public String noleggio(int personeRichieste) {
-    if (personeRichieste <= numPosti) {
-        return "Noleggio possibile: posti sufficienti.";
-    } else {
-        return "Noleggio non possibile: posti insufficienti.";
+   
+    public boolean noleggio(int persone) {
+        return persone <= numeroPosti;
+    }
+
+    
+    public void modificaModello(String nuovoModello) {
+        setModello(nuovoModello);
+    }
+
+    public void modificaNumeroPosti(int nuoviPosti) {
+        setNumeroPosti(nuoviPosti);
     }
 }
-
-}
-
-
-
-
-
-
-
-
-
-
