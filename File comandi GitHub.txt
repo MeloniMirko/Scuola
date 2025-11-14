@@ -1,0 +1,83 @@
+#Per aggiungere la configurazione git
+git config --global user.name "ilMaestro"
+git config --global user.email "melonimirko@asproni-fermi.edu.it"
+
+#senza --global si fa solo per quel file
+
+#Per eliminare la configurazione git
+git config --unset user.name
+git config --unset user.email
+
+
+#Per aggiungere i file 
+git add .
+
+#Per caricarli 
+git commit -m "messaggio di cambio"
+
+#Per vederli
+git push origin master
+
+
+Promemoria: Auto-Sync GitHub
+1️⃣ Preparazione PC laboratorio
+
+Installa Git sul PC.
+
+Git Download
+ → scegli opzione Add Git to PATH.
+
+Configura Git (solo se non l’hai già fatto):
+
+git config --global user.name "TuoNome"
+git config --global user.email "tua@email.com"
+
+2️⃣ Clona il repository
+
+Apri il terminale (cmd.exe)
+
+Vai sul desktop:
+
+cd %USERPROFILE%\Desktop
+
+
+Clona il repository:
+
+git clone https://github.com/MeloniMirko/Scuola.git
+
+
+Ora hai la cartella Scuola sul desktop.
+
+3️⃣ Copia lo script .bat
+
+Copia il file auto_sync.bat nella cartella Scuola sul desktop.
+
+Apri il .bat e verifica:
+
+set REPO_PATH=C:\Users\TUO_UTENTE\Desktop\Scuola
+set INTERVAL=300
+
+
+TUO_UTENTE → nome account Windows.
+
+INTERVAL=300 → sincronizza ogni 5 minuti.
+
+4️⃣ Avvia lo script
+
+Fai doppio click su auto_sync.bat → partirà la sincronizzazione automatica.
+
+Lo script farà:
+
+git add → aggiunge tutti i file modificati
+
+git commit → crea commit automatici
+
+git pull --autostash → aggiorna eventuali modifiche da GitHub
+
+git push → invia le modifiche a GitHub
+
+5️⃣ Verifica
+
+Controlla GitHub o il file auto_sync_log.txt nella cartella Scuola.
+
+Modifica un file per testare: entro pochi minuti, il commit apparirà su GitHub.
