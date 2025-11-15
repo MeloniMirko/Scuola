@@ -1,24 +1,35 @@
 package Multimediale;
-
 public class Main {
     public static void main(String[] args) {
+        // Creazione contenuti
+        ContenutoMultimediale c1 = new ContenutoMultimediale("Film A", "Azione", 135, 2025, 4.5);
+        ContenutoMultimediale c2 = new ContenutoMultimediale("Film B", "Commedia", 90, 2000, 3.8);
 
-        ContenutoMultimediale film1 = new ContenutoMultimediale("Inception", "Fantascienza", 148.0, 2010, 4.8);
-        ContenutoMultimediale film2 = new ContenutoMultimediale("Oppenheimer", "Storico", 180.0, 2025, 4.9);
+        // Copia riferimento e copia valori
+        ContenutoMultimediale c3 = c1; // riferimento
+        ContenutoMultimediale c4 = new ContenutoMultimediale(c2); // copia valori
 
-        System.out.println("=== Film 1 ===");
-        System.out.println(film1);
-        System.out.println("\nCategoria: " + film1.ottieniCategoria());
-        System.out.println("Durata: " + film1.durataOreMinuti());
+        // Modifiche
+        c3.modificaTitolo("Film A Extended");
+        c4.modificaDurata(95);
 
-        System.out.println("\n=== Film 2 ===");
-        System.out.println(film2);
-        System.out.println("\nCategoria: " + film2.ottieniCategoria());
-        System.out.println("Durata: " + film2.durataOreMinuti());
+        // Stampa
+        System.out.println("C1: " + c1);
+        System.out.println("C2: " + c2);
+        System.out.println("C3: " + c3);
+        System.out.println("C4: " + c4);
 
-        System.out.println("\nAggiorno valutazione film1 con 4.3: " + film1.aggiornaValutazione(4.3));
-        System.out.println("Nuova valutazione: " + film1.getValutazione());
+        // Test categoria
+        System.out.println(c1.getTitolo() + " categoria: " + c1.ottieniCategoria());
+        System.out.println(c2.getTitolo() + " categoria: " + c2.ottieniCategoria());
 
-        System.out.println("\nConfronto valutazioni: " + film1.confrontaValutazione(film2));
+        // Test durata ore/minuti
+        System.out.println(c1.getTitolo() + " durata: " + c1.durataOreMinuti());
+
+        // Test aggiornamento valutazione
+        System.out.println("Aggiorna valutazione c2 a 4.2: " + c2.aggiornaValutazione(4.2));
+
+        // Confronto valutazioni
+        System.out.println("Confronto c1 vs c2: " + c1.confrontaValutazione(c2));
     }
 }
