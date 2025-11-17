@@ -24,39 +24,39 @@ public class ContenutoMultimediale {
         this.valutazione = altro.valutazione;
     }
 
-    // Getter 
+ //metodi getter
     public String getTitolo() {
-         return titolo; 
-        }
+        return titolo;
+    }
     public String getGenere() {
-         return genere;
-         }
+        return genere;
+    }
     public int getDurata() {
-         return durata; 
-        }
-    public int getAnnoUscita() { 
-        return annoUscita; 
+        return durata;
+    }
+    public int getAnnoUscita() {
+        return annoUscita;
     }
     public double getValutazione() {
-         return valutazione; 
-        }
+        return valutazione;
+    }
 
-    // Setter 
+    //metodi setter
     public void setTitolo(String titolo) {
-         this.titolo = titolo; 
-        }
+        this.titolo = titolo;
+    }
     public void setGenere(String genere) {
-         this.genere = genere; 
-        }
+        this.genere = genere;
+    }
     public void setDurata(int durata) {
-         this.durata = durata; 
-        }
-    private void setAnnoUscita(int annoUscita) {
-         this.annoUscita = annoUscita;
-        }
-    public void setValutazione(double valutazione) { 
+        this.durata = durata;
+    }
+    public void setAnnoUscita(int annoUscita) {
+        this.annoUscita = annoUscita;
+    }
+    public void setValutazione(double valutazione) {
         this.valutazione = valutazione;
-     }
+    }
 
     // toString
     @Override
@@ -69,11 +69,14 @@ public class ContenutoMultimediale {
     }
 
     // Ottieni categoria
-    public String ottieniCategoria() {
+    public String ottieniCategoria(){
         int annoCorrente = 2025; 
-        if (annoUscita == annoCorrente) return "Nuova Uscita";
-        else if (annoUscita <= annoCorrente - 20) return "Classico";
-        else return "Catalogo Standard";
+        if (annoUscita == annoCorrente){
+            return "Nuova Uscita";
+        }else if (annoUscita <= annoCorrente - 20){
+            return "Classico";
+        }else 
+            return "Catalogo Standard";
     }
 
     // Durata in ore e minuti
@@ -94,11 +97,12 @@ public class ContenutoMultimediale {
 
     // Confronta valutazione
     public String confrontaValutazione(ContenutoMultimediale altro) {
-        if (this.valutazione > altro.valutazione) return "Migliore";
-        else if (this.valutazione < altro.valutazione) return "Peggiore";
-        else return "Uguale";
+    if (this.valutazione > altro.valutazione){
+        return "Migliore";
+    }else if (this.valutazione < altro.valutazione){
+        return "Peggiore";
+    }else 
+        return "Uguale";
     }
-
-    // Metodi pubblici per modifiche 
   
 }

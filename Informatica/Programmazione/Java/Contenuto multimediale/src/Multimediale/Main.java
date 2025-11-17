@@ -10,7 +10,7 @@ public class Main {
         ContenutoMultimediale c4 = new ContenutoMultimediale(c2); // copia valori
 
         // Modifiche
-        c3.setTitolo("mamma ho perso l'aereo");
+        c3.setTitolo("mamma ho perso l'aereo\n");
         c4.setDurata(95);
 
         // Stampa

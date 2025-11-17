@@ -1,5 +1,7 @@
 package Catena;
-class Veicolo {
+
+public class Veicolo {
+
     private String targa;
     private String marca;
     private String modello;
@@ -17,7 +19,7 @@ class Veicolo {
         this.numeroPosti = numeroPosti;
     }
 
-    // Costruttore di copia 
+    // Costruttore di copia (copia valori)
     public Veicolo(Veicolo altro) {
         this.targa = altro.targa;
         this.marca = altro.marca;
@@ -27,66 +29,71 @@ class Veicolo {
         this.numeroPosti = altro.numeroPosti;
     }
 
-    // Getter 
-    public String getTarga() { 
-        return targa;
-     }
-    public String getMarca() {
-         return marca; 
-        }
-    public String getModello() { 
+    // Getter
+    public String getTarga() {
+        return targa; 
+    }
+    public String getMarca() { 
+        return marca;
+    }
+    public String getModello() {
         return modello; 
     }
-    public int getCilindrata() {
-         return cilindrata; 
-        }
+    public int getCilindrata() { 
+        return cilindrata;
+    }
     public int getAnnoAcquisto() {
-         return annoAcquisto;
-         }
+        return annoAcquisto;
+    }
     public int getNumeroPosti() {
-         return numeroPosti; 
-        }
+        return numeroPosti; 
+    }
 
     // Setter 
-    private void setTarga(String targa) {
-         this.targa = targa; 
-        }
-    private void setMarca(String marca) { 
-        this.marca = marca;
-     }
-    public void setModello(String modello) {
-         this.modello = modello; 
-        }
-    private void setCilindrata(int cilindrata) {
-         this.cilindrata = cilindrata; 
-        }
-    private void setAnnoAcquisto(int annoAcquisto) { 
+    public void setTarga(String targa) {
+        this.targa = targa;
+    }
+    public void setMarca(String marca) {
+        this.marca = marca; 
+    }
+    public void setModello(String modello) { 
+        this.modello = modello;
+    }
+    public void setCilindrata(int cilindrata) {
+        this.cilindrata = cilindrata; 
+    }
+    public void setAnnoAcquisto(int annoAcquisto) { 
         this.annoAcquisto = annoAcquisto; 
     }
     public void setNumeroPosti(int numeroPosti) { 
-        this.numeroPosti = numeroPosti;
-     }
+        this.numeroPosti = numeroPosti; 
+    }
 
     // toString
     @Override
     public String toString() {
-        return "Targa: " + targa + " - Marca: " + marca + "  Modello: " + modello +"  Cilindrata: " + cilindrata + "  Anno Acquisto: " + annoAcquisto +"  Numero Posti: " + numeroPosti;
+        return "Targa: " + targa +
+               " - Marca: " + marca +
+               " - Modello: " + modello +
+               " - Cilindrata: " + cilindrata +
+               " - Anno Acquisto: " + annoAcquisto +
+               " - Posti: " + numeroPosti;
     }
 
-    // Confronta potenza
+    // Metodo confronta potenza
     public String confrontaPotenza(Veicolo altro) {
-        if (this.cilindrata > altro.cilindrata) return "Questo veicolo è più potente";
-        else if (this.cilindrata < altro.cilindrata) return "L'altro veicolo è più potente";
-        else return "Entrambi i veicoli hanno la stessa potenza";
+        if (this.cilindrata > altro.cilindrata) {
+            return this.marca + " " + this.modello;
+        } else if (this.cilindrata < altro.cilindrata) {
+            return altro.marca + " " + altro.modello;
+        } else {
+            return "Potenza uguale";
+        }
     }
 
-   
-    public boolean noleggio(int persone) {
-        return persone <= numeroPosti;
+
+    // Metodo noleggio
+    public boolean noleggio(int richiesti) {
+        return richiesti <= numeroPosti;
     }
-
-    
-    
-
-    
 }

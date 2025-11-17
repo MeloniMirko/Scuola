@@ -1,100 +1,104 @@
 package gestionecase;
 
-public class casa {
-    // Attributi privati
+public class Casa {
+
     private String indirizzo;
     private int numeroStanze;
     private double superficie;
     private double prezzo;
-    private boolean haGiardino;
+    private boolean conGiardino;
+    private int annoCostruzione;  
 
     // Costruttore principale
-    public casa(String indirizzo, int numeroStanze, double superficie, double prezzo) {
+    public Casa(String indirizzo, int numeroStanze, double superficie, double prezzo, boolean conGiardino, int annoCostruzione) {
         this.indirizzo = indirizzo;
         this.numeroStanze = numeroStanze;
         this.superficie = superficie;
         this.prezzo = prezzo;
-        this.haGiardino = false;
-             
+        this.conGiardino = conGiardino;
+        this.annoCostruzione = annoCostruzione;
     }
 
     // Costruttore di copia
-    public casa(casa altraCasa) {
-        this.indirizzo = altraCasa.indirizzo;
-        this.numeroStanze = altraCasa.numeroStanze;
-        this.superficie = altraCasa.superficie;
-        this.prezzo = altraCasa.prezzo;
-        this.haGiardino = altraCasa.haGiardino;
+    public Casa(Casa altra) {
+        this.indirizzo = altra.indirizzo;
+        this.numeroStanze = altra.numeroStanze;
+        this.superficie = altra.superficie;
+        this.prezzo = altra.prezzo;
+        this.conGiardino = altra.conGiardino;
+        this.annoCostruzione = altra.annoCostruzione;
     }
 
-    // Getter 
+    // Getter
     public String getIndirizzo() {
          return indirizzo; 
         }
     public int getNumeroStanze() {
          return numeroStanze;
          }
-    public double getSuperficie() { 
-        return superficie;
-     }
+    public double getSuperficie() {
+         return superficie; 
+        }
     public double getPrezzo() {
          return prezzo; 
         }
-    public boolean HaGiardino() {
-        return haGiardino;
-    }
+    public boolean getConGiardino() {
+         return conGiardino; 
+        }
+    public int getAnnoCostruzione() {
+         return annoCostruzione;
+         }
 
-    // Setter 
+    // Setter
     public void setIndirizzo(String indirizzo) {
-         this.indirizzo = indirizzo; 
-        }
-    public void setNumeroStanze(int numeroStanze) { 
-        if (numeroStanze > 0) this.numeroStanze = numeroStanze; 
-    }
+         this.indirizzo = indirizzo;
+         }
+    public void setNumeroStanze(int numeroStanze) {
+         if(numeroStanze>0) 
+         this.numeroStanze=numeroStanze;
+         }
     public void setSuperficie(double superficie) { 
-        if (superficie > 0) this.superficie = superficie; 
-    }
-    public void setPrezzo(double prezzo) { 
-        if (prezzo >= 0) this.prezzo = prezzo; 
-    }
-    public void setHaGiardino(boolean haGiardino) {
-        this.haGiardino = haGiardino;
-    }
+        if(superficie>0) 
+        this.superficie=superficie; }
 
-    // Metodi di confronto
-    public String haSuperficieMaggioreDi(casa altraCasa) {
-        if (this.superficie > altraCasa.superficie) {
-            return this.indirizzo;
-        } else if (this.superficie < altraCasa.superficie) {
-            return altraCasa.indirizzo;
-        } else {
-            return "Entrambe le case hanno la stessa superficie.";
+    public void setPrezzo(double prezzo) {
+         if(prezzo>=0) 
+         this.prezzo=prezzo; 
         }
-    }
+    public void setConGiardino(boolean conGiardino) {
+         this.conGiardino = conGiardino;
+         }
+    public void setAnnoCostruzione(int anno) {
+         if(anno>0) this.annoCostruzione = anno;
+         }
 
-    public String haPrezzoMaggioreDi(casa altraCasa) {
-        if (this.prezzo > altraCasa.prezzo) {
+    // Confronti tra case
+    public String superficieMaggiore(Casa altra) {
+        if (this.superficie > altra.superficie)
             return this.indirizzo;
-        } else if (this.prezzo < altraCasa.prezzo) {
-            return altraCasa.indirizzo;
-        } else {
-            return "Entrambe le case hanno lo stesso prezzo.";
-        }
+        else if (this.superficie < altra.superficie)
+            return altra.indirizzo;
+        else
+            return "Le due case hanno la stessa superficie.";
     }
 
-
-    
+    public String prezzoMaggiore(Casa altra) {
+        if (this.prezzo > altra.prezzo)
+            return this.indirizzo;
+        else if (this.prezzo < altra.prezzo)
+            return altra.indirizzo;
+        else
+            return "Le due case hanno lo stesso prezzo.";
+    }
 
     // toString
     @Override
     public String toString() {
-        return "[Indirizzo: " + indirizzo + ", Stanze: " + numeroStanze +
-               ", Superficie: " + superficie + ", Prezzo: " + prezzo + " EUR" +
-               ", Ha Giardino: " + haGiardino  +   "]";
+        return "Indirizzo: " + indirizzo +
+               ", Stanze: " + numeroStanze +
+               ", Superficie: " + superficie + " mq" +
+               ", Prezzo: " + prezzo + "€" +
+               ", Giardino: " + conGiardino +
+               ", Anno Costruzione: " + annoCostruzione;
     }
-
-  
-
-    
-    
 }

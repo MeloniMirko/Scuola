@@ -5,6 +5,27 @@
       "type": "java",
       "name": "Main",
       "request": "launch",
+      "mainClass": "Multimediale.Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Catena.Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "gestionecase.Main",
+      "projectName": "Scuola_aba515b7"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
       "mainClass": "gestionecase.Main",
       "projectName": "Scuola_1b986559"
     },
