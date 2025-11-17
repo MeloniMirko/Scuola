@@ -6,6 +6,7 @@ public class casa {
     private int numeroStanze;
     private double superficie;
     private double prezzo;
+    private boolean haGiardino;
 
     // Costruttore principale
     public casa(String indirizzo, int numeroStanze, double superficie, double prezzo) {
@@ -13,6 +14,7 @@ public class casa {
         this.numeroStanze = numeroStanze;
         this.superficie = superficie;
         this.prezzo = prezzo;
+        this.haGiardino = false;
              
     }
 
@@ -22,6 +24,7 @@ public class casa {
         this.numeroStanze = altraCasa.numeroStanze;
         this.superficie = altraCasa.superficie;
         this.prezzo = altraCasa.prezzo;
+        this.haGiardino = altraCasa.haGiardino;
     }
 
     // Getter 
@@ -37,6 +40,9 @@ public class casa {
     public double getPrezzo() {
          return prezzo; 
         }
+    public boolean HaGiardino() {
+        return haGiardino;
+    }
 
     // Setter 
     public void setIndirizzo(String indirizzo) {
@@ -51,22 +57,44 @@ public class casa {
     public void setPrezzo(double prezzo) { 
         if (prezzo >= 0) this.prezzo = prezzo; 
     }
+    public void setHaGiardino(boolean haGiardino) {
+        this.haGiardino = haGiardino;
+    }
 
     // Metodi di confronto
-    public boolean haSuperficieMaggioreDi(casa altraCasa) {
-        return this.superficie > altraCasa.superficie;
+    public String haSuperficieMaggioreDi(casa altraCasa) {
+        if (this.superficie > altraCasa.superficie) {
+            return this.indirizzo;
+        } else if (this.superficie < altraCasa.superficie) {
+            return altraCasa.indirizzo;
+        } else {
+            return "Entrambe le case hanno la stessa superficie.";
+        }
     }
 
-    public boolean haPrezzoMaggioreDi(casa altraCasa) {
-        return this.prezzo > altraCasa.prezzo;
+    public String haPrezzoMaggioreDi(casa altraCasa) {
+        if (this.prezzo > altraCasa.prezzo) {
+            return this.indirizzo;
+        } else if (this.prezzo < altraCasa.prezzo) {
+            return altraCasa.indirizzo;
+        } else {
+            return "Entrambe le case hanno lo stesso prezzo.";
+        }
     }
+
+
+    
 
     // toString
     @Override
     public String toString() {
-        return "Casa [Indirizzo: " + indirizzo + ", Stanze: " + numeroStanze +
-               ", Superficie: " + superficie + ", Prezzo: " + prezzo + " €]";
+        return "[Indirizzo: " + indirizzo + ", Stanze: " + numeroStanze +
+               ", Superficie: " + superficie + ", Prezzo: " + prezzo + " EUR" +
+               ", Ha Giardino: " + haGiardino  +   "]";
     }
 
+  
+
+    
     
 }
