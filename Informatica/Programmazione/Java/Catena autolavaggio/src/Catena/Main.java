@@ -3,20 +3,20 @@ package Catena;
 public class Main {
     public static void main(String[] args) {
 
-        // Creazione dei veicoli originali
+        // Creazione dei veicoli 
         Veicolo v1 = new Veicolo("AB123CD", "Fiat", "Panda", 1100, 2020, 4);
         Veicolo v2 = new Veicolo("EF456GH", "Ford", "Focus", 1600, 2019, 5);
 
-        // V3 copia solo il riferimento a V1
+        // V3 copia il riferimento a V1
         Veicolo v3 = v1;
 
-        // V4 copia i valori di V2 (copia profonda)
+        // V4 copia i valori di V2 
         Veicolo v4 = new Veicolo(v2);
 
-        // Modifica su V3 (modifica anche V1 perché è lo stesso oggetto)
+        // Modifica su V3 e nel mentre copia anche V1 essendo lo stesso 
         v3.setModello("Panda 4x4");
 
-        // Modifico TUTTO in V4 così è completamente diverso da V2
+        // Modifica V4
         v4.setTarga("ZZ999XX");
         v4.setMarca("BMW");
         v4.setModello("M3");

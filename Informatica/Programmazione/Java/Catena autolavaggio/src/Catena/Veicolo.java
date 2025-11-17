@@ -19,7 +19,7 @@ public class Veicolo {
         this.numeroPosti = numeroPosti;
     }
 
-    // Costruttore di copia (copia valori)
+    // Costruttore di copia 
     public Veicolo(Veicolo altro) {
         this.targa = altro.targa;
         this.marca = altro.marca;
