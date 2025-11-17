@@ -36,33 +36,32 @@ public class Proprietario {
     public Casa getCasa() {
         return casa; 
     }
-
-
-    // Setter
-    public void setNome(String nome) { 
-        if(nome!=null && !nome.isEmpty()) 
-        this.nome = nome; 
-    }
-    public void setCognome(String cognome) {
-         if(cognome!=null && !cognome.isEmpty()) 
-         this.cognome = cognome; 
-        }
-    public void setCodiceFiscale(String codiceFiscale) { 
-        if(codiceFiscale!=null && !codiceFiscale.isEmpty()) 
-        this.codiceFiscale = codiceFiscale; 
-    }
-    public void setCasa(Casa casa)
-     { 
-        this.casa = casa; }
-
     public boolean haCasaConGiardino() { 
         return casa.getConGiardino();
- }
+    }
 
     public String aggiornaCasa(Casa c) {
         this.casa = c;
         return "Casa aggiornata.";
     }
+
+
+    // Setter
+    public void setNome(String nome) {  
+        this.nome = nome; 
+    }
+    public void setCognome(String cognome) {
+         this.cognome = cognome; 
+        }
+    public void setCodiceFiscale(String codiceFiscale) { 
+        this.codiceFiscale = codiceFiscale; 
+    }
+    public void setCasa(Casa casa)
+     { 
+        this.casa = casa; 
+    }
+
+  
 
     @Override
     public String toString() {

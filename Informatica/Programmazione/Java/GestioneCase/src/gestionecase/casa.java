@@ -74,21 +74,23 @@ public class Casa {
 
     // Confronti tra case
     public String superficieMaggiore(Casa altra) {
-        if (this.superficie > altra.superficie)
+        if (this.superficie > altra.superficie){
             return this.indirizzo;
-        else if (this.superficie < altra.superficie)
+        }else if (this.superficie < altra.superficie){
             return altra.indirizzo;
-        else
+        }else{
             return "Le due case hanno la stessa superficie.";
+        }
     }
 
     public String prezzoMaggiore(Casa altra) {
-        if (this.prezzo > altra.prezzo)
-            return this.indirizzo;
-        else if (this.prezzo < altra.prezzo)
+        if (this.prezzo > altra.prezzo){
+           return this.indirizzo;
+        }else if (this.prezzo < altra.prezzo){
             return altra.indirizzo;
-        else
+        }else{
             return "Le due case hanno lo stesso prezzo.";
+        }
     }
 
     // toString
@@ -97,7 +99,7 @@ public class Casa {
         return "Indirizzo: " + indirizzo +
                ", Stanze: " + numeroStanze +
                ", Superficie: " + superficie + " mq" +
-               ", Prezzo: " + prezzo + "€" +
+               ", Prezzo: " + prezzo + "EUR" +
                ", Giardino: " + conGiardino +
                ", Anno Costruzione: " + annoCostruzione;
     }
