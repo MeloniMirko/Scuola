@@ -10,7 +10,7 @@ public class Main {
         casa casa3 = new casa(casa1);
 
         // Modifico alcuni attributi della casa3 
-        casa3.aggiornaCasa("Via Torino 3", 3, 100, 160000);
+
 
         // Stampo tutti gli oggetti 
         System.out.println(casa1);

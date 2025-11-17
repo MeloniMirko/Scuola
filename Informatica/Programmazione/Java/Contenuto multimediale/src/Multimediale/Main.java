@@ -2,16 +2,16 @@ package Multimediale;
 public class Main {
     public static void main(String[] args) {
         // Creazione contenuti
-        ContenutoMultimediale c1 = new ContenutoMultimediale("Film A", "Azione", 135, 2025, 4.5);
-        ContenutoMultimediale c2 = new ContenutoMultimediale("Film B", "Commedia", 90, 2000, 3.8);
+        ContenutoMultimediale c1 = new ContenutoMultimediale("FilmA", "Azione", 135, 2025, 4.5);
+        ContenutoMultimediale c2 = new ContenutoMultimediale("FilmB", "Commedia", 90, 2000, 3.8);
 
         // Copia riferimento e copia valori
         ContenutoMultimediale c3 = c1; // riferimento
         ContenutoMultimediale c4 = new ContenutoMultimediale(c2); // copia valori
 
         // Modifiche
-        c3.modificaTitolo("Film A Extended");
-        c4.modificaDurata(95);
+        c3.setTitolo("mamma ho perso l'aereo");
+        c4.setDurata(95);
 
         // Stampa
         System.out.println("C1: " + c1);

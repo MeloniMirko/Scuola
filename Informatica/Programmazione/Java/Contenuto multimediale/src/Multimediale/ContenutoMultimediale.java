@@ -1,10 +1,10 @@
 package Multimediale;
-class ContenutoMultimediale {
+public class ContenutoMultimediale {
     private String titolo;
     private String genere;
-    private int durata; // in minuti
+    private int durata; 
     private int annoUscita;
-    private double valutazione; // 0.0 - 5.0
+    private double valutazione;
 
     // Costruttore principale
     public ContenutoMultimediale(String titolo, String genere, int durata, int annoUscita, double valutazione) {
@@ -42,19 +42,19 @@ class ContenutoMultimediale {
         }
 
     // Setter 
-    private void setTitolo(String titolo) {
+    public void setTitolo(String titolo) {
          this.titolo = titolo; 
         }
-    private void setGenere(String genere) {
+    public void setGenere(String genere) {
          this.genere = genere; 
         }
-    private void setDurata(int durata) {
+    public void setDurata(int durata) {
          this.durata = durata; 
         }
     private void setAnnoUscita(int annoUscita) {
          this.annoUscita = annoUscita;
-         }
-    private void setValutazione(double valutazione) { 
+        }
+    public void setValutazione(double valutazione) { 
         this.valutazione = valutazione;
      }
 
@@ -100,16 +100,5 @@ class ContenutoMultimediale {
     }
 
     // Metodi pubblici per modifiche 
-    public void modificaTitolo(String nuovoTitolo) { 
-        setTitolo(nuovoTitolo);
-     }
-    public void modificaGenere(String nuovoGenere) {
-         setGenere(nuovoGenere); 
-        }
-    public void modificaDurata(int nuovaDurata) {
-         setDurata(nuovaDurata); 
-        }
-    public void modificaAnnoUscita(int nuovoAnno) { 
-        setAnnoUscita(nuovoAnno); 
-    }
+  
 }

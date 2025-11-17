@@ -11,8 +11,9 @@ public class casa {
     public casa(String indirizzo, int numeroStanze, double superficie, double prezzo) {
         this.indirizzo = indirizzo;
         this.numeroStanze = numeroStanze;
-        setSuperficie(superficie); // setter privato chiamato internamente
-        setPrezzo(prezzo);         // setter privato chiamato internamente
+        this.superficie = superficie;
+        this.prezzo = prezzo;
+             
     }
 
     // Costruttore di copia
@@ -23,21 +24,31 @@ public class casa {
         this.prezzo = altraCasa.prezzo;
     }
 
-    // Getter pubblici
-    public String getIndirizzo() { return indirizzo; }
-    public int getNumeroStanze() { return numeroStanze; }
-    public double getSuperficie() { return superficie; }
-    public double getPrezzo() { return prezzo; }
+    // Getter 
+    public String getIndirizzo() {
+         return indirizzo; 
+        }
+    public int getNumeroStanze() {
+         return numeroStanze;
+         }
+    public double getSuperficie() { 
+        return superficie;
+     }
+    public double getPrezzo() {
+         return prezzo; 
+        }
 
-    // Setter privati
-    private void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
-    private void setNumeroStanze(int numeroStanze) { 
+    // Setter 
+    public void setIndirizzo(String indirizzo) {
+         this.indirizzo = indirizzo; 
+        }
+    public void setNumeroStanze(int numeroStanze) { 
         if (numeroStanze > 0) this.numeroStanze = numeroStanze; 
     }
-    private void setSuperficie(double superficie) { 
+    public void setSuperficie(double superficie) { 
         if (superficie > 0) this.superficie = superficie; 
     }
-    private void setPrezzo(double prezzo) { 
+    public void setPrezzo(double prezzo) { 
         if (prezzo >= 0) this.prezzo = prezzo; 
     }
 
@@ -54,14 +65,8 @@ public class casa {
     @Override
     public String toString() {
         return "Casa [Indirizzo: " + indirizzo + ", Stanze: " + numeroStanze +
-               ", Superficie: " + superficie + " m², Prezzo: " + prezzo + " €]";
+               ", Superficie: " + superficie + ", Prezzo: " + prezzo + " €]";
     }
 
-    // Metodo pubblico per modificare gli attributi dall'esterno in modo controllato
-    public void aggiornaCasa(String nuovoIndirizzo, int nuoveStanze, double nuovaSuperficie, double nuovoPrezzo) {
-        setIndirizzo(nuovoIndirizzo);
-        setNumeroStanze(nuoveStanze);
-        setSuperficie(nuovaSuperficie);
-        setPrezzo(nuovoPrezzo);
-    }
+    
 }

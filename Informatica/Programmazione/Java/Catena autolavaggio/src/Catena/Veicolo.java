@@ -28,20 +28,44 @@ class Veicolo {
     }
 
     // Getter 
-    public String getTarga() { return targa; }
-    public String getMarca() { return marca; }
-    public String getModello() { return modello; }
-    public int getCilindrata() { return cilindrata; }
-    public int getAnnoAcquisto() { return annoAcquisto; }
-    public int getNumeroPosti() { return numeroPosti; }
+    public String getTarga() { 
+        return targa;
+     }
+    public String getMarca() {
+         return marca; 
+        }
+    public String getModello() { 
+        return modello; 
+    }
+    public int getCilindrata() {
+         return cilindrata; 
+        }
+    public int getAnnoAcquisto() {
+         return annoAcquisto;
+         }
+    public int getNumeroPosti() {
+         return numeroPosti; 
+        }
 
     // Setter 
-    private void setTarga(String targa) { this.targa = targa; }
-    private void setMarca(String marca) { this.marca = marca; }
-    private void setModello(String modello) { this.modello = modello; }
-    private void setCilindrata(int cilindrata) { this.cilindrata = cilindrata; }
-    private void setAnnoAcquisto(int annoAcquisto) { this.annoAcquisto = annoAcquisto; }
-    private void setNumeroPosti(int numeroPosti) { this.numeroPosti = numeroPosti; }
+    private void setTarga(String targa) {
+         this.targa = targa; 
+        }
+    private void setMarca(String marca) { 
+        this.marca = marca;
+     }
+    public void setModello(String modello) {
+         this.modello = modello; 
+        }
+    private void setCilindrata(int cilindrata) {
+         this.cilindrata = cilindrata; 
+        }
+    private void setAnnoAcquisto(int annoAcquisto) { 
+        this.annoAcquisto = annoAcquisto; 
+    }
+    public void setNumeroPosti(int numeroPosti) { 
+        this.numeroPosti = numeroPosti;
+     }
 
     // toString
     @Override
@@ -62,11 +86,7 @@ class Veicolo {
     }
 
     
-    public void modificaModello(String nuovoModello) {
-        setModello(nuovoModello);
-    }
+    
 
-    public void modificaNumeroPosti(int nuoviPosti) {
-        setNumeroPosti(nuoviPosti);
-    }
+    
 }
