@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esercitazione 6</title>
-    <script src="./script.js"></script>
+    <title>Esercitazione js</title>
+    <script src="script.js"></script>
 </head>
+
 <body>
-    <input type="button" value="Aggiungi Prodotto" id="bottoneprodotto" onclick="aggiungiprodotto()" >  
-    <h2>Carrello:</h2>
-    <p id="dati"></p>
-    
+
+    <input type="button" value="aggiungi prodotto" onclick="aggiungi()">
+    <input type="button" value="svuota carrello" onclick="svuota()">
+
+    <h2>Carrello</h2>
+
+    <p id="dati">Il carrello è vuoto</p>
+
+    <h3>Prodotti nel carrello: <span id="contatore">0</span></h3>
+
 </body>
 </html>
 
