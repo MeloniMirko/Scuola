@@ -5,6 +5,7 @@ function aggiungi() {
 
     if (nomeAlimento !== null && nomeAlimento !== "") {
 
+        // tolgo il messaggio "Il carrello è vuoto" alla prima aggiunta
         if (contatore === 0) {
             document.getElementById("dati").innerHTML = "";
         }
