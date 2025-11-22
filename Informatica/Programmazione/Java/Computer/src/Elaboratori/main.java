@@ -1,37 +1,82 @@
 package Elaboratori;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Computer c1 = new Computer("Dell", "XPS 15", 1500.00, "Intel i7", 16, 512);
-        Computer c2 = new Computer("Apple", "MacBook Pro", 2000.00, "M1", 16, 1024);
 
+        // Creazione dello Scanner per leggere input da tastiera
+        Scanner s = new Scanner(System.in);
+
+        // Oggetto Computer
+        Computer c1;
+
+        System.out.println("Ciao, questo programma serve per catalogare i computer.");
+
+        // --- RACCOLTA DATI DALL'UTENTE ---
+        System.out.println("Inserisci la marca del tuo pc: ");
+        String marca = s.nextLine();
+
+        System.out.println("Inserisci il modello del tuo pc: ");
+        String modello = s.nextLine();
+
+        System.out.println("Inserisci il prezzo del tuo pc: ");
+        double prezzo = s.nextDouble();
+        s.nextLine(); // pulizia buffer
+
+        System.out.println("Inserisci la CPU del tuo pc: ");
+        String cpu = s.nextLine();
+
+        System.out.println("Inserisci la quantità di RAM del tuo pc: ");
+        int ram = s.nextInt();
+        s.nextLine(); // pulizia buffer
+
+        System.out.println("Inserisci la quantità di memoria del tuo pc: ");
+        int storage = s.nextInt();
+        s.nextLine(); // pulizia buffer
+
+        // Creazione dell'oggetto Computer
+        c1 = new Computer(marca, modello, prezzo, cpu, ram, storage);
+
+        // Stampa dell'oggetto
         System.out.println(c1.toString());
-        System.out.println(c2.toString());
 
-        // aggiorno il prezzo del primo computer con uno sconto del 10%
-        c1.aggiornaPrezzo(10);
-        System.out.println("Prezzo aggiornato del primo computer: " + c1.getPrezzo());
+        // --- MENU DELLE OPERAZIONI ---
+        System.out.println("Scegli l'operazione: ");
+        System.out.println("1) ottieniFasciaDiPrezzo()");
+        System.out.println("2) Stampa le caratteristiche");
+        System.out.println("3) Aggiorna prezzo");
 
-        // faccio un upgrade della RAM del secondo computer a 32GB
-        c2.upgradeRam(32);
-        System.out.println("RAM aggiornata del secondo computer: " + c2.getRam() + "GB");
+        int scelta = s.nextInt();
+        s.nextLine(); // pulizia buffer
 
-       
-        // stampo i dettagli dei computer
-        System.out.println("=== DETTAGLI COMPUTER 1 ===");
-        System.out.println(c1.ottieniInfoDettagliata());
-        System.out.println("\n=== DETTAGLI COMPUTER 2 ===");
-        System.out.println(c2.ottieniInfoDettagliata());
+        // SWITCH CLASSICO
+        switch (scelta) {
 
-        // confronto i due computer per vedere quale è migliore
-        int confronto = c1.confrontaComputer(c2);
+            case 1:
+                // Caso 1: stampa la fascia di prezzo
+                System.out.println(c1.ottieniFasciaDiPrezzo());
+                break;
 
-        if (confronto > 0) {
-            System.out.println("Computer 1 è migliore di Computer 2");
-        } else if (confronto < 0) {
-            System.out.println("Computer 2 è migliore di Computer 1");
-        } else {
-            System.out.println("I due computer sono equivalenti");
+            case 2:
+                // Caso 2: ristampa tutte le informazioni
+                System.out.println(c1.toString());
+                break;
+
+            case 3:
+                // Caso 3: aggiornamento del prezzo con sconto
+                System.out.println("Scrivi lo sconto: ");
+                double sconto = s.nextDouble();
+                s.nextLine();
+                System.out.println(c1.aggiornaPrezzo(sconto));
+                break;
+
+            default:
+                // Caso di errore se l'utente inserisce un numero non valido
+                System.out.println("Hai sbagliato inserendo il valore");
         }
+
+        // CHIUSURA DELLO SCANNER
+        s.close();
     }
 }
