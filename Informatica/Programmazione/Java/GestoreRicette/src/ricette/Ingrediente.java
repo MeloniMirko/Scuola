@@ -100,5 +100,4 @@ public class Ingrediente {
     public double costoTotale(){
         return(this.quantita *= this.costoPerUnita)/100.0;
     }
-
 }

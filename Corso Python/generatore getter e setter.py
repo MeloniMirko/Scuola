@@ -1,25 +1,51 @@
+def genera_campi(campi):
+    risultato = ""
+    for nome, tipo in campi:
+        risultato += f"private {tipo} {nome};\n"
+    return risultato
+
+
 def genera_getter_setter(campi):
     risultato = ""
 
     for nome, tipo in campi:
-        # Prima lettera maiuscola per i metodi
         Nome = nome[0].upper() + nome[1:]
 
-        # Getter
-        getter = f"public {tipo} get{Nome}() {{\n    return {nome};\n}}\n"
+        getter = (
+            f"public {tipo} get{Nome}() {{\n"
+            f"    return {nome};\n"
+            f"}}\n"
+        )
 
-        # Setter
-        setter = f"public void set{Nome}({tipo} {nome}) {{\n    this.{nome} = {nome};\n}}\n"
+        setter = (
+            f"public void set{Nome}({tipo} {nome}) {{\n"
+            f"    this.{nome} = {nome};\n"
+            f"}}\n"
+        )
 
         risultato += getter + "\n" + setter + "\n"
 
     return risultato
 
 
-def main():
-    print("=== Generatore Getter e Setter Java ===")
-    print("Inserisci i campi (scrivi 'stop' per terminare)\n")
+def genera_toString(campi, nome_classe):
+    parti = [f'"{nome}=" + {nome}' for nome, _ in campi]
+    corpo = ' + ", " + '.join(parti)
 
+    return (
+        f"@Override\n"
+        f"public String toString() {{\n"
+        f"    return \"{nome_classe}[\" + {corpo} + \"]\";\n"
+        f"}}"
+    )
+
+
+def main():
+    print("=== GENERATORE COMPLETO JAVA ===\n")
+
+    nome_classe = input("Nome della classe: ")
+
+    print("\nInserisci i campi (scrivi 'stop' per terminare)\n")
     campi = []
 
     while True:
@@ -31,7 +57,13 @@ def main():
         print()
 
     print("\n=== RISULTATO ===\n")
+
+    print("// --- Campi ---")
+    print(genera_campi(campi))
+    print("// --- Getter e Setter ---")
     print(genera_getter_setter(campi))
+    print("// --- toString ---")
+    print(genera_toString(campi, nome_classe))
 
 
 if __name__ == "__main__":
