@@ -19,13 +19,14 @@ public class Ingrediente {
 
     //costruttore di copia
     public Ingrediente(Ingrediente altro){
-        this.nome= nome;
-        this.quantita=quantita;
-        this.unita=unita;
-        this.caloriePerUnita=caloriePerUnita;
-        this.costoPerUnita=costoPerUnita;
-        this.vegetariano=vegetariano;
-    }
+    this.nome = altro.nome;
+    this.quantita = altro.quantita;
+    this.unita = altro.unita;
+    this.caloriePerUnita = altro.caloriePerUnita;
+    this.costoPerUnita = altro.costoPerUnita;
+    this.vegetariano = altro.vegetariano;
+}
+
 
     //Metodi Getter e Setter
 
@@ -73,6 +74,10 @@ public class Ingrediente {
         return vegetariano ;
     }
 
+    public boolean isVegetariano() {
+        return vegetariano;
+    }
+
     public void setVegetariano (boolean vegetariano ) {
         this.vegetariano  = vegetariano ;
     }
@@ -93,11 +98,14 @@ public class Ingrediente {
         }
     }
 
+    //calorietotali 
+
     public double calorieTotali(){
-        return(this.quantita *= this.caloriePerUnita)/100.0;
+        return quantita * caloriePerUnita;
     }
 
     public double costoTotale(){
-        return(this.quantita *= this.costoPerUnita)/100.0;
+        return quantita * costoPerUnita;
     }
+
 }
