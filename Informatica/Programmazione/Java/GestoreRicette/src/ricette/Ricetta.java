@@ -112,7 +112,7 @@ public class Ricetta {
     
     private int difficoltaToNum(String d) {
         if (d == null) return 2; 
-        return switch (d) {
+        return switch (d) {w
             case "Facile" -> 1;
             case "Media" -> 2;
             case "Difficile" -> 3;
