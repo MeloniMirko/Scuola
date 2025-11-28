@@ -22,7 +22,7 @@ function aggiungi() {
     
     // Aggiorno la lista
     let lista = document.getElementById("lista");
-    lista.innerHTML = lista.innerHTML + "<p>" + bevanda + " - " + quantita + " pz = " + prezzoBevanda.toFixed(2) + " €</p>";
+    lista.innerHTML = lista.innerHTML + "<p>" + bevanda + " - " + quantita + " pz = " + prezzoBevanda + " €</p>";
     
     // Aggiorno il totale
     document.getElementById("totale").innerHTML = "Totale: " + totale + " €";
