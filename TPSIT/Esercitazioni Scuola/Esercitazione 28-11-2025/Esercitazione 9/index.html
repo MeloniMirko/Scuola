@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caffetteria</title>
+</head>
+<body>
+    <h1>Ordina la tua bevanda</h1>
+    
+    <div>
+        <label>Che bevanda vuoi?</label>
+        <input type="text" id="bevanda">
+    </div>
+    
+    <div>
+        <label>Quanti?</label>
+        <input type="number" id="quantita" value="1" min="1">
+    </div>
+    
+    <button onclick="aggiungi()">Aggiungi</button>
+    
+    <h2>Il tuo ordine:</h2>
+    <div id="lista"></div>
+    
+    <h3 id="totale">Totale: 0.00 €</h3>
+    
+    <button onclick="conferma()">Conferma ordine</button>
+
+    <script src="./script.js"></script>
+</body>
+</html>
