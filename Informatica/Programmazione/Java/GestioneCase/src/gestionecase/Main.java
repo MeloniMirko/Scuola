@@ -7,7 +7,7 @@ public class Main {
    public static void main(String[] args) {
        Scanner s=new Scanner(System.in);
        Casa C1;
-       String indirizzo;
+       String   indirizzo;
        System.out.println("Scrivi l'indirizzo della casa: ");
        indirizzo=s.nextLine();
        int stanze;
