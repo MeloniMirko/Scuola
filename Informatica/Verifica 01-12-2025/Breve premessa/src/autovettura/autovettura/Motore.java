@@ -35,7 +35,7 @@ public class Motore {
         return tipo;
     }
 
-    public void settipo(){
+    public void settipo(String tipo){
         this.tipo=tipo;
     }
 
@@ -43,7 +43,7 @@ public class Motore {
         return potenzaCV;
     }
 
-    public void setpotenzaCV(){
+    public void setpotenzaCV(int potenzaCV){
         this.potenzaCV=potenzaCV;
     }
 
@@ -51,7 +51,7 @@ public class Motore {
         return consumoMedio;
     }
 
-    public void setconsumoMedio(){
+    public void setconsumoMedio(int consumoMedio){
        this.consumoMedio= consumoMedio;
     }
 
@@ -59,7 +59,7 @@ public class Motore {
         return emissioniCO2;
     }
 
-    public void setemissioniCO2(){
+    public void setemissioniCO2(double emissioniCO2){
         this.emissioniCO2=emissioniCO2;
     }
 
@@ -67,7 +67,7 @@ public class Motore {
         return costoManutenzioneAnnua;
     }
 
-    public void setcostoManutenzioneAnnua(){
+    public void setcostoManutenzioneAnnua(double costoManutenzioneAnnua){
         this.costoManutenzioneAnnua=costoManutenzioneAnnua;
     }
 
@@ -75,18 +75,10 @@ public class Motore {
     public String toString() {
         return "tipo"+tipo+"potenzaCV"+potenzaCV+"consumoMedio"+consumoMedio+"emissioniCO2"+emissioniCO2+"costoManutenzioneAnnua"+costoManutenzioneAnnua;
     }
+    //metodi
 
 
 
-    //metodi 
-
-    boolean aggiornaCostoManutenzione(double percentuale){
-        if(costoManutenzioneAnnua < 0){
-            return false;
-        }else{
-            return true;
-        }
-    }
 
 
 }

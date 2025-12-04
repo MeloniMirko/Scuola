@@ -36,7 +36,7 @@ public class Veicolo {
         return marca;
     }
 
-    public void setmarca(){
+    public void setmarca(String marca){
         this.marca= marca;
     }
 
@@ -44,7 +44,7 @@ public class Veicolo {
         return modello;
     }
 
-    public void setmodello(){
+    public void setmodello(String modello){
         this.modello=modello;
     }
 
@@ -52,7 +52,7 @@ public class Veicolo {
         return annoImmatricolazione;
     }
 
-    public void setannoImmatricolazione(){
+    public void setannoImmatricolazione(int annoImmatricolazione){
        this.annoImmatricolazione= annoImmatricolazione;
     }
 
@@ -60,7 +60,7 @@ public class Veicolo {
         return prezzo;
     }
 
-    public void setprezzo(){
+    public void setprezzo(double prezzo){
         this.prezzo=prezzo;
     }
 
@@ -68,7 +68,7 @@ public class Veicolo {
         return capienzaSerbatoioOrBatteryKWh;
     }
 
-    public void setcapienzaSerbatoioOrBatteryKWh(){
+    public void setcapienzaSerbatoioOrBatteryKWh(double capienzaSerbatoioOrBatteryKWh){
         this.capienzaSerbatoioOrBatteryKWh=capienzaSerbatoioOrBatteryKWh;
     }
 
@@ -90,12 +90,8 @@ public class Veicolo {
        return "marca:"+marca+"modello"+modello+"annoimmatricolazione="+annoImmatricolazione+"prezzo="+prezzo+"capienzazerbatoioorbatterykwh="+capienzaSerbatoioOrBatteryKWh+" | Motore:"+ motore.toString();
         
     }
-
     //metodi
 
-    double costoManutenzioneAnnuaTotale(){
-        return motore.getcostoManutenzioneAnnua();
-    }
 
     
 
