@@ -9,6 +9,8 @@ function AggiungiAttivita(){
     if(durataattivita == ""){
         alert("Inserisci una durata attivita valida");
     }
+
+    document.getElementById("ultimaattivita").innerHTML = document.getElementById("ultimaattivita").innerHTML +"<br>"+ nomeattivita + " "+durataattivita;
 }
 
 function CategoriaPrincipale(){
