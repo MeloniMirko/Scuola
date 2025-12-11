@@ -9,17 +9,24 @@
 
     <input type="text" placeholder="Nome Attivita" id="NomeAttivita">
     <input type="number" placeholder="Durata Attivita" id="DurataAttivita">
-    <input type="date" id="data">
     <input type="button" value="Aggiungi Attivita" id="AggiungiAttivita"  onclick="AggiungiAttivita()">
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <input type="date" id="data">
+  
 
     <input type="button" value="Filtra attività per giorno" onclick="FiltraAttivita()">
     
-    <p> Ultima durata registrata <span id="ultimaattivita">------</span></p>
+    <p> Ultima durata registrata:<span id="ultimaattivita"></span></p>
 
     <br>
     <br>
 
-    <p> Categoria principale: <span id="categoria"> Nessuna</span></p>
+    <p> Categoria principale: <span id="categoria">Nessuna</span></p>
 
     <input type="button" value="Imposta Categoria Principale"
     onclick="CategoriaPrincipale()">
