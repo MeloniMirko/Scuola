@@ -19,6 +19,3 @@ function CategoriaPrincipale(){
     document.getElementById("categoria").innerHTML = categoriaprincipale ;
 }
 
-function FiltraAttivita(){
-    
-}
