@@ -4,40 +4,52 @@ let ultimaData = "-";
 let categoriaPrincipale = "Nessuna";
 
 
-function AggiungiAttivita(){
- 
-
+function AggiungiAttivita() {
     let nomeattivita = document.getElementById("NomeAttivita").value;
     let durataattivita = Number(document.getElementById("DurataAttivita").value);
+    let dataattivita = document.getElementById("GiornoAttivita").value;
 
-    if (nomeattivita === ""){
-       alert("Inserisci un nome attivita");
+    if (nomeattivita === "") {
+        alert("Inserisci un nome attivita");
+        return;
     }
 
-    if(durataattivita == ""){
+    if (isNaN(durataattivita) || durataattivita === 0) {
         alert("Inserisci una durata attivita valida");
+        return;
     }
 
-    document.getElementById("ultimaattivita").innerHTML = document.getElementById("ultimaattivita").innerHTML +"<br>"+ nomeattivita + " "+durataattivita;
+    if (dataattivita === "") {
+        alert("Inserisci un giorno valido");
+        return;
+    }
 
-    contatore = contatore + 1;  // aumenti il totale
-    ultimaDurata = durataattivita;      // aggiorni l'ultima durata
+    document.getElementById("ultimaattivita").innerHTML =
+        document.getElementById("ultimaattivita").innerHTML +
+        "<br>" + nomeattivita + " " + durataattivita + " min";
 
-  
-
+    contatore = contatore + 1;
+    ultimaDurata = durataattivita;
+    ultimaData = dataattivita;
 }
 
-function CategoriaPrincipale(){
-    let categoriaprincipale = prompt("Inserisci la categoria principale (es. Studio, Sport, Tempo libero...")
 
-    document.getElementById("categoria").innerHTML = categoriaprincipale ;
+function CategoriaPrincipale() {
+    let categoriaprincipale = prompt("Inserisci la categoria principale (es. Studio, Sport, Tempo libero...)");
+
+    if (categoriaprincipale !== null && categoriaprincipale !== "") {
+        document.getElementById("categoria").innerHTML = categoriaprincipale;
+        categoriaPrincipale = categoriaprincipale;
+    }
 }
+
 
 function MostraRiepilogo() {
     alert(
         "Numero totale di attività: " + contatore +
         "\nUltima durata registrata: " + ultimaDurata +
         "\nCategoria principale: " + categoriaPrincipale +
+        "\nUltimo giorno registrato: " + ultimaData +
         "\nEcco il riepilogo delle tue attività!"
     );
 }
