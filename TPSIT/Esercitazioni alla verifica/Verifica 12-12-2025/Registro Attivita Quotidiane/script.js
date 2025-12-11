@@ -1,4 +1,12 @@
+let contatore = 0;
+let ultimaDurata = "-";
+let ultimaData = "-";
+let categoriaPrincipale = "Nessuna";
+
+
 function AggiungiAttivita(){
+ 
+
     let nomeattivita = document.getElementById("NomeAttivita").value;
     let durataattivita = Number(document.getElementById("DurataAttivita").value);
 
@@ -11,6 +19,12 @@ function AggiungiAttivita(){
     }
 
     document.getElementById("ultimaattivita").innerHTML = document.getElementById("ultimaattivita").innerHTML +"<br>"+ nomeattivita + " "+durataattivita;
+
+    contatore = contatore + 1;  // aumenti il totale
+    ultimaDurata = durataattivita;      // aggiorni l'ultima durata
+
+  
+
 }
 
 function CategoriaPrincipale(){
@@ -19,3 +33,11 @@ function CategoriaPrincipale(){
     document.getElementById("categoria").innerHTML = categoriaprincipale ;
 }
 
+function MostraRiepilogo() {
+    alert(
+        "Numero totale di attività: " + contatore +
+        "\nUltima durata registrata: " + ultimaDurata +
+        "\nCategoria principale: " + categoriaPrincipale +
+        "\nEcco il riepilogo delle tue attività!"
+    );
+}
