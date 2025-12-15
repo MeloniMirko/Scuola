@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ConversioniSemplice",
+      "request": "launch",
+      "mainClass": "ConversioniSemplice",
+      "projectName": "Scuola_1b986559"
+    },
+    {
+      "type": "java",
       "name": "Main",
       "request": "launch",
       "mainClass": "Elaboratori.Main",
