@@ -1,0 +1,36 @@
+ESERCITAZIONE LABORATORIO TPSIT – COMANDI DOS
+
+md MirkoMeloni
+cd MirkoMeloni
+
+md Appli
+
+md Appli\Word
+
+md Appli\Photo
+
+type nul > Appli\Photo\P1.gif
+
+type nul > Appli\Photo\P1.jpg
+
+md Vecchi
+
+md Vecchi\Excel
+
+type nul > Vecchi\Excel\Dati1.xls
+
+type nul > Vecchi\Excel\Dati2.xls
+
+md Vecchi\Word
+
+type nul > Vecchi\Word\D1.doc
+
+type nul > Vecchi\Word\D2.doc
+
+md doc
+
+cd Appli
+
+copy ..\Vecchi\Word*.doc Word
+
+del Photo*.gif

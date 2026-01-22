@@ -1,0 +1,35 @@
+md MirkoMeloni
+cd MirkoMeloni
+
+md Programs
+md My_prog
+
+md Programs\Pascal
+md Programs\C
+
+md My_prog\Pascal
+md My_prog\C
+
+cd Programs\Pascal
+type nul > P1.pas
+
+cd ..\C
+type nul > P1.c
+type nul > P2.c
+
+cd ..\..\My_prog\Pascal
+type nul > MP1.pas
+type nul > MP1.tpu
+
+cd ..\C
+type nul > MP1.c
+type nul > MP1.h
+
+cd ..\..\Programs
+
+copy C\P1.c ..\My_prog\C
+copy C\P2.c ..\My_prog\C
+
+copy ..\My_prog\Pascal\*.pas \
+
+del ..\My_prog\C\MP1.h
