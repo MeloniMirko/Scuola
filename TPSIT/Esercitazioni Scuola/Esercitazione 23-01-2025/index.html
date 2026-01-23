@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Array con Form</title>
+
+<script>
+var nome = [];
+var cognome = [];
+var i = 0;
+
+function Invio() {
+    nome[i] = f1.N.value;
+    cognome[i] = f1.C.value;
+    i++;
+
+    f1.N.value = "";
+    f1.C.value = "";
+}
+
+function Stampa() {
+    var out = document.getElementById("stampa");
+    out.innerHTML = "<h3>Elenco persone</h3>";
+    out.innerHTML += "<table border='1'><tr><th>Nome</th><th>Cognome</th></tr>";
+
+    for (var j = 0; j < i; j++) {
+        out.innerHTML += "<tr><td>" + nome[j] + "</td><td>" + cognome[j] + "</td></tr>";
+    }
+
+    out.innerHTML += "</table>";
+}
+
+function Cerca() {
+    var cerca = f1.CERCA.value;
+    var risultato = document.getElementById("risultato");
+    risultato.innerHTML = "";
+    var trovato = false;
+
+    for (var j = 0; j < i; j++) {
+        if (cognome[j] === cerca) {
+            risultato.innerHTML += "<p>Trovato: <strong>" + nome[j] + " " + cognome[j] + "</strong></p>";
+            trovato = true;
+        }
+    }
+
+    if (!trovato) {
+        risultato.innerHTML = "<p><strong>Cognome non trovato</strong></p>";
+    }
+}
+</script>
+</head>
+
+<body>
+<h1>Array con Form</h1>
+
+<form name="f1">
+<h3>Dati personali</h3>
+
+Nome:
+<input type="text" name="N">
+
+Cognome:
+<input type="text" name="C">
+
+<br><br>
+
+<input type="button" value="Aggiungi" onclick="Invio()">
+<input type="button" value="Stampa" onclick="Stampa()">
+
+<br><br>
+
+Cerca Cognome:
+<input type="text" name="CERCA">
+<input type="button" value="Cerca" onclick="Cerca()">
+</form>
+
+
+
+<div id="stampa"></div>
+
+
+
+
+<div id="risultato"></div>
+
+</body>
+</html>
