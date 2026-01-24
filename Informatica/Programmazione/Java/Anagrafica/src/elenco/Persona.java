@@ -1,4 +1,9 @@
 package elenco;
+
+/**
+ * @author mammaruabagassa
+ * @version 1.0 
+ */
 public class Persona {
     //attributi: nome , cognome,età,altezza
 
