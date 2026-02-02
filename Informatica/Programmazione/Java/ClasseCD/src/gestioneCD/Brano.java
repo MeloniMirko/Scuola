@@ -4,7 +4,7 @@ public class Brano {
 
     private String titolo;
     private String autore;
-    private int durata; // in secondi
+    private int durata;          // in secondi
     private int numeroTraccia;
 
     /* Costruttore completo */
@@ -23,7 +23,7 @@ public class Brano {
         setNumeroTraccia(b.getNumeroTraccia());
     }
 
-    /* Getter e Setter */
+    // GET e SET
     public String getTitolo() {
         return titolo;
     }
