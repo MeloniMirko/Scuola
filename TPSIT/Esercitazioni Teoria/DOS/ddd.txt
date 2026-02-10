@@ -1,0 +1,66 @@
+COS’È IL DOS
+
+DOS = Disk Operating System
+
+Sistema operativo testuale (senza grafica)
+
+Si usa tramite comandi da tastiera
+
+Il sistema mostra un PROMPT (es. C:\>) quando è pronto 
+
+SHELL_DOS-command
+
+🔹 SINTASSI DEI COMANDI
+COMANDO [parametri] [opzioni]
+
+
+Maiuscole/minuscole non contano
+
+Gli spazi sono importanti
+
+I comandi si eseguono con INVIO 
+
+SHELL_DOS-command
+
+🔹 FILE SYSTEM
+
+Struttura ad albero
+
+La radice è \
+
+Ogni file ha un percorso (path) 
+
+SHELL_DOS-command
+
+Directory speciali
+
+. → directory corrente
+
+.. → directory padre
+
+🔹 PATH
+
+Assoluto: parte dalla radice
+C:\GIOCHI\TENNIS\SUONO\MUSICA.WAV
+
+Relativo: parte dalla cartella corrente
+..\SUONO\MUSICA.WAV 
+
+
+
+🔹 UNITÀ LOGICHE
+
+Identificate da lettere: C:, D: ecc.
+
+Ogni unità ha il suo file system 
+
+
+
+🔹 CARATTERI JOLLY
+
+* → qualsiasi sequenza di caratteri
+*.txt
+
+? → un solo carattere
+foto?.jpg 
+
