@@ -1,3 +1,4 @@
+package Gestione;
 public class Videogioco {   
     private String titolo;
     private String genere;
@@ -68,6 +69,18 @@ public class Videogioco {
     public void setMultiplayer(boolean multiplayer){
         this.multiplayer = multiplayer;
     }
+    // riduce il prezzo del videogame della percentuale indicata (es. 20 => riduce del 20%).
+    public void applicaSconto(double percentuale){
+        if (percentuale > 0){
+                prezzo = prezzo - (prezzo* percentuale / 100);
+        }
+    } 
+
+    //restituisce true se annoUscita > 2020
+    public boolean isRecente(){
+        return annoUscita>2020;
+    }
+    
 
     @Override
     public String toString() {
