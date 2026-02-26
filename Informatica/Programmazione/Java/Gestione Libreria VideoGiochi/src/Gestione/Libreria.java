@@ -16,50 +16,86 @@ public class Libreria {
         this.numeroVideogiochi = altra.numeroVideogiochi;
 
         for (int i = 0; i < altra.numeroVideogiochi; i++) {
-            // Si assume che Videogioco abbia un costruttore di copia
             this.giochi[i] = new Videogioco(altra.giochi[i]);
         }
     }
+    
+    // Metodo Aggiungi Videogioco
 
-    // Aggiunge un videogioco nella prima posizione libera
-    public boolean aggiungiVideogioco(Videogioco v) {
-        if (numeroVideogiochi >= giochi.length) {
-            return false; // Libreria piena
+    public boolean aggiungiVideogioco(Videogioco v){
+   
+        //controlla se il videogioco immesso e vuoto se non e vuoto prosegue
+
+        if (v == null) {
+            return false;
+        } 
+
+       if(numeroVideogiochi == giochi.length){
+        return false;
+       }
+       
+       //scorre l'array e controlla la posizione aggiunge il gioco e incrementa il contatore e restituisce true
+
+       for(int i = 0; i < giochi.length; i++){
+        if (giochi[i] == null){
+            giochi[i] = v;
+            numeroVideogiochi ++;
+            return true;
         }
-
-        giochi[numeroVideogiochi] = v;
-        numeroVideogiochi++;
-        return true;
+       }
+       return false;
     }
 
-    // Rimuove videogioco in una certa posizione
-    public boolean rimuoviVideogioco(int posizione) {
-        if (posizione < 0 || posizione >= giochi.length) {
-            return false; // Indice non valido
+    public boolean rimuoviVideogioco(int posizione){
+        if(posizione < 0 || posizione >= giochi.length){
+            return false;
         }
 
-        if (giochi[posizione] == null) {
-            return false; // Posizione vuota
-        }
+        if(giochi[posizione] == null){
+            return false;
+        }       
 
-        // Shift a sinistra per mantenere compattezza
-        for (int i = posizione; i < numeroVideogiochi - 1; i++) {
-            giochi[i] = giochi[i + 1];
-        }
-
-        giochi[numeroVideogiochi - 1] = null;
-        numeroVideogiochi--;
-
-        return true;
+        giochi[posizione] = null; 
+        numeroVideogiochi--;       
+        return true;     
+        
     }
 
-    // Rimuove il primo videogioco con il titolo specificato
-    public boolean rimuoviTitolo(String titolo) {
-        for (int i = 0; i < numeroVideogiochi; i++) {
-            if (giochi[i].getTitolo().equals(titolo)) {
-                return rimuoviVideogioco(i);
+    //Rimuovi Titolo 
+
+    public boolean rimuoviTitolo(String titolo){
+        if(titolo == null){
+            return false;
+        }
+
+        for(int i = 0; i < giochi.length; i++){
+            if(giochi[i] != null && titolo.equals(giochi[i].getTitolo())){
+                giochi[i] = null;
+                numeroVideogiochi--;
+                return true;
             }
         }
-        return false; // Non trovato
+        return false;
     }
+
+    //Cerca VideoGioco
+
+    public Videogioco cercaVideogioco(String titolo){
+        if(titolo == null){
+            return null;
+        }
+
+        for(int i = 0; i < giochi.length; i++){
+            if(giochi[i] != null && titolo.equals(giochi[i].getTitolo())){
+                return giochi[i]; // ritorna il gioco trovato
+            }
+        }
+
+        return null;
+    }
+
+    
+
+    
+
 }
