@@ -16,6 +16,7 @@ public class Libreria {
         this.numeroVideogiochi = altra.numeroVideogiochi;
 
         for (int i = 0; i < altra.numeroVideogiochi; i++) {
+            if (altra.giochi[i]!=null)
             this.giochi[i] = new Videogioco(altra.giochi[i]);
         }
     }
@@ -93,6 +94,28 @@ public class Libreria {
 
         return null;
     }
+
+    public String visualizzaLibreria(){
+        
+        if(numeroVideogiochi==0)
+            return "La libreria è vuota.";
+        else{
+            String stringa="";    
+            for(int i = 0; i < giochi.length; i++) {
+                if(giochi[i]!=null)
+                    stringa+=giochi[i].toString();
+            }
+            return stringa;
+        }
+    }
+
+    compattaLibreria(){
+        
+    }
+        
+    
+
+
 
     
 

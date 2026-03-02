@@ -28,23 +28,23 @@ public class Videogioco {
     
     //Setter e Getter
 
-    public String gettitolo(){
+    public String getTitolo(){
         return titolo;
     }
 
-    public String genere(){
+    public String getGenere(){
         return genere;    
     }
 
-    public int annoUscita(){
+    public int getAnnoUscita(){
         return annoUscita;
     }
 
-    public double prezzo(){
+    public double getPrezzo(){
         return prezzo;
     }
 
-    public boolean getmultiplayer(){
+    public boolean getMultiplayer(){
         return multiplayer;
     }
 
@@ -69,9 +69,10 @@ public class Videogioco {
     public void setMultiplayer(boolean multiplayer){
         this.multiplayer = multiplayer;
     }
+
     // riduce il prezzo del videogame della percentuale indicata (es. 20 => riduce del 20%).
     public void applicaSconto(double percentuale){
-        if (percentuale > 0){
+        if (percentuale > 0 && percentuale<=100){
                 prezzo = prezzo - (prezzo* percentuale / 100);
         }
     } 
