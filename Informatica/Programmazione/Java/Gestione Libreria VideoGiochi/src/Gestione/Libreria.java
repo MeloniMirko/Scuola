@@ -109,9 +109,123 @@ public class Libreria {
         }
     }
 
-    compattaLibreria(){
-        
+    public void compattaLibreria() {
+
+        int indice = 0;
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null) {
+                giochi[indice] = giochi[i];
+                if (indice != i) {
+                    giochi[i] = null;
+                }
+                indice++;
+            }
+        }
+    
+        numeroVideogiochi = indice;
     }
+
+    public int contaMultiplayer() {
+
+        int contatore = 0;
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null && giochi[i].isMultiplayer()) {
+                contatore++;
+            }
+        }
+    
+        return contatore;
+    }
+
+    public double calcolaValoreTotale() {
+
+        double totale = 0;
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null) {
+                totale += giochi[i].getPrezzo();
+            }
+        }
+    
+        return totale;
+    }
+
+    public double mediaPrezzi() {
+
+        if (numeroVideogiochi == 0) {
+            return 0;
+        }
+    
+        return calcolaValoreTotale() / numeroVideogiochi;
+    }
+
+    public Videogioco trovaPiuCostoso() {
+
+        if (numeroVideogiochi == 0) {
+            return null;
+        }
+    
+        Videogioco max = null;
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null) {
+                if (max == null || giochi[i].getPrezzo() > max.getPrezzo()) {
+                    max = giochi[i];
+                }
+            }
+        }
+    
+        return max;
+    }
+
+    public Videogioco[] filtraPerGenere(String genere) {
+
+        if (genere == null) {
+            return new Videogioco[0];
+        }
+    
+        int count = 0;
+    
+        // Conta prima quanti giochi del genere richiesto
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null && genere.equals(giochi[i].getGenere())) {
+                count++;
+            }
+        }
+    
+        Videogioco[] risultato = new Videogioco[count];
+        int j = 0;
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null && genere.equals(giochi[i].getGenere())) {
+                risultato[j] = giochi[i];
+                j++;
+            }
+        }
+    
+        return risultato;
+    }
+
+    public void applicaScontoATutti(double percentuale) {
+
+        if (percentuale < 0) {
+            return;
+        }
+    
+        for (int i = 0; i < giochi.length; i++) {
+            if (giochi[i] != null) {
+    
+                double prezzo = giochi[i].getPrezzo();
+                double sconto = prezzo * percentuale / 100;
+                giochi[i].setPrezzo(prezzo - sconto);
+            }
+        }
+    }
+
+    
+}
         
     
 

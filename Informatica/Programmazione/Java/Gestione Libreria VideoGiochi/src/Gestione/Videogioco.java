@@ -81,7 +81,11 @@ public class Videogioco {
     public boolean isRecente(){
         return annoUscita>2020;
     }
-    
+
+    public boolean isMultiplayer()
+    {
+        return this.multiplayer;
+    }
 
     @Override
     public String toString() {
