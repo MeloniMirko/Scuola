@@ -1,7 +1,8 @@
 package Gestione;
+
 public class Libreria {
 
-    private Videogioco[] giochi;
+    private final Videogioco[] giochi;
     private int numeroVideogiochi;
 
     // Costruttore senza parametri
@@ -224,8 +225,43 @@ public class Libreria {
         }
     }
 
-    
+    public void ordinaPerPrezzoCrescente(){
+        for (int i = 0; i < giochi.length - 1; i++) {
+            int minimo = i;
+            for (int j = i + 1; j < giochi.length; j++) {
+                if (giochi[j].getPrezzo() < giochi[minimo].getPrezzo()){
+                    minimo = j;
+                }
+            }
+            if (minimo != i) {
+                // scambio degli oggetti Gioco
+                Videogioco temp = giochi[i];
+                giochi[i] = giochi[minimo];
+                giochi[minimo] = temp;
+            }
+        } 
+    }
+
+    public void ordinaPerAnnoDecrescente(){
+        for (int i = 0; i < giochi.length - 1; i++) {
+            int minimo = i;
+            for (int j = i + 1; j < giochi.length; j++) {
+                if (giochi[j].getAnnoUscita() > giochi[minimo].getAnnoUscita()){
+                    minimo = j;
+                }
+            }
+            if (minimo != i) {
+                // scambio degli oggetti Gioco
+                Videogioco temp = giochi[i];
+                giochi[i] = giochi[minimo];
+                giochi[minimo] = temp;
+            }
+        } 
+    }
 }
+
+    
+
         
     
 
@@ -235,4 +271,3 @@ public class Libreria {
 
     
 
-}
