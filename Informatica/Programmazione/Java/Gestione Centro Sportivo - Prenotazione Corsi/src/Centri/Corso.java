@@ -1,3 +1,4 @@
+package Centri;
 public class Corso {
 
     //attributi tutti privati 
