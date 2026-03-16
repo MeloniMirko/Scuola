@@ -44,7 +44,7 @@ public class CentroSportivo {
     }
 
     public boolean rimuoviPerNome(String nome){
-        
+        if()
     }
 
 }
