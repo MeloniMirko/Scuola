@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestionale</title>
+    <script src="script.js"></script>
 </head>
 <body>
-    <h1>Gestioen Magazzino</h1>
+    <h1>Gestione Magazzino</h1>
 
-    <input type="button" value="Aggiungi Prodotto">
-    <input type="button" value="Visualizza Prodotti">
-    <input type="button" value="cerca Prodotto">
-    <input type="button" value="Calcola valore totale magazzino">
-    <p id="listaProdotti"></p>
+    <input type="button" value="Aggiungi Prodotto" onclick="aggiungi()">
+    <input type="button" value="Visualizza Prodotti" onclick="visualizza()">
+    <input type="button" value="cerca Prodotto" onclick="cerca()">
+    <input type="button" value="Calcola valore totale magazzino" onclick="calcola()">
+    <h3>Elenco Prodotti</h3>
+    <p id="dati"></p>
     
 </body>
 </html>
