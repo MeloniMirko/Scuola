@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genio Indovino - Manuale Utente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(180deg, #040f3c 0%, #0a2b76 100%);
+            min-height: 100vh;
+            color: #f4f8ff;
+            padding: 40px 20px;
+        }
+        
+        .manual-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .manual-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .manual-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+        }
+        
+        .manual-title {
+            font-family: 'Bangers', sans-serif;
+            font-size: 3.5rem;
+            color: #ffca70;
+            text-shadow: 0 4px 0 #633702, 0 0 20px rgba(255, 206, 112, 0.4);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .manual-subtitle {
+            font-size: 1.3rem;
+            color: #a9ddff;
+        }
+        
+        .section {
+            background: linear-gradient(180deg, rgba(8, 33, 90, 0.95) 0%, rgba(8, 26, 72, 0.98) 100%);
+            border: 3px solid rgba(243, 197, 106, 0.7);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-family: 'Bangers', sans-serif;
+            font-size: 2rem;
+            color: #ffca70;
+            text-shadow: 0 2px 0 #633702;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-icon {
+            font-size: 2.2rem;
+        }
+        
+        .section p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #e6f0ff;
+        }
+        
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+        
+        .step-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(180deg, #ffd883 0%, #ffbe4e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bangers', sans-serif;
+            font-size: 1.4rem;
+            color: #07245e;
+        }
+        
+        .step-list li strong {
+            color: #ffe2ac;
+            font-size: 1.1rem;
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .character-chip {
+            background: linear-gradient(180deg, rgba(26, 58, 122, 0.8) 0%, rgba(15, 40, 89, 0.9) 100%);
+            border: 2px solid rgba(243, 197, 106, 0.5);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .character-chip:hover {
+            transform: translateY(-3px);
+            border-color: rgba(243, 197, 106, 0.9);
+        }
+        
+        .character-chip-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .character-chip-name {
+            font-size: 0.8rem;
+            color: #eaf4ff;
+        }
+        
+        .btn-demo {
+            display: inline-block;
+            background: linear-gradient(180deg, #8cf356 0%, #56bb1d 54%, #389415 100%);
+            color: #04200c;
+            font-family: 'Bangers', sans-serif;
+            font-size: 1.4rem;
+            padding: 15px 40px;
+            border-radius: 999px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.15s, filter 0.15s;
+            margin-top: 10px;
+        }
+        
+        .btn-demo:hover {
+            transform: translateY(-2px) scale(1.03);
+            filter: brightness(1.1);
+        }
+        
+        .info-box {
+            background: linear-gradient(180deg, rgba(26, 90, 180, 0.3) 0%, rgba(15, 60, 140, 0.4) 100%);
+            border-left: 4px solid #62f1ff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .info-box-title {
+            font-weight: 700;
+            color: #62f1ff;
+            margin-bottom: 8px;
+        }
+        
+        .question-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .type-card {
+            background: rgba(10, 31, 92, 0.6);
+            border: 1px solid rgba(243, 197, 106, 0.4);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .type-card-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .type-card-text {
+            font-size: 0.9rem;
+            color: #cae3ff;
+        }
+        
+        .algo-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        
+        .flow-step {
+            background: linear-gradient(180deg, rgba(26, 58, 122, 0.9) 0%, rgba(15, 40, 89, 0.95) 100%);
+            border: 2px solid rgba(243, 197, 106, 0.6);
+            border-radius: 16px;
+            padding: 15px 20px;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .flow-step-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .flow-step-text {
+            font-size: 0.9rem;
+            color: #eaf4ff;
+        }
+        
+        .flow-arrow {
+            font-size: 2rem;
+            color: #ffd883;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(243, 197, 106, 0.3);
+        }
+        
+        .footer-text {
+            color: #8ab4e8;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .manual-title { font-size: 2.5rem; }
+            .step-list li { padding-left: 50px; }
+            .step-list li::before { width: 35px; height: 35px; font-size: 1.2rem; }
+            .algo-flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="manual-container">
+        <header class="manual-header">
+            <img src="assets/logo.png" alt="Genio Indovino" class="manual-logo" onerror="this.style.display='none'">
+            <h1 class="manual-title">GENIO INDOVINO</h1>
+            <p class="manual-subtitle">Manuale Utente - Guida Completa</p>
+        </header>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎮</span>
+                COS'È IL GENIO INDOVINO
+            </h2>
+            <p>
+                <strong>Genio Indovino</strong> è un gioco interattivo dove il computer cerca di indovinare 
+                il personaggio famoso che stai pensando, facendoti domande a cui puoi rispondere solo con <strong>SI</strong> o <strong>NO</strong>.
+            </p>
+            <p>
+                Il gioco utilizza un <strong>algoritmo probabilistico avanzato</strong> simile a quello di Akinator, 
+                che analizza le tue risposte per restringere progressivamente il campo dei possibili candidati.
+            </p>
+            <div class="info-box">
+                <div class="info-box-title">💡 SUGGERIMENTO</div>
+                <p style="margin-bottom: 0;">Rispondi onestamente per i migliori risultati! L'algoritmo funziona meglio quando tutte le risposte sono accurate.</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📋</span>
+                COME GIOCARE
+            </h2>
+            <ol class="step-list">
+                <li>
+                    <strong>Pensa a un personaggio STEM</strong><br>
+                    Scegli in testa un personaggio famoso del mondo scientifico, tecnologico, matematico o ingegneristico e non dirlo al gioco.
+                </li>
+                <li>
+                    <strong>Ripondi alle domande</strong><br>
+                    Il Genio ti farà domande a cui dovrai rispondere solo con <strong>SÌ</strong> o <strong>NO</strong>. 
+                    Rispondi onestamente per ogni domanda.
+                </li>
+                <li>
+                    <strong>L'algoritmo analizza</strong><br>
+                    Dopo ogni risposta, il sistema aggiorna le probabilità di ogni personaggio 
+                    e seleziona la domanda più utile per restringere il campo.
+                </li>
+                <li>
+                    <strong>Il tentativo finale</strong><br>
+                    Quando l'algoritmo è abbastanza sicuro, ti proporrà un personaggio. 
+                    Se è corretto, premi <strong>SÌ</strong> per vincere! Altrimenti premi <strong>NO</strong> per continuare.
+                </li>
+                <li>
+                    <strong>Nuova partita</strong><br>
+                    Dopo aver indovinato o esaurito i tentativi (3), puoi iniziare una nuova partita 
+                    premendo <strong>SÌ</strong>.
+                </li>
+            </ol>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="index.html" class="btn-demo">▶ GIOCA ORA</a>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">❓</span>
+                DOMANDE POSSIBILI
+            </h2>
+            <p>Il gioco può chiederti informazioni su diversi aspetti del personaggio STEM:</p>
+            <div class="question-types">
+                <div class="type-card">
+                    <div class="type-card-icon">⚧</div>
+                    <div class="type-card-text">Sesso e genere</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">🌍</div>
+                    <div class="type-card-text">Nazionalità e paese</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">🏆</div>
+                    <div class="type-card-text">Premio Nobel</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">⚗️</div>
+                    <div class="type-card-text">Professione (fisico, chimico, matematico...)</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">💡</div>
+                    <div class="type-card-text">Inventore</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">📅</div>
+                    <div class="type-card-text">Anno di nascita</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🧠</span>
+                COME FUNZIONA L'ALGORITMO
+            </h2>
+            <p>
+                Il Genio Indovino utilizza tecniche di <strong>inferenza bayesiana</strong> e 
+                <strong>entropia di Shannon</strong> per selezionare le domande più efficaci:
+            </p>
+            <div class="algo-flow">
+                <div class="flow-step">
+                    <div class="flow-step-icon">1️⃣</div>
+                    <div class="flow-step-text">Calcola probabilità iniziale per ogni personaggio</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">2️⃣</div>
+                    <div class="flow-step-text">Seleziona domanda con maggiore guadagno informativo</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">3️⃣</div>
+                    <div class="flow-step-text">Aggiorna probabilità con Teorema di Bayes</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">4️⃣</div>
+                    <div class="flow-step-text">Ripete fino al guess finale</div>
+                </div>
+            </div>
+            <div class="info-box">
+                <div class="info-box-title">🔬 DETTAGLI TECNICI</div>
+                <p style="margin-bottom: 0;">
+                    L'algoritmo utilizza <strong>likelihood ratios</strong> calibrati, 
+                    <strong>information gain</strong> per la selezione delle domande, 
+                    e <strong>normalizzazione delle probabilità</strong> dopo ogni risposta.
+                </p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">👥</span>
+                PERSONAGGI STEM DISPONIBILI
+            </h2>
+            <p>Il gioco include personaggi del mondo STEM (Scienza, Tecnologia, Ingegneria, Matematica):</p>
+            <div class="character-grid">
+                <div class="character-chip">
+                    <div class="character-chip-icon">🔬</div>
+                    <div class="character-chip-name">Fisici</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">⚗️</div>
+                    <div class="character-chip-name">Chimici</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">📐</div>
+                    <div class="character-chip-name">Matematici</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">🧬</div>
+                    <div class="character-chip-name">Biologi</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">💡</div>
+                    <div class="character-chip-name">Inventori</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">🔧</div>
+                    <div class="character-chip-name">Ingegneri</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">🤖</div>
+                    <div class="character-chip-name">Esperti AI</div>
+                </div>
+                <div class="character-chip">
+                    <div class="character-chip-icon">💻</div>
+                    <div class="character-chip-name">Tech Founder</div>
+                </div>
+            </div>
+            <p style="margin-top: 20px;">
+                I personaggi vengono caricati da un database locale e integrati con dati da 
+                <strong>Wikidata</strong>, il database di conoscenza libera.
+            </p>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">⚙️</span>
+                REQUISITI E RISOLUZIONE PROBLEMI
+            </h2>
+            <div class="question-types">
+                <div class="type-card">
+                    <div class="type-card-icon">🌐</div>
+                    <div class="type-card-text"><strong>Browser:</strong> Chrome, Firefox, Edge, Safari moderni</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">📶</div>
+                    <div class="type-card-text"><strong>Internet:</strong> Richiesta per Wikidata</div>
+                </div>
+                <div class="type-card">
+                    <div class="type-card-icon">📜</div>
+                    <div class="type-card-text"><strong>JS:</strong> JavaScript deve essere abilitato</div>
+                </div>
+            </div>
+            <div class="info-box" style="margin-top: 20px;">
+                <div class="info-box-title">🔧 PROBLEMI COMUNI</div>
+                <p style="margin-bottom: 10px;">
+                    <strong>Immagini non visibili:</strong> Controlla la connessione internet e ricarica la pagina.<br>
+                    <strong>Gioco lento:</strong> Prova a ricaricare o svuotare la cache del browser.<br>
+                    <strong>Personaggi mancanti:</strong> Clicca su "Aggiorna personaggi online" nella pagina Come Giocare.
+                </p>
+            </div>
+        </section>
+        
+        <footer class="footer">
+            <p class="footer-text">© 2026 Genio Indovino - Progetto Didattico PCTO</p>
+            <p class="footer-text" style="margin-top: 10px;">
+                Dati forniti da <strong>Wikidata</strong> - Database di conoscenza libera
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

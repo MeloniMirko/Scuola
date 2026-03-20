@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Genio Indovino - Come Giocare</title>
+    <link rel="icon" type="image/png" href="assets/loghetto.png?v=8">
+    <link rel="shortcut icon" type="image/png" href="assets/loghetto.png?v=8">
+    <link rel="apple-touch-icon" href="assets/logo.png?v=8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="page-guide">
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand-wrap">
+                <div class="brand-icon" aria-hidden="true">
+                    <img class="header-logo-img" src="assets/logo.png" alt=""
+                        onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='assets/loghetto.png';return;}this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de.svg';">
+                </div>
+                <h1 class="brand-title">GENIO <span>INDOVINO</span></h1>
+            </div>
+
+            <nav class="top-nav" aria-label="Menu principale">
+                <a href="index.html">HOME</a>
+                <a href="come-giocare.html" class="active">COME GIOCARE</a>
+                <a href="classifica.html">CLASSIFICA</a>
+                <a href="#">LINGUA</a>
+            </nav>
+        </header>
+
+        <div class="gold-line"></div>
+
+        <main class="scene guide-scene">
+            <div class="stars"></div>
+
+            <section class="guide-content">
+                <article class="guide-panel guide-hero">
+                    <p class="guide-eyebrow">Guida rapida</p>
+                    <h2 class="guide-heading">COME SI GIOCA</h2>
+                    <p class="guide-subtitle">
+                        Pensa a un personaggio famoso e lascia lavorare il Genio Indovino:
+                        domande a risposta SI/NO, algoritmo probabilistico e tentativi finali con foto.
+                    </p>
+                    <div class="guide-actions">
+                        <a class="guide-btn guide-btn-primary" href="index.html">TORNA A GIOCARE</a>
+                        <button id="refreshCharacters" class="guide-btn" type="button">AGGIORNA PERSONAGGI
+                            ONLINE</button>
+                    </div>
+                </article>
+
+                <section class="guide-steps" aria-label="Passi del gioco">
+                    <article class="step-card">
+                        <span class="step-number">1</span>
+                        <h3 class="step-title">Scegli in segreto</h3>
+                        <p class="step-text">Pensa a un personaggio famoso e non rivelarlo.</p>
+                    </article>
+
+                    <article class="step-card">
+                        <span class="step-number">2</span>
+                        <h3 class="step-title">Rispondi semplice</h3>
+                        <p class="step-text">Rispondi alle domande con SI, NO o risposte incerte.</p>
+                    </article>
+
+                    <article class="step-card">
+                        <span class="step-number">3</span>
+                        <h3 class="step-title">Il motore restringe</h3>
+                        <p class="step-text">Ogni risposta aggiorna le probabilita dei candidati.</p>
+                    </article>
+
+                    <article class="step-card">
+                        <span class="step-number">4</span>
+                        <h3 class="step-title">Arriva il guess</h3>
+                        <p class="step-text">Quando e pronto, il Genio propone nome e foto.</p>
+                    </article>
+                </section>
+
+                <article class="guide-panel">
+                    <div class="guide-panel-head">
+                        <h3>Personaggi che il gioco puo indovinare</h3>
+                        <p id="charactersMeta" class="guide-meta">Caricamento lista personaggi...</p>
+                    </div>
+
+                    <div class="characters-toolbar">
+                        <input id="characterSearch" class="characters-search" type="search"
+                            placeholder="Cerca un personaggio...">
+                        <p id="charactersStatus" class="guide-status">Connessione a Wikidata in corso...</p>
+                    </div>
+
+                    <ul id="charactersGrid" class="characters-grid"></ul>
+                </article>
+            </section>
+        </main>
+
+        <div class="gold-line"></div>
+
+        <footer class="bottom-bar">
+            <nav class="bottom-nav" aria-label="Menu secondario">
+                <a href="index.html">Home</a>
+                <a href="come-giocare.html">Come giocare</a>
+                <a href="classifica.html">Classifica</a>
+            </nav>
+
+            <div class="socials" aria-label="Social"></div>
+
+            <p class="copyright">© 2026 Genio Indovino. Tutti i diritti riservati.</p>
+        </footer>
+    </div>
+
+    <script src="characters.js?v=8"></script>
+    <script src="come-giocare.js?v=8"></script>
+</body>
+
+</html>
