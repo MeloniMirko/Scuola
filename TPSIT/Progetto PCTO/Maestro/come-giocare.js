@@ -10,7 +10,7 @@ const CHARACTER_IMAGE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
 const FALLBACK_CHARACTERS = typeof SHARED_CHARACTERS_DATA !== 'undefined'
     ? SHARED_CHARACTERS_DATA.map(d => ({
         name: d.args[1],
-        image: sanitizeHttpUrl(d.args[2])
+        image: fixWikimediaUrl(sanitizeHttpUrl(d.args[2]))
     }))
     : [];
 
@@ -53,6 +53,31 @@ function sanitizeHttpUrl(url) {
 
 function normalizeName(value) {
     return String(value || "").trim().toLowerCase();
+}
+
+function fixWikimediaUrl(url) {
+    if (!url || typeof url !== "string") return "";
+
+    // solo per wikimedia
+    if (!url.includes("wikimedia.org")) return url;
+
+    // già corretto
+    if (url.includes("/thumb/")) return url;
+
+    try {
+        const parts = url.split("/commons/")[1];
+        if (!parts) return url;
+
+        const segments = parts.split("/");
+        if (segments.length < 3) return url;
+
+        const path = segments.slice(0, 2).join("/");
+        const file = segments[2];
+
+        return `https://upload.wikimedia.org/wikipedia/commons/thumb/${path}/${file}/400px-${file}`;
+    } catch {
+        return url;
+    }
 }
 
 // -------------------- CACHE --------------------
@@ -165,12 +190,28 @@ function renderCharacters(list) {
             img.src = cached;
         } else if (character.image) {
             img.src = character.image;
-            writeCachedImage(character.name, character.image);
+            img.onload = function () {
+                writeCachedImage(character.name, this.src);
+            };
         } else {
             img.src = GUIDE_IMAGE_FALLBACK;
         }
 
         img.onerror = function () {
+            console.warn("Errore immagine:", this.src);
+        
+            // se è una thumb → prova originale
+            if (this.src.includes("/thumb/")) {
+                const original = this.src
+                    .replace("/thumb/", "/")
+                    .replace(/\/\d+px-/, "/");
+        
+                this.onerror = null;
+                this.src = original;
+                return;
+            }
+        
+            // fallback finale
             if (!this.src.includes("Question_mark")) {
                 this.onerror = null;
                 this.src = GUIDE_IMAGE_FALLBACK;
@@ -231,8 +272,6 @@ function bindEvents() {
 
 function bootstrap() {
     bindEvents();
-
-    // ✅ reset cache vecchia UNA VOLTA
     if (!localStorage.getItem("cache_fix_done")) {
         localStorage.removeItem(CHARACTER_IMAGE_CACHE_KEY);
         localStorage.setItem("cache_fix_done", "true");

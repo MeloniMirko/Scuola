@@ -1,0 +1,2 @@
+//Ora le foto in come giocare si vedono tutte bene
+//algoritmo affinato ma ancora da sistemare diversi bug 
