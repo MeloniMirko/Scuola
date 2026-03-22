@@ -1,517 +1,281 @@
 ================================================================================
-                      GENIO INDOVINO - MANUALE UTENTE
-                      Progetto PCTO - Anno scolastico 2025/2026
+                    GENIO INDOVINO - MANUALE UTENTE
 ================================================================================
 
-
-╔══════════════════════════════════════════════════════════════════════════════╗
-║  INDICE                                                                      ║
-║  1. Descrizione del progetto                                                 ║
-║  2. Requisiti tecnici                                                        ║
-║  3. Avvio e utilizzo del programma                                           ║
-║  4. Descrizione delle pagine                                                 ║
-║  5. Personaggi disponibili                                                   ║
-║  6. Analisi dell'algoritmo risolutivo                                        ║
-║     6a. Pseudocodifica                                                       ║
-║     6b. Flow chart                                                           ║
-║  7. Struttura dei file                                                       ║
-║  8. Dati e privacy                                                           ║
-║  9. Risoluzione problemi                                                     ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-
+SOMMARIO
+--------
+1. Cos'è Genio Indovino?
+2. Come si gioca (passo passo)
+3. L'algoritmo spiegato in parole semplici
+4. Flowchart dell'algoritmo
+5. Pseudocodice
+6. Struttura dei file
+7. Requisiti tecnici
+8. Risoluzione problemi
 
 ================================================================================
-1. DESCRIZIONE DEL PROGETTO
+1. COS'È GENIO INDOVINO?
 ================================================================================
 
-"Genio Indovino" è un gioco web interattivo ispirato ad Akinator. Il programma
-cerca di indovinare il personaggio famoso del mondo STEM (Scienza, Tecnologia,
-Ingegneria, Matematica) a cui stai pensando, ponendoti una serie di domande a
-risposta SI/NO.
+Genio Indovino è un gioco dove il computer cerca di indovinare il personaggio
+STEM (scienziato, inventore, matematico, ingegnere) che stai pensando.
 
-Il cuore del sistema è un motore di inferenza probabilistica che applica il
-Teorema di Bayes ad ogni risposta dell'utente, aggiornando le probabilità di
-ciascun candidato in tempo reale. La domanda successiva viene scelta tramite
-la minimizzazione dell'Entropia di Shannon, garantendo così il massimo
-guadagno informativo ad ogni passo.
-
-Il database dei personaggi è arricchito automaticamente tramite query SPARQL
-all'endpoint pubblico di Wikidata (Wikipedia), con fallback su un dataset
-locale offline.
-
+Funziona come Akinator: il computer ti fa domande a cui puoi rispondere solo
+con SÌ o NO, e alla fine cerca di indovinare chi hai in mente.
 
 ================================================================================
-2. REQUISITI TECNICI
+2. COME SI GIOCA
 ================================================================================
 
-- Browser moderno con JavaScript abilitato (Chrome, Firefox, Edge, Safari)
-- Connessione internet (facoltativa: migliora il database dei personaggi)
-- Server web locale (es: python -m http.server 8000) oppure accesso diretto
-  al file index.html tramite file system
+PASSO 1: SCEGLI IL PERSONAGGIO
+Pensa a un personaggio famoso del mondo STEM. NON dirlo al gioco!
 
+PASSO 2: RISPONDI ALLE DOMANDE
+Il Genio ti farà delle domande. Rispondi solo con:
+  - SÌ  → se la risposta è vera
+  - NO   → se la risposta è falsa
 
-================================================================================
-3. AVVIO E UTILIZZO DEL PROGRAMMA
-================================================================================
+PASSO 3: L'INDOVINELLO
+Quando l'algoritmo sarà abbastanza sicuro, ti proporrà un personaggio:
+  - Se è quello giusto → premi SÌ e VINCI!
+  - Se non è quello    → premi NO e il gioco continuerà con altre domande
 
-AVVIO
------
-  Metodo A (consigliato):
-    1. Apri un terminale nella cartella del progetto
-    2. Esegui: python -m http.server 8000
-    3. Apri il browser e vai a: http://localhost:8000
-
-  Metodo B:
-    1. Apri direttamente il file index.html con un browser moderno
-
-COME GIOCARE (passo per passo)
---------------------------------
-  PASSO 1 — Tutorial iniziale
-    Al primo avvio compare un tutorial di 4 schermate.
-    Puoi scorrerlo con "AVANTI" o saltarlo con "SALTA".
-    Spunta "Non mostrare più" per disabilitarlo nelle sessioni successive.
-
-  PASSO 2 — Introduzione
-    Il Genio chiede: "SEI PRONTO PER GIOCARE?"
-    • Premi SI  → inizia la partita
-    • Premi NO  → il Genio attenderà con pazienza e cambierà umore
-
-  PASSO 3 — Pensa al personaggio
-    Scegli mentalmente un personaggio famoso del mondo STEM.
-    Non devi scrivere nulla: il Genio cercherà di indovinarlo.
-
-  PASSO 4 — Rispondi alle domande
-    Il Genio porrà domande binarie:
-    • Premi SI  → la risposta alla domanda è affermativa
-    • Premi NO  → la risposta alla domanda è negativa
-    Rispondi sempre onestamente per ottenere il miglior risultato.
-
-    Esempi di domande:
-    - "Il tuo personaggio è di sesso femminile?"
-    - "Il tuo personaggio è ancora in vita?"
-    - "Il tuo personaggio è di origine italiana?"
-    - "Il tuo personaggio ha vinto il Premio Nobel?"
-    - "Il tuo personaggio è nato prima del 1950?"
-
-  PASSO 5 — Tentativo del Genio
-    Quando l'algoritmo ritiene di avere abbastanza informazioni,
-    mostra la foto del personaggio candidato e chiede conferma.
-    • Premi SI → il Genio ha indovinato! Partita vinta.
-    • Premi NO → il Genio tenterà un altro candidato (max 3 tentativi)
-
-  PASSO 6 — Fine partita
-    Il Genio annuncia se ha vinto o perso e propone una nuova partita.
-
-INTERFACCIA
------------
-    [Barra di stato]   - mostra la sorgente dati e lo stato del sistema
-    [Barra avanzamento]- domanda attuale / domande massime (es: 3/20)
-    [Candidati top]    - lista con probabilità dei personaggi più probabili
-    [Tentativi]        - quanti tentativi di indovino sono stati usati
-
+PASSO 4: NUOVA PARTITA
+Dopo aver indovinato (o se ti arrendi), premi SÌ per giocare ancora.
 
 ================================================================================
-4. DESCRIZIONE DELLE PAGINE
+3. L'ALGORITMO SPIEGATO IN PAROLE SEMPLICI
 ================================================================================
 
-  index.html           Pagina principale — gioco interattivo
-  come-giocare.html    Guida rapida + griglia con tutti i personaggi disponibili
-  classifica.html      Classifica degli utenti (se implementata)
-  MANUALE.txt          Questo manuale utente (testo)
+COME FUNZIONA IL GIOCO?
+L'algoritmo è come un detective intelligente che:
 
+1. PARTE DA ZERO
+   - All'inizio tutti i personaggi hanno la stessa probabilità di essere
+     quello che hai pensato.
 
-================================================================================
-5. PERSONAGGI DISPONIBILI
-================================================================================
+2. SCELGLIE LA DOMANDA MIGLIORE
+   - L'algoritmo calcola quale domanda sarà più "utile" per eliminare
+     i personaggi sbagliati.
+   - Esempio: se hai 30 personaggi e chiedi "È una donna?", potresti
+     escludere metà dei candidati in una sola risposta. Questa è una
+     BUONA domanda.
 
-Il gioco include personaggi del mondo STEM ordinati per categoria:
+3. AGGIORNA LE PROBABILITÀ
+   - Dopo ogni risposta, l'algoritmo ricalcola le probabilità:
+     • Se dici SÌ a "È italiano?", i personaggi non italiani diventano
+       meno probabili.
+     • Se dici NO, quelli italiani diventano meno probabili.
 
-FISICI E SCIENZIATI:
-  Albert Einstein, Marie Curie, Stephen Hawking, Niels Bohr, Max Planck,
-  Richard Feynman, Galileo Galilei, Enrico Fermi, Isaac Newton,
-  Lise Meitner, Ernest Rutherford, Alessandro Volta, Guglielmo Marconi
+4. RIPETE FINCHÉ È SICURO
+   - Dopo ogni domanda, l'algoritmo controlla: "Sono abbastanza sicuro?"
+   - Quando la sicurezza supera l'85%, propone un personaggio.
 
-MATEMATICI:
-  Ada Lovelace, Alan Turing, Carl Friedrich Gauss, Leonhard Euler,
-  Blaise Pascal, Emmy Noether, Archimede, Andrew Wiles, Pitagora
+5. SE SBAGLIA, IMPARA
+   - Se dici NO a un personaggio proposto, l'algoritmo:
+     • Lo esclude dalla lista
+     • Continua a fare domande
+     • Deve fare almeno 3 domande prima di proporne un altro
 
-INVENTORI:
-  Leonardo da Vinci, Nikola Tesla, Thomas Edison, Alexander Graham Bell,
-  Alfred Nobel, Hedy Lamarr, Grace Hopper, Robert Noyce
-
-BIOLOGI:
-  Charles Darwin, Louis Pasteur, Gregor Mendel, Rosalind Franklin,
-  James Watson, Jane Goodall, Barbara McClintock
-
-INGEGNERI E INFORMATICI:
-  Elon Musk, Tim Berners-Lee, Linus Torvalds, Dennis Ritchie,
-  Margaret Hamilton, Katherine Johnson
-
-IMPRENDITORI TECH:
-  Steve Jobs, Bill Gates, Mark Zuckerberg, Jeff Bezos, Larry Page,
-  Sergey Brin, Sundar Pichai, Satya Nadella, Tim Cook
-
-ESPERTI AI / INFORMATICA:
-  Geoffrey Hinton, Yann LeCun, Yoshua Bengio, Andrew Ng, Fei-Fei Li,
-  Vint Cerf, Guido van Rossum, John Hennessy, David Patterson
-
-Il database viene arricchito automaticamente da Wikidata (fino a ~80 personaggi).
-
+PERCHÉ NON CHIEDE DOMANDE STUPIDE?
+L'algoritmo evita domande contraddittorie:
+  - Se dici SÌ a "È una donna?", NON chiederà "È un uomo?" (ovvio!)
+  - Se dici SÌ a "È italiano?", NON chiederà "È francese?" (già escluso)
 
 ================================================================================
-6. ANALISI DELL'ALGORITMO RISOLUTIVO
+4. FLOWCHART DELL'ALGORITMO
 ================================================================================
 
-Il gioco utilizza un motore di inferenza probabilistica composto da tre
-componenti principali:
-
-  (A) AGGIORNAMENTO BAYESIANO delle probabilità dei candidati
-  (B) SELEZIONE OTTIMALE della prossima domanda via ENTROPIA DI SHANNON
-  (C) SOGLIA DI CONFIDENZA per decidere quando effettuare il tentativo
-
-────────────────────────────────────────────────────────────────────────────────
-A) INFERENZA BAYESIANA
-────────────────────────────────────────────────────────────────────────────────
-
-Ogni personaggio C_i ha una probabilità a posteriori P(C_i).
-All'avvio tutte le probabilità sono uguali: P(C_i) = 1/N  (dove N = numero
-di personaggi nel dataset).
-
-Quando l'utente risponde alla domanda sulla caratteristica k:
-
-  Risposta SI:
-    P(C_i | risposta=SI) ∝ P(C_i) × P(risposta=SI | caratteristica_k di C_i)
-
-  Risposta NO:
-    P(C_i | risposta=NO) ∝ P(C_i) × P(risposta=NO | caratteristica_k di C_i)
-
-La funzione di likelihood usata è:
-
-  traitLikelihood(trait, strength):
-    Se trait = TRUE  e risposta = SI  → likelihood = 0.12 + 0.76 × 1.0 = 0.88
-    Se trait = TRUE  e risposta = NO  → likelihood = 0.12 + 0.76 × 0.0 = 0.12
-    Se trait = FALSE e risposta = SI  → likelihood = 0.12 + 0.76 × 0.0 = 0.12
-    Se trait = FALSE e risposta = NO  → likelihood = 0.12 + 0.76 × 1.0 = 0.88
-    Se trait = NULL  (sconosciuto)    → likelihood = 0.50 (neutro)
-
-Le probabilità vengono poi normalizzate in modo che la loro somma sia 1:
-  P(C_i) = P(C_i) × likelihood(C_i) / Σ [P(C_j) × likelihood(C_j)]
-
-────────────────────────────────────────────────────────────────────────────────
-B) ENTROPIA DI SHANNON E SELEZIONE DELLA DOMANDA
-────────────────────────────────────────────────────────────────────────────────
-
-Per scegliere quale domanda porre, il sistema calcola per ogni domanda
-candidata il suo "guadagno informativo" (Information Gain).
-
-L'ENTROPIA DI SHANNON misura l'incertezza del sistema:
-
-  H = -Σ P(C_i) × log2(P(C_i))
-
-  H = 0     → certezza assoluta (un solo candidato con P=1)
-  H = log2N → massima incertezza (tutti i candidati equiprobabili)
-
-L'ENTROPIA ATTESA dopo aver posto la domanda k è:
-
-  E[H | domanda_k] = P(SI) × H(distribuzione | risposta=SI)
-                   + P(NO) × H(distribuzione | risposta=NO)
-
-Il GUADAGNO INFORMATIVO della domanda k è:
-
-  Gain(k) = H_attuale - E[H | domanda_k]
-
-Viene scelta la domanda con il punteggio più alto:
-
-  Score(k) = Gain(k) + 0.08 × knownMass
-
-dove knownMass rappresenta la frazione di probabilità coperta da personaggi
-che hanno un valore definito (TRUE o FALSE) per quella caratteristica.
-Le domande con knownMass < 0.15 vengono scartate (irrilevanti).
-
-────────────────────────────────────────────────────────────────────────────────
-C) SOGLIA DI CONFIDENZA PER IL TENTATIVO
-────────────────────────────────────────────────────────────────────────────────
-
-Il sistema decide di passare alla fase di "indovino" quando:
-
-  1. Sono state fatte almeno MIN_QUESTIONS_BEFORE_GUESS (5) domande
-     E il personaggio con probabilità più alta supera 0.90 (90%)
-
-  OPPURE
-
-  2. Sono state fatte almeno 8 domande
-     E la probabilità del candidato top supera 0.65 (65%)
-     E il margine rispetto al secondo candidato supera 0.25 (25%)
-
-  OPPURE
-
-  3. Sono state fatte MAX_QUESTIONS (20) domande (limite massimo)
-
-I tentativi di indovino sono massimo 3 (MAX_GUESS_ATTEMPTS).
-Il sistema propone i candidati in ordine decrescente di probabilità.
-
+                    ┌─────────────────────┐
+                    │     INIZIO          │
+                    │  (Carica personaggi)│
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  "SEI PRONTO?"      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   FAI DOMANDA       │
+                    │  (la più utile)     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  L'utente risponde  │
+                    │     SÌ o NO         │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┴────────────────┐
+              │                                 │
+              ▼                                 ▼
+    ┌─────────────────┐             ┌─────────────────┐
+    │  RISPOSTA = SÌ  │             │  RISPOSTA = NO  │
+    └────────┬────────┘             └────────┬────────┘
+              │                                 │
+              ▼                                 ▼
+    ┌─────────────────┐             ┌─────────────────┐
+    │ Aggiorna: i     │             │ Aggiorna: i     │
+    │ "NO" diventano  │             │ "SÌ" diventano  │
+    │ meno prob.      │             │ meno prob.      │
+    └────────┬────────┘             └────────┬────────┘
+              │                                 │
+              └────────────────┬────────────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  Sono abbastanza    │
+                    │  sicuro? (≥85%)     │
+                    │  E almeno 3 dom.?   │
+                    └──────────┬──────────┘
+                               │
+                    ┌──────────┴──────────┐
+                    │                         │
+                    ▼                         ▼
+          ┌─────────────────┐     ┌─────────────────┐
+          │       SÌ        │     │       NO        │
+          │  ┌───────────┐  │     │  ┌───────────┐  │
+          │  │ PROPONI   │  │     │  │ CONTINUA  │  │
+          │  │PERSONAGGIO│  │     │  |CON DOMANDE│  │
+          │  └─────┬─────┘  │     │  └─────┬─────┘  │
+          │        │        │     │        │        │
+          │        ▼        │     │        │        │
+          │  ┌───────────┐  │     │        │        │
+          │  │È quello?  │  │     │        │        │
+          │  └─────┬─────┘  │     │        │        │
+          │        │        │     │        │        │
+          │  ┌─────┴─────┐  │     │        │        │
+          │  ▼           ▼  │     │        │        │
+          │ SÌ          NO  │     │        │        │
+          │  │           │  │     │        │        │
+          │  ▼           ▼  │     │        │        │
+          │VINCI!  ESCLUDI  │     │        │        │
+          │          E      │     │        │        │
+          │          RIPETI │     │        │        │
+          └───────────┘     │     │        │        │
+                    └──────┴─────┘     └────────┘
 
 ================================================================================
-6a. PSEUDOCODIFICA
+5. PSEUDOCODICE DELL'ALGORITMO
 ================================================================================
 
-────────────────────────────────────────────────
-ALGORITMO PRINCIPALE: bootstrap()
-────────────────────────────────────────────────
+INIZIALIZZAZIONE:
+    personaggi = [lista di tutti i personaggi STEM]
+    FOR ogni personaggio:
+        probabilità[personaggio] = 1 / numero_personaggi
+    domande_fatte = 0
+    risposte_dopo_NO = 0
 
-INIZIO bootstrap
-  Carica personaggi dal dataset locale (characters.js)
-  Inizializza probabilità uniformi: P[i] = 1/N per ogni personaggio i
-  Avvia caricamento asincrono da Wikidata (in background)
-  Mostra schermata introduttiva "SEI PRONTO A GIOCARE?"
-FINE bootstrap
+CICLO PRINCIPALE:
+    
+    FUNZIONE scegli_domanda_migliore():
+        FOR ogni domanda NON fatta:
+            calcola_quanto_serve = guadagno_informativo(domanda)
+            IF quanto_serve > migliore:
+                migliore = domanda
+        RETURN migliore
 
-────────────────────────────────────────────────
-ALGORITMO: applyEvidence(chiave_risposta, risposta)
-────────────────────────────────────────────────
+    FUNZIONE guadagno_informativo(domanda):
+        incertezza_prima = entropia_attuale()
+        
+        // Simula: cosa succede se risponde SÌ?
+        probabilità_se_SÌ = ricalcola_probabilità(domanda, SÌ)
+        incertezza_dopo_SÌ = entropia(probabilità_se_SÌ)
+        
+        // Simula: cosa succede se risponde NO?
+        probabilità_se_NO = ricalcola_probabilità(domanda, NO)
+        incertezza_dopo_NO = entropia(probabilità_se_NO)
+        
+        // Media ponderata dell'incertezza
+        incertezza_attesa = peso_SÌ * incertezza_dopo_SÌ + peso_NO * incertezza_dopo_NO
+        
+        guadagno = incertezza_prima - incertezza_attesa
+        RETURN guadagno
 
-INIZIO applyEvidence(chiave, risposta)
-  SE risposta == "SI" ALLORA strength ← 1
-  ALTRIMENTI             strength ← 0
+    FUNZIONE entropia(probabilità[]):
+        entropia = 0
+        FOR ogni p IN probabilità:
+            se p > 0:
+                entropia = entropia - p * log2(p)
+        RETURN entropia
 
-  PER OGNI personaggio C_i:
-    trait ← C_i.caratteristiche[chiave]
-    likelihood ← 0.12 + 0.76 × (se trait == TRUE allora strength
-                                 se trait == FALSE allora 1-strength
-                                 altrimenti 0.5)
-    P_nuova[i] ← P[i] × likelihood
+    FUNZIONE aggiorna_probabilità(domanda, risposta):
+        FOR ogni personaggio:
+            SE risposta CONTRADDICE attributi(personaggio):
+                probabilità[personaggio] = 0
+        normalizza_probabilità()
+        domande_fatte = domande_fatte + 1
+        risposte_dopo_NO = risposte_dopo_NO + 1
 
-  Normalizza P_nuova: P[i] ← P_nuova[i] / Σ P_nuova[j]
-FINE applyEvidence
+    FUNZIONE sono_sicuro():
+        candidato_top = personaggio con probabilità massima
+        
+        SE candidato_top ≥ 85%: RETURN VERO
+        SE (candidato_top - secondo) ≥ 25% E risposte_dopo_NO ≥ 3:
+            RETURN VERO
+        RETURN FALSO
 
-────────────────────────────────────────────────
-ALGORITMO: chooseBestQuestion()
-────────────────────────────────────────────────
+    // --- INIZIO GIOCO ---
+    FAI DOMANDA:
+        domanda = scegli_domanda_migliore()
+        MOSTRA domanda all'utente
+        
+        risposta = OTTIENI_RISPOSTA()  // SÌ o NO
+        
+        aggiorna_probabilità(domanda, risposta)
+        
+        SE sono_sicuro():
+            VAI A INDOVINA
+        ALTRIMENTI:
+            VAI A FAI DOMANDA
 
-INIZIO chooseBestQuestion
-  domande_disponibili ← tutte le domande non ancora poste
-  H_attuale ← -Σ P[i] × log2(P[i])   // Entropia corrente
-  miglior_domanda ← NULL
-  miglior_punteggio ← -∞
+    INDOVINA:
+        proponi = candidato_top
+        MOSTRA foto e nome di proponi
+        MOSTRA "È questo il tuo personaggio?"
+        
+        risposta = OTTIENI_RISPOSTA()
+        
+        SE risposta = SÌ:
+            MOSTRA "HO INDOVINATO!"
+            FINE
+        
+        // L'utente ha detto NO
+        probabilità[proposto] = 0
+        normalizza_probabilità()
+        risposte_dopo_NO = 0
+        
+        VAI A FAI DOMANDA
 
-  PER OGNI domanda k IN domande_disponibili:
-    Calcola P_SI  ← Σ P[i] × P(SI | trait_k di C_i)
-    Calcola P_NO  ← Σ P[i] × P(NO | trait_k di C_i)
-    Calcola distribuzione_SI ← probabilità normalizzate se risposta=SI
-    Calcola distribuzione_NO ← probabilità normalizzate se risposta=NO
-    H_attesa ← P_SI × H(distribuzione_SI) + P_NO × H(distribuzione_NO)
-    guadagno ← H_attuale - H_attesa
-    knownMass ← Σ P[i] per C_i con trait_k definito (TRUE o FALSE)
+================================================================================
+6. STRUTTURA DEI FILE
+================================================================================
 
-    SE knownMass < 0.15 ALLORA CONTINUA  // domanda inutile, salta
+index.html          → Pagina principale del gioco
+app.js              → Algoritmo e logica del gioco
+questions.js        → Lista delle domande possibili
+characters.js       → Lista dei personaggi STEM
+come-giocare.html   → Istruzioni e lista personaggi (versione web)
+manuale.html        → Questo manuale (versione grafica)
+style.css          → Stili visivi del gioco
+assets/             → Immagini (logo, Zorina)
 
-    punteggio ← guadagno + 0.08 × knownMass
-    SE punteggio > miglior_punteggio ALLORA
-      miglior_punteggio ← punteggio
-      miglior_domanda ← k
+================================================================================
+7. REQUISITI TECNICI
+================================================================================
 
-  RESTITUISCI miglior_domanda
-FINE chooseBestQuestion
+- Browser moderno: Chrome, Firefox, Edge, Safari
+- Connessione internet (per caricare le immagini)
+- JavaScript attivato nel browser
 
-────────────────────────────────────────────────
-ALGORITMO: shouldPrepareGuessing()
-────────────────────────────────────────────────
-
-INIZIO shouldPrepareGuessing
-  candidato_top ← personaggio con P[i] massima
-  secondo_top   ← personaggio con P[i] seconda
-
-  SE domande_fatte >= MAX_QUESTIONS         ALLORA RESTITUISCI VERO
-  SE domande_disponibili == 0               ALLORA RESTITUISCI VERO
-  SE domande_fatte >= 5
-  E  P[top] >= 0.90                         ALLORA RESTITUISCI VERO
-  SE domande_fatte >= 8
-  E  P[top] >= 0.65
-  E  (P[top] - P[secondo]) >= 0.25         ALLORA RESTITUISCI VERO
-
-  RESTITUISCI FALSO
-FINE shouldPrepareGuessing
-
-────────────────────────────────────────────────
-CICLO PRINCIPALE DI GIOCO: applyAnswer(risposta)
-────────────────────────────────────────────────
-
-INIZIO applyAnswer(risposta)
-  SE stato == "intro" ALLORA
-    SE risposta == "SI" ALLORA
-      Prepara stato "asking" (domande)
-      Chiedi prossima domanda
-    ALTRIMENTI
-      Mostra schermata "non pronto"
-    FINE SE
-
-  ALTRIMENTI SE stato == "asking" ALLORA
-    ApplyEvidence(domanda_corrente, risposta)
-    domande_fatte ← domande_fatte + 1
-
-    SE shouldPrepareGuessing() ALLORA
-      Ordina personaggi per probabilità decrescente
-      Mostra tentativo con il candidato top
-      stato ← "guessing"
-    ALTRIMENTI
-      Chiedi prossima domanda tramite chooseBestQuestion()
-
-  ALTRIMENTI SE stato == "guessing" ALLORA
-    SE risposta == "SI" ALLORA
-      Mostra "HO INDOVINATO!" e nuova partita
-    ALTRIMENTI
-      tentativo_successivo ← tentativo_successivo + 1
-      SE tentativo_successivo >= MAX_TENTATIVI ALLORA
-        Mostra "HO PERSO" e nuova partita
-      ALTRIMENTI
-        Mostra prossimo candidato in classifica
-  FINE SE
-FINE applyAnswer
 
 
 ================================================================================
-6b. FLOW CHART (diagramma di flusso)
+AUTORE
 ================================================================================
-
-Legenda simboli:
-  [    ] = Processo / Azione
-  { } = Decisione (Sì / No)
-  (    ) = Inizio / Fine
-  ──►  = Flusso
-
-
-(INIZIO)
-   │
-   ▼
-[Carica dataset locale + inizia fetch Wikidata in background]
-   │
-   ▼
-[Inizializza probabilità uniformi P[i] = 1/N per ogni personaggio]
-   │
-   ▼
-[Mostra "SEI PRONTO A GIOCARE?"]
-   │
-   ▼
-{ Risposta = SI? }
-   │ NO                    │ SI
-   ▼                       ▼
-[Mostra schermata     [stato ← "asking"]
- "non pronto"]             │
-   │                       ▼
-   └──────────────►  [chooseBestQuestion()]
-                           │
-                           ▼
-                    [Mostra domanda all'utente]
-                           │
-                           ▼
-                    [Utente preme SI o NO]
-                           │
-                           ▼
-                    [applyEvidence():  aggiorna P[i] con
-                     regola di Bayes × likelihood(trait, risposta)]
-                           │
-                           ▼
-                    [Normalizza tutte le P[i]]
-                    [domande_fatte += 1]
-                           │
-                           ▼
-              { shouldPrepareGuessing()? }
-                 │ NO              │ SI
-                 ▼                 ▼
-          [Ritorna a        [Ordina candidati per P[i]]
-          chooseBestQuestion]    │
-                                 ▼
-                          [Mostra candidato top + foto]
-                          [chiede "È questo il tuo personaggio?"]
-                                 │
-                                 ▼
-                         { Risposta = SI? }
-                            │ SI        │ NO
-                            ▼           ▼
-                     [VITTORIA!]  [tentativo += 1]
-                            │           │
-                            │     { tentativo >= 3? }
-                            │        │ SI        │ NO
-                            │        ▼           ▼
-                            │   [SCONFITTA!] [Mostra prossimo
-                            │        │        candidato in lista]
-                            │        │           │
-                            ▼        ▼           │
-                     { Nuova partita? }  ◄───────┘
-                        │ SI   │ NO
-                        ▼      ▼
-                  [GOTO INIZIO] (FINE)
-
-
-================================================================================
-7. STRUTTURA DEI FILE
-================================================================================
-
-  Cartella principale/
-  ├── index.html          Pagina principale del gioco
-  ├── come-giocare.html   Guida e griglia dei personaggi
-  ├── classifica.html     Pagina classifica utenti
-  ├── app.js              Motore del gioco (algoritmo Bayesiano + UI)
-  ├── come-giocare.js     Logica pagina "Come Giocare"
-  ├── classifica.js       Logica pagina classifica
-  ├── characters.js       Database locale dei personaggi
-  ├── style.css           Stili grafici (tema scuro, animazioni)
-  ├── MANUALE.txt         Questo manuale
-  └── assets/
-      ├── loghetto.png    Icona del tab del browser
-      └── zorina.png      Immagine del personaggio guida "Zorina"
-
-
-================================================================================
-8. DATI E PRIVACY
-================================================================================
-
-  - I dati dei personaggi (immagini, nomi, categorie) vengono scaricati
-    da Wikidata (query SPARQL) e salvati nel localStorage del browser.
-  - Il localStorage è locale al browser dell'utente: nessun dato viene
-    trasmesso a server di terze parti.
-  - Le immagini vengono caricate direttamente dai server di Wikimedia.
-  - Nessun dato personale dell'utente viene raccolto o memorizzato.
-  - La cache locale può essere resettata cancellando i dati del browser.
-
-
-================================================================================
-9. RISOLUZIONE PROBLEMI
-================================================================================
-
-  Problema: Le immagini non appaiono
-  Soluzione: Esegui un hard-refresh (Ctrl+Shift+R) per svuotare la cache.
-             Oppure apri una finestra incognita (Ctrl+Shift+N).
-
-  Problema: Il gioco non risponde ai pulsanti SI/NO
-  Soluzione: Ricarica la pagina. Se il problema persiste, controlla che
-             JavaScript sia abilitato nel browser.
-
-  Problema: Mancano molti personaggi
-  Soluzione: Clicca "Aggiorna personaggi online" nella pagina "Come Giocare".
-             Verifica di avere una connessione internet attiva.
-
-  Problema: Il tutorial non appare
-  Soluzione: Cancella i dati del sito dal browser (localStorage).
-             Vai in: Impostazioni browser → Privacy → Cancella dati sito.
-
-  Problema: Errore "Wikidata non disponibile"
-  Soluzione: Il gioco funziona comunque con il dataset locale (~40 personaggi).
-             La connessione a Wikidata non è obbligatoria.
-
-
-================================================================================
-                               AUTORE
-================================================================================
-
-  Progetto PCTO sviluppato a scopo didattico
-  Istituto: ______________________________
-  Studente: Meloni Mirko
-  Anno scolastico: 2025/2026
-
-  Tecnologie utilizzate:
-    - HTML5 / CSS3 / JavaScript (ES2020)
-    - Wikidata SPARQL API
-    - Algoritmo: Inferenza Bayesiana + Entropia di Shannon
+Progetto sviluppato per scopo didattico PCTO
+© 2026 - Tutti i diritti riservati
 
 ================================================================================

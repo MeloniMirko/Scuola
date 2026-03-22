@@ -1,3 +1,0 @@
-https://upload.wikimedia.org/wikipedia/commons/d/d4/Enrico_Fermi_1943-49.jpg => Enrico_Fermi_1943-49.jpg
-https://upload.wikimedia.org/wikipedia/commons/4/42/Fei-Fei_Li.jpg => Fei-Fei_Li.jpg
-https://upload.wikimedia.org/wikipedia/commons/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg => Einstein_1921_by_F_Schmutzer_-_restoration.jpg

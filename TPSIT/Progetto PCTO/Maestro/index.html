@@ -31,7 +31,6 @@
                 <a href="index.html" class="active">HOME</a>
                 <a href="come-giocare.html">COME GIOCARE</a>
                 <a href="classifica.html">CLASSIFICA</a>
-                <a href="#">LINGUA</a>
             </nav>
 
 
@@ -47,11 +46,11 @@
                     <div class="character-stage">
                         <div class="portal"></div>
                         <div class="character-frame">
-                            <img id="characterImage" src="assets/zorina.png" alt="La genia Zorina">
+                            <img id="characterImage" src="assets/zorina.png" alt="La genia Zorina"
+                                onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de-200d-2640-fe0f.svg';">
                         </div>
-                        <h3 id="characterName" class="character-name"
-                            style="text-align:center; color: var(--gold-color, #ffd700); font-family: 'Bangers', sans-serif; letter-spacing: 1px; margin-top: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 10; position: relative;">
-                            ZORINA</h3>
+                        <p id="characterName" class="character-name"></p>
+
                         <div class="lamp" aria-hidden="true">🪔</div>
                     </div>
                 </div>
@@ -147,8 +146,9 @@
         </section>
     </div>
 
-    <script src="characters.js?v=8"></script>
-    <script src="app.js?v=8"></script>
+    <script src="questions.js"></script>
+    <script src="characters.js"></script>
+    <script src="app.js?v=15"></script>
 </body>
 
 </html>
