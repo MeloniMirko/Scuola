@@ -30,7 +30,6 @@ const QUESTION_BANK = [
     { key: "born_before_1950", text: "È nato prima del 1950?", weight: 1.5 },
     { key: "born_1950_1980", text: "È nato tra 1950 e 1980?", weight: 1.3 },
 
-    // 🔥 SUPER DISCRIMINANTI
     { key: "relativity", text: "È famoso per la relatività?", weight: 1.5 },
     { key: "gravity_laws", text: "Ha formulato la gravità?", weight: 1.5 },
     { key: "electricity", text: "È legato all’elettricità?", weight: 1.3 },
@@ -38,7 +37,6 @@ const QUESTION_BANK = [
     { key: "computer_pioneer", text: "È un pioniere informatico?", weight: 1.4 },
     { key: "evolution", text: "È legato all’evoluzione?", weight: 1.5 },
 
-    // 🔥 NUOVE (CRUCIALI)
     { key: "astronomy", text: "È legato all'astronomia?", weight: 1.3 },
     { key: "battery", text: "Ha inventato la batteria?", weight: 1.3 },
     { key: "alternating_current", text: "Ha lavorato sulla corrente alternata?", weight: 1.3 },
