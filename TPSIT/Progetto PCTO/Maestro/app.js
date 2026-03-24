@@ -102,7 +102,12 @@ function buildTraits(trueKeys) {
 }
 
 function seedCharacter(id, name, image, trueKeys) {
-    return { id, name, image: image || "", traits: buildTraits(trueKeys) };
+    return {
+        id,
+        name,
+        image: image || "",
+        traits: Array.isArray(trueKeys) ? [...trueKeys] : []
+    };
 }
 
 const LOCAL_SEED = (typeof SHARED_CHARACTERS_DATA !== "undefined")
@@ -142,7 +147,7 @@ function scoreQuestion(q) {
     let yesW = [], noW = [], pYes = 0, pNo = 0, knownMass = 0;
     for (let i = 0; i < state.characters.length; i++) {
         const p = state.posteriors[i] || 0;
-        const trait = state.characters[i].traits[traitKey];
+        const trait = state.characters[i].traits.includes(traitKey);
         if (trait === true || trait === false) knownMass += p;
         const wY = p * traitLikelihood(trait, true);
         const wN = p * traitLikelihood(trait, false);
@@ -182,17 +187,6 @@ function shouldSkipQuestion(key) {
         state.answers["born_after_1980"] === undefined
     ) return true;
 
-    // penalità paesi dinamica
-    if (key.startsWith("from_")) {
-        const topCandidates = rankCandidates().filter(r => r.probability > 0.05);
-        const uniqueCountries = new Set(
-            topCandidates.map(r => Object.keys(r.character.traits)
-                .find(k => k.startsWith("from_") && r.character.traits[k] === true)
-            )
-        );
-        if (uniqueCountries.size > 2) return true;
-    }
-
     // evita traits già impliciti
     if ((key === "male" || key === "female") &&
         (state.answers["male"] === "yes" || state.answers["female"] === "yes")
@@ -201,10 +195,27 @@ function shouldSkipQuestion(key) {
     return false;
 }
 
-// 🔹 chooseBestQuestion aggiornato con countryPenalty dinamica
 function chooseBestQuestion() {
     const unanswered = QUESTION_BANK.filter(q => !shouldSkipQuestion(q.key));
     if (!unanswered.length) return null;
+
+    const ranked = rankCandidates();
+    const topCandidates = ranked.filter(r => r.probability > 0.05);
+
+    // 🔥 MODALITÀ DUELLO (FONDAMENTALE)
+    if (topCandidates.length <= 3) {
+        for (const q of unanswered) {
+            const values = topCandidates.map(r =>
+                r.character.traits.includes(q.key)
+            );
+
+            const uniqueValues = new Set(values);
+
+            if (uniqueValues.size > 1) {
+                return q; // separa direttamente
+            }
+        }
+    }
 
     const H_current = shannonEntropy(state.posteriors);
     let best = null;
@@ -216,45 +227,65 @@ function chooseBestQuestion() {
         if (knownMass < 0.15) continue;
 
         let yesMass = 0, noMass = 0;
+
         for (let i = 0; i < state.characters.length; i++) {
             const p = state.posteriors[i] || 0;
-            const trait = state.characters[i].traits[q.key];
-            if (trait === true) yesMass += p;
-            if (trait === false) noMass += p;
+            const traits = state.characters[i].traits;
+
+            const hasTrait = traits.includes(q.key);
+
+            if (hasTrait) yesMass += p;
+            else noMass += p;
         }
+
         if (yesMass < 0.05 || noMass < 0.05) continue;
 
+        const balance = 1 - Math.abs(yesMass - noMass);
         const gain = H_current - expectedH;
-        const weight = q.weight || 1;
 
-        const baseBonus =
-            (q.key === "european" ? 0.4 : 0) +
-            (q.key.startsWith("born_") ? 2.0 : 0) +
-            (q.key === "alive" ? 1.5 : 0);
+        if (gain < 0.03) continue;
 
-        const importantBonus =
-            (q.key === "inventor" ? 0.7 : 0) +
-            (["physicist","mathematician"].includes(q.key) ? 0.2 : 0);
+        // 🔥 UNIQUE BONUS CORRETTO
+        let uniqueBonus = 0;
+        const countWithTrait = topCandidates.reduce(
+            (acc, r) => acc + (r.character.traits.includes(q.key) ? 1 : 0),
+            0
+        );
 
-        // penalità dinamica per paesi / traits moderni
-        let countryPenalty = 0;
-        if (q.key.startsWith("from_") || q.key === "tech_founder" || q.key === "billionaire") {
-            const topCandidates = rankCandidates().filter(r => r.probability > 0.05);
-            const uniqueTraits = new Set(
-                topCandidates.map(r => Object.keys(r.character.traits)
-                    .find(k => k === q.key && r.character.traits[k] === true)
-                )
-            );
-            if (uniqueTraits.size > 2) countryPenalty = -0.8;
+        if (countWithTrait === 1 && topCandidates.length > 2 && gain > 0.05) {
+            uniqueBonus = 2.0;
         }
 
-        // bonus per traits unici (discriminanti)
-        let uniqueBonus = 0;
-        const topCandidates = rankCandidates().filter(r => r.probability > 0.05);
-        const countWithTrait = topCandidates.reduce((acc, r) => acc + (r.character.traits[q.key] ? 1 : 0), 0);
-        if (countWithTrait === 1) uniqueBonus = 0.8; // solo un candidato ha questo trait
+        const baseBonus =
+            (q.key.startsWith("born_") ? 1.5 : 0) +
+            (q.key === "alive" ? 1.0 : 0);
 
-        const score = (gain + knownMass * 0.2 + baseBonus + importantBonus + countryPenalty + uniqueBonus) * weight;
+        const strongDiscriminators = [
+            "biologist","chemist","physicist",
+            "astronomer","electricity",
+            "inventor","engineer"
+        ];
+        const discriminatorBoost = strongDiscriminators.includes(q.key) ? 1.5 : 0;
+
+        const ultraDiscriminators = [
+            "geometry_founder",
+            "euler_formula",
+            "pure_mathematics",
+            "renaissance",
+            "programming",
+            "computer_architecture",
+            "compiler"
+        ];
+        const ultraBoost = ultraDiscriminators.includes(q.key) ? 2.0 : 0;
+
+        const score =
+            gain * 6.0 +
+            balance * 1.0 +
+            knownMass * 0.2 +
+            uniqueBonus +
+            baseBonus +
+            ultraBoost +
+            discriminatorBoost;
 
         if (score > bestScore) {
             bestScore = score;
@@ -264,7 +295,6 @@ function chooseBestQuestion() {
 
     return best || unanswered[0];
 }
-
 function rankCandidates() {
     return state.characters
         .map((c, i) => ({ character: c, probability: state.posteriors[i] || 0 }))
@@ -276,16 +306,21 @@ function applyEvidence(questionKey, answerType) {
     state.answers[questionKey] = answerType;
 
     const next = state.characters.map((c, i) => {
-        const trait = c.traits[questionKey];
-        let p = state.posteriors[i] || 0;
 
-        // 🔥 penalità forte
-        if (trait === true && !answerYes) return p * 0.001;
-        if (trait === false && answerYes) return p * 0.001;
+        const trait = c.traits.includes(questionKey);
 
-        if (trait === null) return p * 0.5;
+        let p = state.posteriors[i];
+        if (!p || p <= 0) p = 1e-6; // 🔥 FIX CRITICO
 
-        return p;
+        let likelihood;
+
+        if (answerYes) {
+            likelihood = trait ? 0.97 : 0.03;
+        } else {
+            likelihood = trait ? 0.03 : 0.97;
+        }
+
+        return p * likelihood;
     });
 
     state.posteriors = normalizeProbabilities(next);
@@ -367,7 +402,11 @@ function showIntroPrompt() {
 }
 
 function startGame() {
-    state.characters = LOCAL_SEED.map(c => ({ ...c, traits: { ...c.traits } }));
+    state.characters = LOCAL_SEED.map(c => ({
+        ...c,
+        traits: [...c.traits]
+    }));
+
     state.posteriors = initPosteriors();
     state.askedKeys = new Set();
     state.answers = {};
@@ -377,7 +416,9 @@ function startGame() {
     state.guessAttempts = 0;
     state.mode = "asking";
     state.currentQuestionKey = null;
+
     if (el.questionBox) el.questionBox.classList.remove("intro-mode");
+
     setButtons(true);
     setProgressVisible(true);
     setGuideCharacter();
@@ -385,21 +426,29 @@ function startGame() {
     updateProgress();
     updateAttemptsStat();
     updateCandidateList();
+
     askNextQuestion();
 }
-
 function askNextQuestion() {
     const ranked = rankCandidates();
     const top = ranked[0];
     const second = ranked[1] || { probability: 0 };
 
     const margin = top.probability - second.probability;
+    const entropy = shannonEntropy(state.posteriors);
 
-    // 🔥 indovina quando è chiaro
+    // 🔥 NUOVO: quanti candidati sono ancora "vivi"
+    const strongCandidates = ranked.filter(r => r.probability > 0.1).length;
+
     if (
-        state.askedCount >= 3 &&
-        top.probability > 0.65 &&
-        margin > 0.2
+        state.askedCount >= 6 &&
+        (
+            // ✅ caso sicuro
+            (top.probability > 0.80 && margin > 0.30 && strongCandidates <= 2)
+
+            // ✅ fallback entropico ma più sicuro
+            || (entropy < 0.8 && strongCandidates <= 2)
+        )
     ) {
         prepareGuessing();
         return;
@@ -453,35 +502,42 @@ function handleGuess(answerType) {
         return;
     }
 
-    //  guess sbagliato
+    // ❌ guess sbagliato
     const wrongGuess = state.guessOrder[state.guessIndex]?.character;
     const wrongIndex = state.characters.findIndex(c => c.id === wrongGuess?.id);
 
+    // 🔥 FIX CRITICO: ELIMINA completamente il candidato
     if (wrongIndex >= 0) {
-        state.posteriors[wrongIndex] *= 0.01; // penalizza
+        state.posteriors[wrongIndex] *= 0.01;
     }
 
     state.posteriors = normalizeProbabilities(state.posteriors);
 
     state.guessAttempts++;
 
-    //  BLOCCO LOOP
-    if (state.guessAttempts >= 2) {
-        // torna a fare domande
-        state.mode = "asking";
-        state.guessIndex = 0;
-        state.questionsAfterLastNo = 0;
-
+    // 🔥 se sbaglia troppe volte → stop
+    if (state.guessAttempts >= MAX_GUESS_ATTEMPTS) {
         setGuideCharacter();
-        setQuestionText("Ok, mi serve qualche informazione in più...", "Rispondi con SÌ o NO");
-
-        askNextQuestion();
+        setQuestionText(
+            "Non riesco a indovinare... forse il personaggio non è nel mio database!",
+            "Vuoi riprovare? Premi SÌ."
+        );
+        finishGame(false);
         return;
     }
 
-    // prova prossimo candidato
-    state.guessIndex++;
-    showCurrentGuess(true);
+    // 🔥 torna a fare domande (stile Akinator)
+    state.mode = "asking";
+    state.guessIndex = 0;
+    state.questionsAfterLastNo = 0;
+
+    setGuideCharacter();
+    setQuestionText(
+        "Ok, mi serve qualche informazione in più...",
+        "Rispondi con SÌ o NO"
+    );
+
+    askNextQuestion();
 }
 
 function finishGame(won) {
@@ -529,11 +585,160 @@ function onAnswer(answerType) {
 
 // ── Bootstrap ────────────────────────────────────────────────
 function bootstrap() {
-    state.characters = LOCAL_SEED.map(c => ({ ...c, traits: { ...c.traits } }));
+    state.characters = LOCAL_SEED.map(c => ({ ...c, traits: [...c.traits] }));
     updateStaticStats();
     showIntroPrompt();
+    showTutorial();
     if (el.btnYes) el.btnYes.addEventListener("click", () => onAnswer("yes"));
     if (el.btnNo) el.btnNo.addEventListener("click", () => onAnswer("no"));
 }
 
 bootstrap();
+
+//FUNZIONI DI TEST
+
+function simulateGame(targetId) {
+    startGame();
+
+    state.won = false;
+
+    let safety = 100;
+    let questions = 0;
+
+    const character = state.characters.find(c => c.id === targetId);
+
+    if (!character) {
+        console.error("❌ Personaggio non trovato:", targetId);
+        return { success: false, questions: 0 };
+    }
+
+    while (state.mode !== "finished" && safety-- > 0) {
+
+        // ─────────────── ASKING ───────────────
+        if (state.mode === "asking") {
+            const key = state.currentQuestionKey;
+            if (!key) {
+                askNextQuestion();
+                continue;
+            }
+
+            questions++;
+
+            let answer = character.traits.includes(key) ? "yes" : "no";
+
+            // 🔹 rumore realistico (10%)
+            if (Math.random() < 0.03) {
+                answer = answer === "yes" ? "no" : "yes";
+            }
+
+            applyAnswer(answer);
+        }
+
+        // ─────────────── GUESSING ───────────────
+        else if (state.mode === "guessing") {
+            const guess = state.guessOrder[state.guessIndex]?.character;
+            if (!guess) break;
+
+            // ✅ indovinato
+            if (guess.id === targetId) {
+                state.won = true;
+                break;
+            } 
+            
+            // ❌ sbagliato
+            else {
+                console.log("TARGET:", character.name, "→ GUESS SBAGLIATO:", guess.name);
+            
+                state.posteriors = normalizeProbabilities(state.posteriors);
+            
+                // 🔥 reset stato corretto
+                state.mode = "asking";
+                state.guessIndex = 0;
+                state.currentQuestionKey = null;
+                state.questionsAfterLastNo = 0;
+            
+                askNextQuestion();
+            }
+        }
+    }
+
+    return {
+        success: state.won === true,
+        questions
+    };
+}
+
+function testAllCharacters() {
+    let success = 0;
+    let totalQuestions = 0;
+    let totalWrongGuesses = 0;
+
+    for (const c of state.characters) {
+        const result = simulateGame(c.id);
+
+        if (result.success) success++;
+        totalQuestions += result.questions;
+        totalWrongGuesses += result.wrongGuesses || 0;
+    }
+
+    console.log("Accuracy:", ((success / state.characters.length) * 100).toFixed(2) + "%");
+    console.log("Avg Questions:", (totalQuestions / state.characters.length).toFixed(2));
+    console.log("Avg Wrong Guesses:", (totalWrongGuesses / state.characters.length).toFixed(2));
+}
+
+
+//TUTORIAL
+function showTutorial() {
+    if (!el.tutorialOverlay) return;
+
+    el.tutorialOverlay.hidden = false;
+    document.body.classList.add("tutorial-open");
+
+    state.tutorialIndex = 0;
+    renderTutorialStep();
+}
+
+function renderTutorialStep() {
+    const step = TUTORIAL_STEPS[state.tutorialIndex];
+    if (!step) return;
+
+    if (el.tutorialTitle) el.tutorialTitle.textContent = step.title;
+    if (el.tutorialBody) el.tutorialBody.textContent = step.text;
+
+    // dots
+    if (el.tutorialDots) {
+        el.tutorialDots.innerHTML = TUTORIAL_STEPS
+            .map((_, i) =>
+                `<span class="dot ${i === state.tutorialIndex ? "active" : ""}"></span>`
+            )
+            .join("");
+    }
+}
+
+function nextTutorialStep() {
+    state.tutorialIndex++;
+
+    if (state.tutorialIndex >= TUTORIAL_STEPS.length) {
+        closeTutorial();
+    } else {
+        renderTutorialStep();
+    }
+}
+
+function closeTutorial() {
+    if (el.tutorialOverlay) el.tutorialOverlay.hidden = true;
+    document.body.classList.remove("tutorial-open");
+}
+
+if (el.tutorialNext) {
+    el.tutorialNext.addEventListener("click", nextTutorialStep);
+}
+
+if (el.tutorialSkip) {
+    el.tutorialSkip.addEventListener("click", closeTutorial);
+}
+
+const tutorialClose = document.getElementById("tutorialClose");
+if (tutorialClose) {
+    tutorialClose.addEventListener("click", closeTutorial);
+}
