@@ -52,8 +52,8 @@ body {
 }
 
 .brand-icon {
-    width: 52px;
-    height: 52px;
+    width: 70px;
+    height: 70px;
     display: grid;
     place-items: center;
     filter: drop-shadow(0 0 8px rgba(255, 218, 130, 0.45));
@@ -331,9 +331,9 @@ body {
 .question-box.intro-mode {
     min-height: 0;
     display: block;
-    padding-top: clamp(80px, 15vh, 140px);
-    padding-bottom: 34px;
-    margin-top: 60px;
+    padding-top: clamp(30px, 6vh, 140px);
+    padding-bottom: 20px;
+    margin-top: 150px;
     width: 100%;
     max-width: 860px;
     margin-left: auto;

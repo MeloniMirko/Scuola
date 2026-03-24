@@ -1,9 +1,5 @@
 "use strict";
 
-/* ============================================================
-   GENIO INDOVINO — Algoritmo Akinator-style
-   ============================================================ */
-
 // ── Costanti ────────────────────────────────────────────────
 const MAX_GUESS_ATTEMPTS = 3;
 const GUESS_THRESHOLD = 0.92;
@@ -160,7 +156,6 @@ function scoreQuestion(q) {
     return { expectedH, knownMass };
 }
 
-// 🔹 shouldSkipQuestion aggiornato
 function shouldSkipQuestion(key) {
     if (state.answers[key] !== undefined) return true;
 
@@ -175,19 +170,16 @@ function shouldSkipQuestion(key) {
         if (others.every(g => state.answers[g] === "no")) return true;
     }
 
-    // storico → no traits moderni per personaggi vecchi
     if (state.answers["born_before_1950"] === "yes") {
         if (["billionaire", "tech_founder", "alive"].includes(key)) return true;
     }
 
-    // blocca "alive" solo se non sappiamo epoca
     if (key === "alive" &&
         state.answers["born_before_1950"] === undefined &&
         state.answers["born_1950_1980"] === undefined &&
         state.answers["born_after_1980"] === undefined
     ) return true;
 
-    // evita traits già impliciti
     if ((key === "male" || key === "female") &&
         (state.answers["male"] === "yes" || state.answers["female"] === "yes")
     ) return true;
@@ -202,7 +194,6 @@ function chooseBestQuestion() {
     const ranked = rankCandidates();
     const topCandidates = ranked.filter(r => r.probability > 0.05);
 
-    // 🔥 MODALITÀ DUELLO (FONDAMENTALE)
     if (topCandidates.length <= 3) {
         for (const q of unanswered) {
             const values = topCandidates.map(r =>
@@ -212,7 +203,7 @@ function chooseBestQuestion() {
             const uniqueValues = new Set(values);
 
             if (uniqueValues.size > 1) {
-                return q; // separa direttamente
+                return q; 
             }
         }
     }
@@ -245,7 +236,6 @@ function chooseBestQuestion() {
 
         if (gain < 0.03) continue;
 
-        // 🔥 UNIQUE BONUS CORRETTO
         let uniqueBonus = 0;
         const countWithTrait = topCandidates.reduce(
             (acc, r) => acc + (r.character.traits.includes(q.key) ? 1 : 0),
@@ -295,6 +285,7 @@ function chooseBestQuestion() {
 
     return best || unanswered[0];
 }
+
 function rankCandidates() {
     return state.characters
         .map((c, i) => ({ character: c, probability: state.posteriors[i] || 0 }))
@@ -310,7 +301,7 @@ function applyEvidence(questionKey, answerType) {
         const trait = c.traits.includes(questionKey);
 
         let p = state.posteriors[i];
-        if (!p || p <= 0) p = 1e-6; // 🔥 FIX CRITICO
+        if (!p || p <= 0) p = 1e-6; 
 
         let likelihood;
 
@@ -370,7 +361,6 @@ function updateCandidateList() {
 
 function setGuideCharacter() {
     state.characterViewToken++;
-    if (el.characterName) el.characterName.textContent = "ZORINA";
     if (el.characterFrame) el.characterFrame.classList.remove("person-mode");
     if (el.characterImage) {
         el.characterImage.src = "assets/zorina.png";
@@ -433,20 +423,14 @@ function askNextQuestion() {
     const ranked = rankCandidates();
     const top = ranked[0];
     const second = ranked[1] || { probability: 0 };
-
     const margin = top.probability - second.probability;
     const entropy = shannonEntropy(state.posteriors);
-
-    // 🔥 NUOVO: quanti candidati sono ancora "vivi"
     const strongCandidates = ranked.filter(r => r.probability > 0.1).length;
 
     if (
         state.askedCount >= 6 &&
         (
-            // ✅ caso sicuro
             (top.probability > 0.80 && margin > 0.30 && strongCandidates <= 2)
-
-            // ✅ fallback entropico ma più sicuro
             || (entropy < 0.8 && strongCandidates <= 2)
         )
     ) {
@@ -502,11 +486,9 @@ function handleGuess(answerType) {
         return;
     }
 
-    // ❌ guess sbagliato
     const wrongGuess = state.guessOrder[state.guessIndex]?.character;
     const wrongIndex = state.characters.findIndex(c => c.id === wrongGuess?.id);
 
-    // 🔥 FIX CRITICO: ELIMINA completamente il candidato
     if (wrongIndex >= 0) {
         state.posteriors[wrongIndex] *= 0.01;
     }
@@ -515,7 +497,6 @@ function handleGuess(answerType) {
 
     state.guessAttempts++;
 
-    // 🔥 se sbaglia troppe volte → stop
     if (state.guessAttempts >= MAX_GUESS_ATTEMPTS) {
         setGuideCharacter();
         setQuestionText(
@@ -526,7 +507,6 @@ function handleGuess(answerType) {
         return;
     }
 
-    // 🔥 torna a fare domande (stile Akinator)
     state.mode = "asking";
     state.guessIndex = 0;
     state.questionsAfterLastNo = 0;
@@ -546,7 +526,7 @@ function finishGame(won) {
     setButtons(true);
     if (!won) {
         setGuideCharacter();
-        setQuestionText("Non ci sono riuscito...", "Vuoi riprovare? Premi SÌ.");
+        setQuestionText("Non ci sono riuscita...", "Vuoi riprovare? Premi SÌ.");
     } else {
         setQuestionText("Vuoi sfidare ancora il Genio?", "Premi SÌ per giocare ancora!");
     }
@@ -578,7 +558,11 @@ function onAnswer(answerType) {
             handleGuess(answerType);
             break;
         case "finished":
-            if (answerType === "yes") showIntroPrompt();
+            if (answerType === "yes") {
+                startGame(); 
+            } else {
+                showIntroPrompt(); 
+            }
             break;
     }
 }
