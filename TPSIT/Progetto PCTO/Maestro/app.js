@@ -188,94 +188,100 @@ function shouldSkipQuestion(key) {
 }
 
 function chooseBestQuestion() {
+
     const unanswered = QUESTION_BANK.filter(q => !shouldSkipQuestion(q.key));
     if (!unanswered.length) return null;
 
     const ranked = rankCandidates();
-    const topCandidates = ranked.filter(r => r.probability > 0.05);
+    const topCandidates = ranked.slice(0, 4); // 🔥 leggermente più largo
 
-    if (topCandidates.length <= 3) {
+    // 🔴 DISCRIMINAZIONE FINALE (ATTIVA PRIMA E PIÙ STABILE)
+    if (topCandidates.length <= 4) {
+
+        let bestQ = null;
+        let bestScore = -Infinity;
+
         for (const q of unanswered) {
-            const values = topCandidates.map(r =>
-                r.character.traits.includes(q.key)
-            );
 
-            const uniqueValues = new Set(values);
+            let yes = 0;
+            let no = 0;
 
-            if (uniqueValues.size > 1) {
-                return q; 
+            for (const r of topCandidates) {
+                if (r.character.traits.includes(q.key)) yes++;
+                else no++;
+            }
+
+            // deve separare davvero
+            if (yes === 0 || no === 0) continue;
+
+            const split = Math.min(yes, no);
+
+            // 🔥 conta SOLO sui top (fix importante)
+            const balance = 1 - Math.abs(yes - no) / topCandidates.length;
+
+            const score =
+                split * 4.0 +     // 🔥 più forte → separa davvero
+                balance * 2.0;
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestQ = q;
             }
         }
+
+        if (bestQ) return bestQ;
     }
 
+    // 🟢 MODALITÀ NORMALE (ENTROPIA STABILE)
     const H_current = shannonEntropy(state.posteriors);
+
     let best = null;
     let bestScore = -Infinity;
 
     for (const q of unanswered) {
-        const { expectedH, knownMass } = scoreQuestion(q);
 
-        if (knownMass < 0.15) continue;
+        let yesWeights = [];
+        let noWeights = [];
 
-        let yesMass = 0, noMass = 0;
+        let yesMass = 0;
+        let noMass = 0;
+        let knownMass = 0;
 
         for (let i = 0; i < state.characters.length; i++) {
-            const p = state.posteriors[i] || 0;
-            const traits = state.characters[i].traits;
 
-            const hasTrait = traits.includes(q.key);
+            const p = state.posteriors[i];
+            const hasTrait = state.characters[i].traits.includes(q.key);
+
+            if (hasTrait === true || hasTrait === false) {
+                knownMass += p;
+            }
+
+            const wYes = p * traitLikelihood(hasTrait, true);
+            const wNo  = p * traitLikelihood(hasTrait, false);
+
+            yesWeights.push(wYes);
+            noWeights.push(wNo);
 
             if (hasTrait) yesMass += p;
             else noMass += p;
         }
 
+        // filtri minimi
+        if (knownMass < 0.15) continue;
         if (yesMass < 0.05 || noMass < 0.05) continue;
 
+        const H_yes = shannonEntropy(normalizeProbabilities(yesWeights));
+        const H_no  = shannonEntropy(normalizeProbabilities(noWeights));
+
+        const expectedH = yesMass * H_yes + noMass * H_no;
+
+        const infoGain = H_current - expectedH;
+
         const balance = 1 - Math.abs(yesMass - noMass);
-        const gain = H_current - expectedH;
-
-        if (gain < 0.03) continue;
-
-        let uniqueBonus = 0;
-        const countWithTrait = topCandidates.reduce(
-            (acc, r) => acc + (r.character.traits.includes(q.key) ? 1 : 0),
-            0
-        );
-
-        if (countWithTrait === 1 && topCandidates.length > 2 && gain > 0.05) {
-            uniqueBonus = 2.0;
-        }
-
-        const baseBonus =
-            (q.key.startsWith("born_") ? 1.5 : 0) +
-            (q.key === "alive" ? 1.0 : 0);
-
-        const strongDiscriminators = [
-            "biologist","chemist","physicist",
-            "astronomer","electricity",
-            "inventor","engineer"
-        ];
-        const discriminatorBoost = strongDiscriminators.includes(q.key) ? 1.5 : 0;
-
-        const ultraDiscriminators = [
-            "geometry_founder",
-            "euler_formula",
-            "pure_mathematics",
-            "renaissance",
-            "programming",
-            "computer_architecture",
-            "compiler"
-        ];
-        const ultraBoost = ultraDiscriminators.includes(q.key) ? 2.0 : 0;
 
         const score =
-            gain * 6.0 +
-            balance * 1.0 +
-            knownMass * 0.2 +
-            uniqueBonus +
-            baseBonus +
-            ultraBoost +
-            discriminatorBoost;
+            infoGain * 6.0 +   // 🔥 dominante
+            balance * 1.5;
 
         if (score > bestScore) {
             bestScore = score;
@@ -306,9 +312,9 @@ function applyEvidence(questionKey, answerType) {
         let likelihood;
 
         if (answerYes) {
-            likelihood = trait ? 0.97 : 0.03;
+            likelihood = trait ? 0.999 : 0.001;
         } else {
-            likelihood = trait ? 0.03 : 0.97;
+            likelihood = trait ? 0.001 : 0.999;
         }
 
         return p * likelihood;
@@ -620,27 +626,39 @@ function simulateGame(targetId) {
 
         // ─────────────── GUESSING ───────────────
         else if (state.mode === "guessing") {
+
             const guess = state.guessOrder[state.guessIndex]?.character;
             if (!guess) break;
-
+        
             // ✅ indovinato
             if (guess.id === targetId) {
                 state.won = true;
                 break;
             } 
             
-            // ❌ sbagliato
+            // ❌ sbagliato → simula gioco reale
             else {
-                console.log("TARGET:", character.name, "→ GUESS SBAGLIATO:", guess.name);
-            
+        
+                const wrongIndex = state.characters.findIndex(c => c.id === guess.id);
+        
+                if (wrongIndex >= 0) {
+                    state.posteriors[wrongIndex] *= 0.01;
+                }
+        
                 state.posteriors = normalizeProbabilities(state.posteriors);
-            
-                // 🔥 reset stato corretto
+        
+                state.guessAttempts++;
+        
+                // se finiti tentativi → fallimento
+                if (state.guessAttempts >= MAX_GUESS_ATTEMPTS) {
+                    break;
+                }
+        
+                // torna a fare domande
                 state.mode = "asking";
-                state.guessIndex = 0;
                 state.currentQuestionKey = null;
                 state.questionsAfterLastNo = 0;
-            
+        
                 askNextQuestion();
             }
         }
@@ -648,7 +666,8 @@ function simulateGame(targetId) {
 
     return {
         success: state.won === true,
-        questions
+        questions,
+        wrongGuesses: state.guessAttempts
     };
 }
 
@@ -656,11 +675,17 @@ function testAllCharacters() {
     let success = 0;
     let totalQuestions = 0;
     let totalWrongGuesses = 0;
+    const failures = [];
 
     for (const c of state.characters) {
         const result = simulateGame(c.id);
 
-        if (result.success) success++;
+        if (result.success) {
+            success++;
+        } else {
+            failures.push(c.id);
+        }
+
         totalQuestions += result.questions;
         totalWrongGuesses += result.wrongGuesses || 0;
     }
@@ -668,8 +693,110 @@ function testAllCharacters() {
     console.log("Accuracy:", ((success / state.characters.length) * 100).toFixed(2) + "%");
     console.log("Avg Questions:", (totalQuestions / state.characters.length).toFixed(2));
     console.log("Avg Wrong Guesses:", (totalWrongGuesses / state.characters.length).toFixed(2));
+
+    if (failures.length > 0) {
+        console.log("❌ Fallimenti:");
+        failures.forEach(f => console.log("-", f));
+    } else {
+        console.log("🔥 Perfetto: nessun errore!");
+    }
 }
 
+
+function findIndistinguishablePairs() {
+
+    if (!state.characters || state.characters.length === 0) {
+        console.warn("⚠️ Nessun personaggio caricato. Avvia prima startGame()");
+        return [];
+    }
+
+    const collisions = [];
+
+    for (let i = 0; i < state.characters.length; i++) {
+        for (let j = i + 1; j < state.characters.length; j++) {
+
+            const c1 = state.characters[i];
+            const c2 = state.characters[j];
+
+            let identical = true;
+            const differences = [];
+
+            for (const key of TRAIT_KEYS) {
+
+                const t1 = c1.traits.includes(key);
+                const t2 = c2.traits.includes(key);
+
+                if (t1 !== t2) {
+                    identical = false;
+                    differences.push(key);
+                }
+            }
+
+            if (identical) {
+                collisions.push({
+                    type: "IDENTICAL",
+                    c1: c1.name,
+                    c2: c2.name
+                });
+            } 
+            else if (differences.length <= 2) {
+                collisions.push({
+                    type: "VERY_SIMILAR",
+                    c1: c1.name,
+                    c2: c2.name,
+                    differences
+                });
+            }
+        }
+    }
+
+    return collisions;
+}
+
+function testCollisions() {
+
+    // 🔥 assicura che i personaggi siano caricati
+    if (!state.characters || state.characters.length === 0) {
+        state.characters = LOCAL_SEED.map(c => ({
+            ...c,
+            traits: [...c.traits]
+        }));
+    }
+
+    const results = findIndistinguishablePairs();
+
+    if (!results || results.length === 0) {
+        console.log("✅ Tutti i personaggi sono distinguibili!");
+        return;
+    }
+
+    console.log("⚠️ Problemi trovati:\n");
+
+    results.forEach(r => {
+        if (r.type === "IDENTICAL") {
+            console.log(`❌ IDENTICI: ${r.c1} = ${r.c2}`);
+        } else {
+            console.log(`⚠️ SIMILI: ${r.c1} vs ${r.c2}`);
+            console.log("   Differenze:", r.differences.join(", "));
+        }
+    });
+}
+function checkDiscriminativePower() {
+    const stats = {};
+
+    for (const key of TRAIT_KEYS) {
+        let count = 0;
+
+        for (const c of state.characters) {
+            if (c.traits.includes(key)) count++;
+        }
+
+        stats[key] = count;
+    }
+
+    console.log("Distribuzione trait:");
+    console.table(stats);
+}
 
 //TUTORIAL
 function showTutorial() {
