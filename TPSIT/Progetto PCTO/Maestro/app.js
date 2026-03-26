@@ -110,6 +110,21 @@ const LOCAL_SEED = (typeof SHARED_CHARACTERS_DATA !== "undefined")
     ? SHARED_CHARACTERS_DATA.map(d => seedCharacter(...d.args))
     : [];
 
+    function setSafeImage(img, src) {
+        if (!src || typeof src !== "string") {
+            img.src = "assets/fallback.png";
+            return;
+        }
+    
+        img.src = src;
+    
+        img.onerror = function () {
+            console.warn("IMG ERROR:", src);
+            this.onerror = null;
+            this.src = "assets/fallback.png";
+        };
+    }
+
 // ── Algoritmo Bayesiano ─────────────────────────────────────
 function initPosteriors() {
     const base = 1 / Math.max(1, state.characters.length);
@@ -193,9 +208,8 @@ function chooseBestQuestion() {
     if (!unanswered.length) return null;
 
     const ranked = rankCandidates();
-    const topCandidates = ranked.slice(0, 4); // 🔥 leggermente più largo
+    const topCandidates = ranked.slice(0, 4); 
 
-    // 🔴 DISCRIMINAZIONE FINALE (ATTIVA PRIMA E PIÙ STABILE)
     if (topCandidates.length <= 4) {
 
         let bestQ = null;
@@ -211,16 +225,14 @@ function chooseBestQuestion() {
                 else no++;
             }
 
-            // deve separare davvero
             if (yes === 0 || no === 0) continue;
 
             const split = Math.min(yes, no);
 
-            // 🔥 conta SOLO sui top (fix importante)
             const balance = 1 - Math.abs(yes - no) / topCandidates.length;
 
             const score =
-                split * 4.0 +     // 🔥 più forte → separa davvero
+                split * 4.0 +     
                 balance * 2.0;
 
             if (score > bestScore) {
@@ -231,8 +243,6 @@ function chooseBestQuestion() {
 
         if (bestQ) return bestQ;
     }
-
-    // 🟢 MODALITÀ NORMALE (ENTROPIA STABILE)
     const H_current = shannonEntropy(state.posteriors);
 
     let best = null;
@@ -341,10 +351,24 @@ function setProgressVisible(visible) {
 }
 
 function updateProgress() {
-    if (el.progressLabel) el.progressLabel.textContent = `DOMANDA ${state.askedCount}`;
-    if (el.progressFill) el.progressFill.style.width = `${Math.min(100, state.askedCount * 5)}%`;
-    if (el.answersStat) el.answersStat.textContent = `Risposte: ${state.askedCount}`;
-    if (el.answersValue) el.answersValue.textContent = state.askedCount;
+    if (el.progressLabel) {
+        el.progressLabel.textContent = `DOMANDA ${state.askedCount +1}`;
+    }
+    const top = rankCandidates()[0]?.probability || 0;
+    let progress = top * 100;
+    if (state.askedCount < 3) {
+        progress = Math.max(progress, state.askedCount * 10);
+    }
+    progress = Math.min(100, progress);
+    if (el.progressFill) {
+        el.progressFill.style.width = `${progress}%`;
+    }
+    if (el.answersStat) {
+        el.answersStat.textContent = `Risposte: ${state.askedCount}`;
+    }
+    if (el.answersValue) {
+        el.answersValue.textContent = state.askedCount;
+    }
 }
 
 function updateAttemptsStat() {
@@ -370,17 +394,27 @@ function setGuideCharacter() {
     if (el.characterFrame) el.characterFrame.classList.remove("person-mode");
     if (el.characterImage) {
         el.characterImage.src = "assets/zorina.png";
-        el.characterImage.onerror = () => { el.characterImage.src = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de-200d-2640-fe0f.svg"; };
+        el.characterImage.onerror = () => {
+            el.characterImage.src = "fallback.png";
+        };
+    }
+    if (el.characterName) {
+        el.characterName.textContent = "";
     }
 }
 
 function setCandidateCharacter(character) {
     state.characterViewToken++;
+
     if (el.characterName) el.characterName.textContent = character.name;
+
     if (el.characterFrame) el.characterFrame.classList.add("person-mode");
+
     if (el.characterImage) {
-        el.characterImage.src = character.image;
-        el.characterImage.onerror = () => { el.characterImage.src = "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9d1.svg"; };
+        setSafeImage(el.characterImage, character.image);
+        el.characterImage.onerror = () => {
+            el.characterImage.src = "fallback.png";
+        };
     }
 }
 
@@ -414,6 +448,10 @@ function startGame() {
     state.currentQuestionKey = null;
 
     if (el.questionBox) el.questionBox.classList.remove("intro-mode");
+
+    if (el.characterFrame) {
+        el.characterFrame.classList.remove("reveal", "win");
+    }
 
     setButtons(true);
     setProgressVisible(true);
@@ -480,6 +518,10 @@ function showCurrentGuess(isRetry = false) {
     const instr = isRetry ? "Riprovo..." : `Confidenza: ${pct}%`;
     setQuestionText(`Il tuo personaggio è ${guess.name}?`, instr);
     setCandidateCharacter(guess);
+    el.characterFrame.classList.remove("reveal");
+    void el.characterFrame.offsetWidth;
+    el.characterFrame.classList.add("reveal");
+    el.characterFrame.classList.add("win");
     updateAttemptsStat();
     updateCandidateList();
 }
@@ -487,7 +529,16 @@ function showCurrentGuess(isRetry = false) {
 function handleGuess(answerType) {
     if (answerType === "yes") {
         const winner = state.guessOrder[state.guessIndex]?.character;
-        setQuestionText(`Ho indovinato! È ${winner?.name}!`, "Il Genio è imbattibile!");
+    
+        saveToLeaderboard(winner);
+    
+        el.characterFrame.classList.add("win");
+    
+        setQuestionText(
+            `Ho indovinato! È ${winner?.name}!`,
+            "Il Genio è imbattibile!"
+        );
+    
         finishGame(true);
         return;
     }
@@ -526,6 +577,35 @@ function handleGuess(answerType) {
     askNextQuestion();
 }
 
+function saveToLeaderboard(character) {
+    if (!character) return;
+
+    const key = "genio_indovino_leaderboard";
+
+    let list = [];
+
+    try {
+        list = JSON.parse(localStorage.getItem(key)) || [];
+    } catch {
+        list = [];
+    }
+
+    const existing = list.find(c => c.id === character.id);
+
+    if (existing) {
+        existing.count++;
+    } else {
+        list.push({
+            id: character.id,
+            name: character.name,
+            image: character.image,
+            count: 1
+        });
+    }
+
+    localStorage.setItem(key, JSON.stringify(list));
+}
+
 function finishGame(won) {
     state.mode = "finished";
     setProgressVisible(false);
@@ -539,6 +619,9 @@ function finishGame(won) {
 }
 
 function onAnswer(answerType) {
+    const btn = answerType === "yes" ? el.btnYes : el.btnNo;
+    btn.classList.add("flash");
+    setTimeout(() => btn.classList.remove("flash"), 250);
     switch (state.mode) {
         case "intro":
             if (answerType === "yes") startGame();
@@ -616,7 +699,7 @@ function simulateGame(targetId) {
 
             let answer = character.traits.includes(key) ? "yes" : "no";
 
-            // 🔹 rumore realistico (10%)
+            // rumore realistico (10%)
             if (Math.random() < 0.03) {
                 answer = answer === "yes" ? "no" : "yes";
             }
@@ -630,13 +713,13 @@ function simulateGame(targetId) {
             const guess = state.guessOrder[state.guessIndex]?.character;
             if (!guess) break;
         
-            // ✅ indovinato
+            // indovinato
             if (guess.id === targetId) {
                 state.won = true;
                 break;
             } 
             
-            // ❌ sbagliato → simula gioco reale
+            //  sbagliato → simula gioco reale
             else {
         
                 const wrongIndex = state.characters.findIndex(c => c.id === guess.id);
@@ -695,10 +778,10 @@ function testAllCharacters() {
     console.log("Avg Wrong Guesses:", (totalWrongGuesses / state.characters.length).toFixed(2));
 
     if (failures.length > 0) {
-        console.log("❌ Fallimenti:");
+        console.log(" Fallimenti:");
         failures.forEach(f => console.log("-", f));
     } else {
-        console.log("🔥 Perfetto: nessun errore!");
+        console.log(" Perfetto: nessun errore!");
     }
 }
 
@@ -706,7 +789,7 @@ function testAllCharacters() {
 function findIndistinguishablePairs() {
 
     if (!state.characters || state.characters.length === 0) {
-        console.warn("⚠️ Nessun personaggio caricato. Avvia prima startGame()");
+        console.warn(" Nessun personaggio caricato. Avvia prima startGame()");
         return [];
     }
 
@@ -755,7 +838,7 @@ function findIndistinguishablePairs() {
 
 function testCollisions() {
 
-    // 🔥 assicura che i personaggi siano caricati
+    // assicura che i personaggi siano caricati
     if (!state.characters || state.characters.length === 0) {
         state.characters = LOCAL_SEED.map(c => ({
             ...c,
@@ -766,17 +849,17 @@ function testCollisions() {
     const results = findIndistinguishablePairs();
 
     if (!results || results.length === 0) {
-        console.log("✅ Tutti i personaggi sono distinguibili!");
+        console.log(" Tutti i personaggi sono distinguibili!");
         return;
     }
 
-    console.log("⚠️ Problemi trovati:\n");
+    console.log(" Problemi trovati:\n");
 
     results.forEach(r => {
         if (r.type === "IDENTICAL") {
-            console.log(`❌ IDENTICI: ${r.c1} = ${r.c2}`);
+            console.log(` IDENTICI: ${r.c1} = ${r.c2}`);
         } else {
-            console.log(`⚠️ SIMILI: ${r.c1} vs ${r.c2}`);
+            console.log(` SIMILI: ${r.c1} vs ${r.c2}`);
             console.log("   Differenze:", r.differences.join(", "));
         }
     });

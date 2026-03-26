@@ -10,7 +10,7 @@ const CHARACTER_IMAGE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
 const FALLBACK_CHARACTERS = typeof SHARED_CHARACTERS_DATA !== 'undefined'
     ? SHARED_CHARACTERS_DATA.map(d => ({
         name: d.args[1],
-        image: fixWikimediaUrl(sanitizeHttpUrl(d.args[2]))
+        image: sanitizeHttpUrl(d.args[2])
     }))
     : [];
 
@@ -55,30 +55,7 @@ function normalizeName(value) {
     return String(value || "").trim().toLowerCase();
 }
 
-function fixWikimediaUrl(url) {
-    if (!url || typeof url !== "string") return "";
 
-    // solo per wikimedia
-    if (!url.includes("wikimedia.org")) return url;
-
-    // già corretto
-    if (url.includes("/thumb/")) return url;
-
-    try {
-        const parts = url.split("/commons/")[1];
-        if (!parts) return url;
-
-        const segments = parts.split("/");
-        if (segments.length < 3) return url;
-
-        const path = segments.slice(0, 2).join("/");
-        const file = segments[2];
-
-        return `https://upload.wikimedia.org/wikipedia/commons/thumb/${path}/${file}/400px-${file}`;
-    } catch {
-        return url;
-    }
-}
 
 // -------------------- CACHE --------------------
 
@@ -97,45 +74,21 @@ function saveImageCache() {
     } catch {}
 }
 
-function readCachedImage(name) {
-    const key = normalizeName(name);
-    const row = state.imageCache[key];
-
-    if (!row || typeof row !== "object") return "";
-
-    if (!row.url || typeof row.url !== "string") {
-        delete state.imageCache[key];
-        return "";
+function setSafeImage(img, src) {
+    if (!src || typeof src !== "string") {
+        img.src = "assets/fallback.png";
+        return;
     }
 
-    if (!row.url.startsWith("https")) {
-        delete state.imageCache[key];
-        return "";
-    }
+    img.src = src;
 
-    const age = Date.now() - row.ts;
-
-    if (age > CHARACTER_IMAGE_CACHE_TTL_MS) {
-        delete state.imageCache[key];
-        return "";
-    }
-
-    return row.url;
-}
-
-function writeCachedImage(name, url) {
-    const key = normalizeName(name);
-    const cleanUrl = sanitizeHttpUrl(url);
-
-    if (!key || !cleanUrl) return;
-
-    state.imageCache[key] = {
-        url: cleanUrl,
-        ts: Date.now()
+    img.onerror = function () {
+        console.warn("IMG ERROR:", src);
+        this.onerror = null;
+        this.src = "assets/fallback.png";
     };
-
-    saveImageCache();
 }
+
 
 // -------------------- CORE --------------------
 
@@ -183,16 +136,9 @@ function renderCharacters(list) {
         img.className = "character-thumb";
         img.alt = character.name;
         img.loading = "lazy";
-
-        const cached = readCachedImage(character.name);
-
-        if (cached) {
-            img.src = cached;
-        } else if (character.image) {
-            img.src = character.image;
-            img.onload = function () {
-                writeCachedImage(character.name, this.src);
-            };
+        
+        if (character.image) {
+            setSafeImage(img, character.image);
         } else {
             img.src = GUIDE_IMAGE_FALLBACK;
         }
@@ -200,7 +146,7 @@ function renderCharacters(list) {
         img.onerror = function () {
             console.warn("Errore immagine:", this.src);
         
-            // se è una thumb → prova originale
+            // se è una thumb prova originale
             if (this.src.includes("/thumb/")) {
                 const original = this.src
                     .replace("/thumb/", "/")
@@ -272,10 +218,7 @@ function bindEvents() {
 
 function bootstrap() {
     bindEvents();
-    if (!localStorage.getItem("cache_fix_done")) {
-        localStorage.removeItem(CHARACTER_IMAGE_CACHE_KEY);
-        localStorage.setItem("cache_fix_done", "true");
-    }
+    localStorage.removeItem(CHARACTER_IMAGE_CACHE_KEY);
 
     loadImageCache();
 

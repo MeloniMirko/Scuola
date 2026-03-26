@@ -41,12 +41,17 @@
             border-color: var(--gold-color);
         }
 
-        .leaderboard-img {
-            width: 80px;
-            height: 80px;
+        .leaderboard-item img {
+            width: 80px !important;
+            height: 80px !important;
+            max-width: 80px !important;
+            max-height: 80px !important;
+
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--accent-color);
+
+            display: block;
+            flex-shrink: 0;
         }
 
         .leaderboard-info {

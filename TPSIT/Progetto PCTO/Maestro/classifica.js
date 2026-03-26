@@ -21,7 +21,7 @@ function renderLeaderboard() {
             return `
                 <li class="leaderboard-item">
                     <div class="leaderboard-rank">#${index + 1}</div>
-                    <img src="${imageSrc}" alt="${item.name}" class="leaderboard-img" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9d1.svg';">
+                    <img src="${imageSrc}" onerror="this.onerror=null;this.src='assets/fallback.png';">
                     <div class="leaderboard-info">
                         <h3>${item.name}</h3>
                         <p>Indovinato ${item.count} ${timesWord}</p>
