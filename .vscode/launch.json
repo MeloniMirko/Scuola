@@ -5,6 +5,13 @@
       "type": "java",
       "name": "Main",
       "request": "launch",
+      "mainClass": "Eccezzioni2.Main",
+      "projectName": "Scuola_1b986559"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
       "mainClass": "Gestione.Main",
       "projectName": "Scuola_75f4c6e5"
     },
