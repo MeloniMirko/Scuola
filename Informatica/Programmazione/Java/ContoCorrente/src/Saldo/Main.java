@@ -6,9 +6,12 @@ public class Main {
 
         try {
             conto.effettuaOperazione(150);
+            System.out.println("Prelievo effettuato. Saldo: " + conto.getSaldo() + "€");
+
         } catch (SaldoInsufficienteException e) {
             System.out.println("Operazione negata: fondi non sufficienti");
-            System.out.println(e); //stampa il messaggio dell'eccezione
+            System.out.println(e.toString());
+            
         } finally {
             System.out.println("Grazie per aver utilizzato i nostri servizi");
         }
