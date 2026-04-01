@@ -704,8 +704,8 @@ function bootstrap() {
     updateStaticStats();
     showIntroPrompt();
     showTutorial();
-    if (el.btnYes) el.btnYes.addEventListener("click", () => onAnswer("yes"));
-    if (el.btnNo) el.btnNo.addEventListener("click", () => onAnswer("no"));
+    bindAnswerButtons();
+    preventDoubleTapZoom();
 }
 
 async function init() {
@@ -725,6 +725,41 @@ async function init() {
 }
 
 init();
+
+function bindAnswerButtons() {
+    const bind = (btn, answer) => {
+        if (!btn) return;
+        let lastTouch = 0;
+        btn.addEventListener("touchend", (event) => {
+            event.preventDefault();
+            lastTouch = Date.now();
+            onAnswer(answer);
+        }, { passive: false });
+        btn.addEventListener("click", () => {
+            if (Date.now() - lastTouch < 500) return;
+            onAnswer(answer);
+        });
+    };
+
+    bind(el.btnYes, "yes");
+    bind(el.btnNo, "no");
+}
+
+function preventDoubleTapZoom() {
+    let lastTouchEnd = 0;
+    const handler = (event) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    };
+    document.addEventListener("touchend", handler, { passive: false });
+    if (el.btnYes) el.btnYes.addEventListener("touchend", handler, { passive: false });
+    if (el.btnNo) el.btnNo.addEventListener("touchend", handler, { passive: false });
+    document.addEventListener("dblclick", (event) => event.preventDefault(), { passive: false });
+    document.addEventListener("gesturestart", (event) => event.preventDefault(), { passive: false });
+}
 
 //FUNZIONI DI TEST
 
