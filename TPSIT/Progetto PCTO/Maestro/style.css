@@ -14,6 +14,7 @@
     --text-primary: var(--text-light);
     --text-secondary: #dbe9ff;
     --accent-light: #38a6ff;
+    --focus-ring: rgba(255, 222, 140, 0.85);
 }
 
 * {
@@ -37,6 +38,8 @@ body {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 .app-shell {
@@ -116,6 +119,12 @@ body {
 .top-nav a:hover {
     opacity: 1;
     color: #ffe5aa;
+}
+
+.top-nav a:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: 8px;
 }
 
 .profile {
@@ -426,6 +435,16 @@ body {
     letter-spacing: 0.8px;
     color: #ffffff;
     text-shadow: 0 4px 0 rgba(0, 0, 0, 0.44);
+    text-wrap: balance;
+}
+
+.question-flash {
+    animation: questionFlash 0.18s ease;
+}
+
+@keyframes questionFlash {
+    from { opacity: 0; transform: translateY(2px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .answers-grid {
@@ -483,6 +502,12 @@ body {
 
 .btn:active {
     transform: scale(0.95);
+}
+
+.btn:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(12, 33, 96, 0.7);
 }
 
 .btn.flash {
@@ -781,6 +806,8 @@ body {
     background: linear-gradient(180deg, rgba(9, 34, 89, 0.95) 0%, rgba(8, 24, 66, 0.98) 100%);
     box-shadow: 0 8px 16px rgba(0, 7, 36, 0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    content-visibility: auto;
+    contain-intrinsic-size: 180px 240px;
 }
 
 .character-card:hover {
@@ -950,6 +977,15 @@ body.tutorial-open {
     50% { opacity: 1; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
 
 /* ================= RESPONSIVE UI ================= */
 
@@ -1036,6 +1072,9 @@ body.tutorial-open {
         overflow: hidden;
         touch-action: manipulation;
         overscroll-behavior: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
     }
 
     body.page-guide {
@@ -1099,7 +1138,7 @@ body.tutorial-open {
         grid-template-columns: 1fr;
         justify-items: center;
         gap: 6px;
-        padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
+        padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
     }
 
     .top-nav {
@@ -1113,22 +1152,22 @@ body.tutorial-open {
     }
 
     .top-nav a {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         white-space: nowrap;
     }
 
     .brand-title {
-        font-size: 1.35rem;
+        font-size: 1.2rem;
     }
 
     .brand-icon {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
     }
 
     body:not(.page-guide) .character-frame {
         width: auto;
-        height: min(32vh, 210px);
+        height: min(26vh, 180px);
         max-width: 70vw;
         margin: 0 auto;
     }
@@ -1136,8 +1175,8 @@ body.tutorial-open {
     #characterName {
         display: block;
         text-align: center;
-        font-size: 1.6rem;
-        margin-top: 6px;
+        font-size: 1.35rem;
+        margin-top: 4px;
         color: #ffe2ac;
         z-index: 5;
     }
@@ -1179,7 +1218,7 @@ body.tutorial-open {
     body:not(.page-guide) .question-box {
         width: min(100%, 720px);
         padding: 6px 10px;
-        margin: 4px auto 0;
+        margin: 2px auto 0;
     }
 
     .question-box.intro-mode {
@@ -1188,11 +1227,11 @@ body.tutorial-open {
     }
 
     .instruction {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     body:not(.page-guide) .question-text {
-        font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+        font-size: clamp(1rem, 4.4vw, 1.25rem);
         line-height: 1.15;
     }
 
@@ -1206,8 +1245,8 @@ body.tutorial-open {
     body:not(.page-guide) .btn {
         width: 100%;
         max-width: 230px;
-        min-height: 44px;
-        font-size: 1.1rem;
+        min-height: 40px;
+        font-size: 1rem;
     }
 
     .btn:active {
@@ -1482,6 +1521,21 @@ body.tutorial-open {
     .question-box.intro-mode {
         margin-top: 18px;
         padding-top: 16px;
+    }
+}
+
+@media (max-height: 820px) and (max-width: 700px) {
+    body:not(.page-guide) .character-frame {
+        height: min(24vh, 170px);
+    }
+
+    body:not(.page-guide) .question-text {
+        font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+    }
+
+    body:not(.page-guide) .btn {
+        min-height: 38px;
+        font-size: 0.95rem;
     }
 }
 

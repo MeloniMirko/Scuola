@@ -6,7 +6,9 @@ const GUESS_THRESHOLD = 0.92;
 const MARGIN_THRESHOLD   = 0.25;
 const MIN_QUESTIONS_AFTER_NO = 3;
 const FALLBACK_IMAGE = "assets/loghetto.webp";
+const WIKIMEDIA_THUMB_WIDTH = 320;
 const TUTORIAL_STORAGE_KEY = "genio_indovino_tutorial_hide_v1";
+const LEADERBOARD_KEY = "genio_indovino_leaderboard";
 
 // ── Gruppi di trait mutualmente esclusivi ───────────────────
 const EXCLUSIVE_GROUPS = [
@@ -28,6 +30,43 @@ function getGroup(trait) {
 let QUESTION_BANK = [];
 let TRAIT_KEYS = [];
 let LOCAL_SEED = [];
+
+function toWikimediaThumb(url, width = WIKIMEDIA_THUMB_WIDTH) {
+    if (!url || typeof url !== "string") return url;
+    if (!url.includes("upload.wikimedia.org")) return url;
+    if (url.includes("/wikipedia/commons/thumb/")) return url;
+
+    try {
+        const parsed = new URL(url);
+        const prefix = "/wikipedia/commons/";
+        if (!parsed.pathname.startsWith(prefix)) return url;
+
+        const pathAfter = parsed.pathname.slice(prefix.length);
+        const fileName = pathAfter.split("/").pop();
+        if (!fileName) return url;
+
+        parsed.pathname = `${prefix}thumb/${pathAfter}/${width}px-${fileName}`;
+        return parsed.toString();
+    } catch {
+        return url;
+    }
+}
+
+function fromWikimediaThumb(url) {
+    if (!url || typeof url !== "string") return "";
+    if (!url.includes("/wikipedia/commons/thumb/")) return "";
+    try {
+        const parsed = new URL(url);
+        parsed.pathname = parsed.pathname.replace("/wikipedia/commons/thumb/", "/wikipedia/commons/");
+        parsed.pathname = parsed.pathname.replace(/\/\d+px-[^/]+$/, (match) => {
+            const parts = match.split("/");
+            return parts.length > 1 ? "" : match;
+        });
+        return parsed.toString();
+    } catch {
+        return "";
+    }
+}
 
 // ── Tutorial ────────────────────────────────────────────────
 const TUTORIAL_STEPS = [
@@ -57,7 +96,8 @@ const state = {
     guessAttempts: 0,
     introNoCount: 0,
     tutorialIndex: 0,
-    characterViewToken: 0
+    characterViewToken: 0,
+    leaderboardCache: null
 };
 
 // ── Elementi DOM ───────────────────────────────────────────
@@ -130,7 +170,9 @@ async function loadGameData() {
     TRAIT_KEYS = QUESTION_BANK.map(q => q.key);
 
     const rawCharacters = Array.isArray(characters) ? characters : [];
-    LOCAL_SEED = rawCharacters.map(c => seedCharacter(c.id, c.name, c.image, c.traits));
+    LOCAL_SEED = rawCharacters.map(c =>
+        seedCharacter(c.id, c.name, toWikimediaThumb(c.image), c.traits)
+    );
 }
 
 function setSafeImage(img, src, token, onReady) {
@@ -144,7 +186,10 @@ function setSafeImage(img, src, token, onReady) {
     if (img.dataset.currentSrc !== safeSrc) {
         img.src = FALLBACK_IMAGE;
         img.dataset.currentSrc = safeSrc;
+        img.dataset.originalTried = "";
     }
+
+    const originalSrc = fromWikimediaThumb(safeSrc);
 
     img.onload = function () {
         if (token && state.characterViewToken !== token) return;
@@ -154,6 +199,11 @@ function setSafeImage(img, src, token, onReady) {
 
     img.onerror = function () {
         if (token && state.characterViewToken !== token) return;
+        if (originalSrc && this.dataset.originalTried !== "1") {
+            this.dataset.originalTried = "1";
+            this.src = originalSrc;
+            return;
+        }
         console.warn("IMG ERROR:", safeSrc);
         this.onerror = null;
         this.src = FALLBACK_IMAGE;
@@ -380,6 +430,16 @@ function applyEvidence(questionKey, answerType) {
 function setQuestionText(text, instruction = "") {
     if (el.instruction) el.instruction.textContent = instruction || "";
     if (el.questionText) el.questionText.textContent = text;
+    if (el.instruction) {
+        el.instruction.classList.remove("question-flash");
+        void el.instruction.offsetWidth;
+        el.instruction.classList.add("question-flash");
+    }
+    if (el.questionText) {
+        el.questionText.classList.remove("question-flash");
+        void el.questionText.offsetWidth;
+        el.questionText.classList.add("question-flash");
+    }
 }
 
 function setButtons(enabled) {
@@ -619,19 +679,29 @@ function handleGuess(answerType) {
     askNextQuestion();
 }
 
+function getLeaderboard() {
+    if (state.leaderboardCache) return state.leaderboardCache;
+    try {
+        const raw = localStorage.getItem(LEADERBOARD_KEY) || "[]";
+        const list = JSON.parse(raw);
+        state.leaderboardCache = Array.isArray(list) ? list : [];
+    } catch {
+        state.leaderboardCache = [];
+    }
+    return state.leaderboardCache;
+}
+
+function persistLeaderboard(list) {
+    state.leaderboardCache = list;
+    try {
+        localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(list));
+    } catch {}
+}
+
 function saveToLeaderboard(character) {
     if (!character) return;
 
-    const key = "genio_indovino_leaderboard";
-
-    let list = [];
-
-    try {
-        list = JSON.parse(localStorage.getItem(key)) || [];
-    } catch {
-        list = [];
-    }
-
+    const list = getLeaderboard();
     const existing = list.find(c => c.id === character.id);
 
     if (existing) {
@@ -645,7 +715,7 @@ function saveToLeaderboard(character) {
         });
     }
 
-    localStorage.setItem(key, JSON.stringify(list));
+    persistLeaderboard(list);
 }
 
 function finishGame(won) {

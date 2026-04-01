@@ -1,10 +1,8 @@
 "use strict";
 
-const CATALOG_CACHE_KEY = "genio_indovino_catalog_v4_clear";
-const GUIDE_IMAGE_FALLBACK = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Question_mark_alternate.svg/400px-Question_mark_alternate.svg.png";
-const CHARACTER_IMAGE_CACHE_KEY = "genio_indovino_guide_images_v4";
-const CHARACTER_IMAGE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
+const GUIDE_IMAGE_FALLBACK = "assets/loghetto.webp";
 const FALLBACK_IMAGE = "assets/loghetto.webp";
+const WIKIMEDIA_THUMB_WIDTH = 320;
 
 // -------------------- DATA --------------------
 const CHARACTERS_JSON_URL = "data/characters.json";
@@ -15,8 +13,7 @@ const state = {
     characters: [],
     filtered: [],
     source: "locale",
-    lastUpdate: 0,
-    imageCache: {}
+    lastUpdate: 0
 };
 
 // -------------------- ELEMENTS --------------------
@@ -50,6 +47,43 @@ function normalizeName(value) {
     return String(value || "").trim().toLowerCase();
 }
 
+function toWikimediaThumb(url, width = WIKIMEDIA_THUMB_WIDTH) {
+    if (!url || typeof url !== "string") return url;
+    if (!url.includes("upload.wikimedia.org")) return url;
+    if (url.includes("/wikipedia/commons/thumb/")) return url;
+
+    try {
+        const parsed = new URL(url);
+        const prefix = "/wikipedia/commons/";
+        if (!parsed.pathname.startsWith(prefix)) return url;
+
+        const pathAfter = parsed.pathname.slice(prefix.length);
+        const fileName = pathAfter.split("/").pop();
+        if (!fileName) return url;
+
+        parsed.pathname = `${prefix}thumb/${pathAfter}/${width}px-${fileName}`;
+        return parsed.toString();
+    } catch {
+        return url;
+    }
+}
+
+function fromWikimediaThumb(url) {
+    if (!url || typeof url !== "string") return "";
+    if (!url.includes("/wikipedia/commons/thumb/")) return "";
+    try {
+        const parsed = new URL(url);
+        parsed.pathname = parsed.pathname.replace("/wikipedia/commons/thumb/", "/wikipedia/commons/");
+        parsed.pathname = parsed.pathname.replace(/\/\d+px-[^/]+$/, (match) => {
+            const parts = match.split("/");
+            return parts.length > 1 ? "" : match;
+        });
+        return parsed.toString();
+    } catch {
+        return "";
+    }
+}
+
 async function loadCharacters() {
     const response = await fetch(CHARACTERS_JSON_URL);
     if (!response.ok) {
@@ -61,27 +95,10 @@ async function loadCharacters() {
 
     return list.map(c => ({
         name: c.name,
-        image: sanitizeHttpUrl(c.image)
+        image: sanitizeHttpUrl(toWikimediaThumb(c.image))
     }));
 }
 
-
-// -------------------- CACHE --------------------
-
-function loadImageCache() {
-    try {
-        const raw = localStorage.getItem(CHARACTER_IMAGE_CACHE_KEY);
-        if (raw) state.imageCache = JSON.parse(raw);
-    } catch {
-        state.imageCache = {};
-    }
-}
-
-function saveImageCache() {
-    try {
-        localStorage.setItem(CHARACTER_IMAGE_CACHE_KEY, JSON.stringify(state.imageCache));
-    } catch {}
-}
 
 function setSafeImage(img, src) {
     if (!src || typeof src !== "string") {
@@ -89,10 +106,20 @@ function setSafeImage(img, src) {
         return;
     }
 
-    img.src = src;
+    const safeSrc = src.trim();
+    const originalSrc = fromWikimediaThumb(safeSrc);
+    img.dataset.originalTried = "";
+
+    img.referrerPolicy = "no-referrer";
+    img.src = safeSrc;
 
     img.onerror = function () {
-        console.warn("IMG ERROR:", src);
+        console.warn("IMG ERROR:", safeSrc);
+        if (originalSrc && this.dataset.originalTried !== "1") {
+            this.dataset.originalTried = "1";
+            this.src = originalSrc;
+            return;
+        }
         this.onerror = null;
         this.src = FALLBACK_IMAGE;
     };
@@ -137,6 +164,8 @@ function renderCharacters(list) {
         return;
     }
 
+    const fragment = document.createDocumentFragment();
+
     for (const character of list) {
         const li = document.createElement("li");
         li.className = "character-card";
@@ -145,6 +174,7 @@ function renderCharacters(list) {
         img.className = "character-thumb";
         img.alt = character.name;
         img.loading = "lazy";
+        img.decoding = "async";
         
         if (character.image) {
             setSafeImage(img, character.image);
@@ -152,34 +182,15 @@ function renderCharacters(list) {
             img.src = GUIDE_IMAGE_FALLBACK;
         }
 
-        img.onerror = function () {
-            console.warn("Errore immagine:", this.src);
-        
-            // se è una thumb prova originale
-            if (this.src.includes("/thumb/")) {
-                const original = this.src
-                    .replace("/thumb/", "/")
-                    .replace(/\/\d+px-/, "/");
-        
-                this.onerror = null;
-                this.src = original;
-                return;
-            }
-        
-            // fallback finale
-            if (!this.src.includes("Question_mark")) {
-                this.onerror = null;
-                this.src = GUIDE_IMAGE_FALLBACK;
-            }
-        };
-
         const name = document.createElement("p");
         name.textContent = character.name;
 
         li.appendChild(img);
         li.appendChild(name);
-        el.charactersGrid.appendChild(li);
+        fragment.appendChild(li);
     }
+
+    el.charactersGrid.appendChild(fragment);
 }
 
 function updateMeta() {
@@ -227,9 +238,6 @@ function bindEvents() {
 
 async function bootstrap() {
     bindEvents();
-    localStorage.removeItem(CHARACTER_IMAGE_CACHE_KEY);
-
-    loadImageCache();
 
     try {
         const characters = await loadCharacters();
