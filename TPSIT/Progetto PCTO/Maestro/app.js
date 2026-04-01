@@ -133,19 +133,37 @@ async function loadGameData() {
     LOCAL_SEED = rawCharacters.map(c => seedCharacter(c.id, c.name, c.image, c.traits));
 }
 
-function setSafeImage(img, src) {
-    if (!src || typeof src !== "string") {
+function setSafeImage(img, src, token, onReady) {
+    const safeSrc = typeof src === "string" ? src.trim() : "";
+    if (!safeSrc) {
         img.src = FALLBACK_IMAGE;
+        if (typeof onReady === "function") onReady(false);
         return;
     }
 
-    img.src = src;
+    if (img.dataset.currentSrc !== safeSrc) {
+        img.src = FALLBACK_IMAGE;
+        img.dataset.currentSrc = safeSrc;
+    }
+
+    img.onload = function () {
+        if (token && state.characterViewToken !== token) return;
+        this.onload = null;
+        if (typeof onReady === "function") onReady(true);
+    };
 
     img.onerror = function () {
-        console.warn("IMG ERROR:", src);
+        if (token && state.characterViewToken !== token) return;
+        console.warn("IMG ERROR:", safeSrc);
         this.onerror = null;
         this.src = FALLBACK_IMAGE;
+        if (typeof onReady === "function") onReady(false);
     };
+
+    requestAnimationFrame(() => {
+        if (token && state.characterViewToken !== token) return;
+        img.src = safeSrc;
+    });
 }
 
 // ── Algoritmo Bayesiano ─────────────────────────────────────
@@ -375,10 +393,7 @@ function setProgressVisible(visible) {
 
 function updateProgress() {
     if (el.progressLabel) {
-        const total = QUESTION_BANK.length;
-        el.progressLabel.textContent = total
-            ? `DOMANDA ${state.askedCount + 1} / ${total}`
-            : `DOMANDA ${state.askedCount + 1}`;
+        el.progressLabel.textContent = `DOMANDA ${state.askedCount + 1}`;
     }
     const top = rankCandidates()[0]?.probability || 0;
     let progress = top * 100;
@@ -417,9 +432,10 @@ function updateCandidateList() {
 
 function setGuideCharacter() {
     state.characterViewToken++;
+    const token = state.characterViewToken;
     if (el.characterFrame) el.characterFrame.classList.remove("person-mode");
     if (el.characterImage) {
-        setSafeImage(el.characterImage, "assets/zorina.webp");
+        setSafeImage(el.characterImage, "assets/zorina.webp", token);
     }
     if (el.characterName) {
         el.characterName.textContent = "";
@@ -428,13 +444,19 @@ function setGuideCharacter() {
 
 function setCandidateCharacter(character) {
     state.characterViewToken++;
+    const token = state.characterViewToken;
 
-    if (el.characterName) el.characterName.textContent = character.name;
+    if (el.characterName) el.characterName.textContent = "";
 
     if (el.characterFrame) el.characterFrame.classList.add("person-mode");
 
     if (el.characterImage) {
-        setSafeImage(el.characterImage, character.image);
+        setSafeImage(el.characterImage, character.image, token, () => {
+            if (state.characterViewToken !== token) return;
+            if (el.characterName) el.characterName.textContent = character.name;
+        });
+    } else if (el.characterName) {
+        el.characterName.textContent = character.name;
     }
 }
 
@@ -690,6 +712,7 @@ async function init() {
     try {
         await loadGameData();
         bootstrap();
+        updateProgress();
     } catch (err) {
         console.error(err);
         setQuestionText(

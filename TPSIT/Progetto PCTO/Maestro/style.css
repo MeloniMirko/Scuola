@@ -103,6 +103,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.4px;
     opacity: 0.9;
+    touch-action: manipulation;
 }
 
 .top-nav a.active,
@@ -455,6 +456,7 @@ body {
     position: relative;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.38);
     transition: transform 0.15s ease, filter 0.15s ease;
+    touch-action: manipulation;
 }
 
 .btn::before {
@@ -1022,22 +1024,33 @@ body.tutorial-open {
         overflow-y: auto;
     }
 
+    body:not(.page-guide) {
+        overflow: hidden;
+    }
+
     .app-shell {
         height: auto;
         min-height: 100dvh;
         grid-template-rows: auto 2px auto auto;
     }
 
-    .scene {
-        height: auto;
-        min-height: 0;
-        display: block;
-        padding: 8px 8px 14px;
-        overflow: visible;
+    body:not(.page-guide) .app-shell {
+        height: 100dvh;
+        grid-template-rows: auto 2px 1fr 2px auto;
     }
 
-    .playfield,
-    .playfield.no-stats {
+    body:not(.page-guide) .scene {
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 8px 8px 14px;
+        overflow: hidden;
+    }
+
+    body:not(.page-guide) .playfield,
+    body:not(.page-guide) .playfield.no-stats {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1045,8 +1058,9 @@ body.tutorial-open {
         max-width: 100%;
         min-width: 0;
         min-height: 0;
-        gap: 8px;
+        gap: 6px;
         padding-top: 4px;
+        justify-content: center;
     }
 
     .left-column {
@@ -1070,6 +1084,21 @@ body.tutorial-open {
         padding: calc(8px + env(safe-area-inset-top)) 8px 8px;
     }
 
+    .top-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .top-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .top-nav a {
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
     .brand-title {
         font-size: 1.6rem;
     }
@@ -1079,8 +1108,8 @@ body.tutorial-open {
         height: 40px;
     }
 
-    .character-frame {
-        width: clamp(150px, 50vw, 220px);
+    body:not(.page-guide) .character-frame {
+        width: clamp(130px, 42vw, 200px);
         margin: 0 auto;
     }
 
@@ -1093,10 +1122,10 @@ body.tutorial-open {
         z-index: 5;
     }
 
-    .progress-block {
+    body:not(.page-guide) .progress-block {
         width: 100%;
         padding: 0;
-        margin: 8px 0 0;
+        margin: 4px 0 0;
     }
 
     .progress-label {
@@ -1127,10 +1156,10 @@ body.tutorial-open {
         transform: none;
     }
 
-    .question-box {
+    body:not(.page-guide) .question-box {
         width: min(100%, 720px);
-        padding: 10px 10px;
-        margin: 12px auto 0;
+        padding: 8px 10px;
+        margin: 6px auto 0;
     }
 
     .question-box.intro-mode {
@@ -1142,23 +1171,23 @@ body.tutorial-open {
         font-size: 1rem;
     }
 
-    .question-text {
-        font-size: clamp(1.25rem, 5vw, 1.6rem);
+    body:not(.page-guide) .question-text {
+        font-size: clamp(1.1rem, 4.8vw, 1.45rem);
         line-height: 1.15;
     }
 
-    .answers-simple {
+    body:not(.page-guide) .answers-simple {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
-    .btn {
+    body:not(.page-guide) .btn {
         width: 100%;
         max-width: 230px;
-        min-height: 52px;
-        font-size: 1.4rem;
+        min-height: 48px;
+        font-size: 1.2rem;
     }
 
     .btn:active {
