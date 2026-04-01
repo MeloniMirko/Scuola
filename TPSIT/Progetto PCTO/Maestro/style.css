@@ -933,9 +933,25 @@ body.tutorial-open {
 
 /* ================= RESPONSIVE UI ================= */
 
+/* ---------- LARGE TABLET ---------- */
+@media (max-width: 1200px) {
+    .playfield,
+    .playfield.no-stats {
+        grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .center-column {
+        width: 100%;
+    }
+
+    .question-box {
+        width: 100%;
+    }
+}
+
 /* ---------- TABLET ---------- */
 @media (max-width: 1024px) {
-
     .playfield,
     .playfield.no-stats {
         grid-template-columns: 1fr;
@@ -951,46 +967,79 @@ body.tutorial-open {
         width: 100%;
         max-width: 700px;
     }
-
 }
 
+/* ---------- SMALL TABLET ---------- */
+@media (max-width: 900px) {
+    .topbar {
+        padding: 8px 16px;
+        gap: 12px;
+    }
 
-/* ---------- MOBILE ---------- */
-@media (max-width: 700px) {
-    body {
-        height: 100vh;
-        overflow: hidden;
+    .top-nav {
+        gap: 12px;
+        row-gap: 6px;
+    }
+
+    .top-nav a {
+        font-size: 0.9rem;
+    }
+
+    .brand-title {
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+    }
+
+    .progress-label {
+        font-size: clamp(1.6rem, 3.2vw, 2rem);
     }
 
     .app-shell {
-        height: 100vh;
-        grid-template-rows: auto 2px 1fr auto;
+        grid-template-rows: auto 2px auto auto;
+    }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 700px) {
+    html,
+    body {
+        height: auto;
+    }
+
+    body {
+        min-height: 100dvh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .app-shell {
+        height: auto;
+        min-height: 100dvh;
+        grid-template-rows: auto 2px auto auto;
     }
 
     .scene {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 6px;
-        overflow: hidden;
-    }
-    /* layout base */
-    .scene {
-        padding: 10px 8px;
+        height: auto;
+        min-height: 0;
+        display: block;
+        padding: 8px 8px 14px;
+        overflow: visible;
     }
 
-    .playfield {
-        height: 100%;
+    .playfield,
+    .playfield.no-stats {
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; 
         align-items: center;
-        gap: 6px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        min-height: 0;
+        gap: 8px;
         padding-top: 4px;
     }
 
     .left-column {
+        padding-top: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1003,12 +1052,11 @@ body.tutorial-open {
         gap: 4px;
     }
 
-    /* header */
     .topbar {
         grid-template-columns: 1fr;
         justify-items: center;
         gap: 8px;
-        padding: 8px;
+        padding: calc(8px + env(safe-area-inset-top)) 8px 8px;
     }
 
     .brand-title {
@@ -1020,17 +1068,9 @@ body.tutorial-open {
         height: 40px;
     }
 
-    /* personaggio */
     .character-frame {
-        width: 200px;
+        width: clamp(150px, 50vw, 220px);
         margin: 0 auto;
-        margin-bottom: -90px;
-    }
-
-    .character-stage {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 
     #characterName {
@@ -1042,23 +1082,16 @@ body.tutorial-open {
         z-index: 5;
     }
 
-    /* progress */
     .progress-block {
         width: 100%;
         padding: 0;
-        margin: 0;
-        margin-top: 40px;
-        margin-bottom: -50px;
+        margin: 8px 0 0;
     }
 
     .progress-label {
         font-size: 1.2rem;
         text-align: center;
         margin-bottom: 2px;
-    }
-
-    .progress-fill {
-        transition: width 0.4s ease;
     }
 
     .progress-row {
@@ -1071,7 +1104,7 @@ body.tutorial-open {
     .progress-bar {
         flex: 1;
         height: 20px;
-        min-width: 0; 
+        min-width: 0;
     }
 
     .progress-lamp {
@@ -1082,10 +1115,14 @@ body.tutorial-open {
     }
 
     .question-box {
-        width: 100%;
-        padding: 12px 10px;
-        margin: 0;
-        margin-top: 80px;
+        width: min(100%, 720px);
+        padding: 10px 10px;
+        margin: 12px auto 0;
+    }
+
+    .question-box.intro-mode {
+        margin-top: 22px;
+        padding-top: 16px;
     }
 
     .instruction {
@@ -1093,48 +1130,40 @@ body.tutorial-open {
     }
 
     .question-text {
-        font-size: 1.7rem;
+        font-size: clamp(1.25rem, 5vw, 1.6rem);
         line-height: 1.15;
     }
 
-    /* bottoni */
     .answers-simple {
         display: flex;
         flex-direction: column;
-        align-items: center; 
-        gap: 10px;
+        align-items: center;
+        gap: 8px;
     }
 
     .btn {
         width: 100%;
-        max-width: 240px;
-        min-height: 55px;
-        font-size: 1.5rem;
+        max-width: 230px;
+        min-height: 52px;
+        font-size: 1.4rem;
     }
 
     .btn:active {
         transform: scale(0.92);
     }
 
-    /* footer (NON lo nascondiamo per sicurezza) */
     .bottom-bar {
         grid-template-columns: 1fr;
         justify-items: center;
         display: none;
     }
-}
 
-/* ===== COME GIOCARE MOBILE FIX ===== */
-
-@media (max-width: 700px) {
-
-    /* container generale */
+    /* ----- COME GIOCARE / CLASSIFICA ----- */
     .guide-content {
         gap: 10px;
         padding: 0 6px;
     }
 
-    /* HERO */
     .guide-hero {
         text-align: center;
         gap: 8px;
@@ -1159,7 +1188,6 @@ body.tutorial-open {
         justify-content: center;
     }
 
-    /* STEP */
     .guide-steps {
         grid-template-columns: 1fr;
         gap: 8px;
@@ -1178,7 +1206,6 @@ body.tutorial-open {
         font-size: 0.85rem;
     }
 
-    /* PANEL PERSONAGGI */
     .guide-panel-head {
         flex-direction: column;
         align-items: flex-start;
@@ -1193,7 +1220,6 @@ body.tutorial-open {
         font-size: 0.8rem;
     }
 
-    /* TOOLBAR */
     .characters-toolbar {
         display: flex;
         flex-direction: column;
@@ -1202,12 +1228,11 @@ body.tutorial-open {
     }
 
     .characters-search {
-        flex: none !important;   
+        flex: none !important;
         width: 100%;
         height: 38px;
         padding: 0 12px;
-
-        border-radius: 10px;     
+        border-radius: 10px;
         font-size: 0.85rem;
     }
 
@@ -1221,9 +1246,8 @@ body.tutorial-open {
         font-size: 0.8rem;
     }
 
-    /* GRID PERSONAGGI */
     .characters-grid {
-        grid-template-columns: repeat(2, 1fr); 
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 
@@ -1232,8 +1256,8 @@ body.tutorial-open {
     }
 
     .character-card:hover {
-    transform: scale(1.03);
-}
+        transform: scale(1.03);
+    }
 
     .character-thumb {
         aspect-ratio: 4 / 5;
@@ -1246,9 +1270,8 @@ body.tutorial-open {
         text-align: center;
     }
 
-    /* SBLOCCA SCROLL SOLO PER COME-giocare */
     body.page-guide {
-        overflow: auto !important;
+        overflow: auto;
     }
 
     body.page-guide .app-shell {
@@ -1256,8 +1279,176 @@ body.tutorial-open {
         min-height: 100vh;
     }
 
-    body.page-guide .app-shell {
-        height: auto;
-        min-height: 100vh;
+    body.page-guide .leaderboard-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    body.page-guide .leaderboard-item img {
+        width: 64px !important;
+        height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+    }
+
+    body.page-guide .leaderboard-rank {
+        font-size: 2rem;
+        min-width: 0;
+    }
+
+    body.page-guide .leaderboard-info h3 {
+        font-size: 1.1rem;
+    }
+
+    body.page-guide .leaderboard-info p {
+        font-size: 1rem;
+    }
+
+    body.page-guide .guide-panel {
+        padding: 12px;
+    }
+}
+
+/* ---------- SMALL MOBILE ---------- */
+@media (max-width: 600px) {
+    .brand-title {
+        font-size: 1.45rem;
+    }
+
+    #characterName {
+        font-size: 1.4rem;
+    }
+
+    .btn {
+        max-width: 220px;
+        min-height: 52px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .brand-title {
+        font-size: 1.25rem;
+    }
+
+    .top-nav {
+        gap: 8px;
+    }
+
+    .top-nav a {
+        font-size: 0.78rem;
+    }
+
+    .progress-bar {
+        height: 18px;
+    }
+
+    .progress-lamp {
+        width: 28px;
+        height: 28px;
+    }
+
+    .progress-label {
+        font-size: 1rem;
+    }
+
+    .question-text {
+        font-size: 1.3rem;
+        line-height: 1.1;
+    }
+
+    .btn {
+        max-width: 200px;
+        min-height: 48px;
+        font-size: 1.2rem;
+    }
+
+    body.page-guide .leaderboard-item {
+        gap: 8px;
+    }
+
+    body.page-guide .leaderboard-info h3 {
+        font-size: 1rem;
+    }
+
+    body.page-guide .leaderboard-info p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .brand-title {
+        font-size: 1.15rem;
+    }
+
+    .top-nav a {
+        font-size: 0.74rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        max-width: 190px;
+        min-height: 46px;
+        font-size: 1.15rem;
+    }
+}
+
+/* ---------- SHORT HEIGHT ---------- */
+@media (max-height: 620px) and (max-width: 900px) {
+    .playfield {
+        gap: 6px;
+        padding-top: 6px;
+    }
+
+    .character-frame {
+        width: clamp(150px, 45vw, 200px);
+    }
+
+    .progress-block {
+        margin-top: 8px;
+    }
+
+    .question-box {
+        margin-top: 12px;
+    }
+
+    .question-box.intro-mode {
+        margin-top: 18px;
+        padding-top: 16px;
+    }
+}
+
+/* ---------- LARGE SCREENS ---------- */
+@media (min-width: 1800px) {
+    body {
+        font-size: 18px;
+    }
+
+    .playfield,
+    .playfield.no-stats {
+        max-width: 1600px;
+        grid-template-columns: minmax(480px, 620px) minmax(0, 1fr);
+        gap: 28px;
+    }
+
+    .character-frame {
+        width: min(100%, 520px);
+    }
+
+    .question-box {
+        max-width: 980px;
+    }
+
+    .brand-title {
+        font-size: clamp(2.6rem, 2.2vw, 3.4rem);
+    }
+
+    .progress-label {
+        font-size: clamp(2.3rem, 2.2vw, 3rem);
     }
 }
