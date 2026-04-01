@@ -5,15 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#0b162c">
     <title>Genio Indovino - Il Gioco</title>
-    <link rel="icon" type="image/png" sizes="64x64" href="assets/loghetto.png?v=8">
-    <link rel="shortcut icon" type="image/png" href="assets/loghetto.png?v=8">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png?v=8">
+    <meta name="description" content="Genio Indovino: gioco stile Akinator con personaggi STEM. Rispondi SI/NO e il Genio indovina.">
+    <meta property="og:title" content="Genio Indovino - Il Gioco">
+    <meta property="og:description" content="Gioco stile Akinator con personaggi STEM. Rispondi SI/NO e il Genio indovina.">
+    <meta property="og:image" content="https://maestrogang.github.io/SteamWho/assets/logo.webp">
+    <meta property="og:url" content="https://maestrogang.github.io/SteamWho/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="it_IT">
+    <link rel="icon" type="image/webp" sizes="64x64" href="assets/loghetto.webp?v=8">
+    <link rel="shortcut icon" type="image/webp" href="assets/loghetto.webp?v=8">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.webp?v=8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@400;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 
 <body>
@@ -21,8 +29,8 @@
         <header class="topbar">
             <div class="brand-wrap">
                 <div class="brand-icon" aria-hidden="true">
-                    <img class="header-logo-img" src="assets/logo.png" alt="logo Genioindovino"
-                        onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='assets/loghetto.png';return;}this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de.svg';">
+                    <img class="header-logo-img" src="assets/logo.webp" alt="logo Genioindovino"
+                        onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='assets/loghetto.webp';return;}this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de.svg';">
                 </div>
                 <h1 class="brand-title">GENIO <span>INDOVINO</span></h1>
             </div>
@@ -46,7 +54,7 @@
                     <div class="character-stage">
                         <div class="portal"></div>
                         <div class="character-frame">
-                            <img id="characterImage" src="assets/zorina.png" alt="La genia Zorina"
+                            <img id="characterImage" src="assets/zorina.webp" alt="La genia Zorina"
                                 onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f9de-200d-2640-fe0f.svg';">
                         </div>
                         <p id="characterName" class="character-name"></p>
@@ -63,7 +71,7 @@
                             <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
                         </div>
                         <span class="progress-lamp" aria-hidden="true">
-                            <img src="assets/lampada.png" alt=""
+                            <img src="assets/lampada.webp" alt=""
                                 onerror="this.onerror=null;this.parentElement.textContent='🪔';">
                         </span>
                     </div>
@@ -71,11 +79,11 @@
 
                     <section id="questionBox" class="question-box">
                         <div class="card-logo-wrap">
-                            <img class="card-logo-img" src="assets/logo.png" alt="Logo Genio Indovino"
-                                onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='assets/loghetto.png';return;}this.style.display='none';this.parentElement.classList.add('fallback');">
+                            <img class="card-logo-img" src="assets/logo.webp" alt="Logo Genio Indovino"
+                                onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='assets/loghetto.webp';return;}this.style.display='none';this.parentElement.classList.add('fallback');">
                             <span class="card-logo-fallback">GENIO INDOVINO</span>
                         </div>
-                        <p id="instruction" class="instruction">Il Genio Indovino e pronto a sfidarti...</p>
+                        <p id="instruction" class="instruction">Il Genio Indovino è pronto a sfidarti...</p>
                         <h2 id="questionText" class="question-text">SEI PRONTO PER GIOCARE?</h2>
 
                         <div class="answers-grid answers-simple">
@@ -143,14 +151,12 @@
 
             <label class="tutorial-never">
                 <input id="tutorialNever" type="checkbox">
-                Non mostrarlo piu
+                Non mostrarlo più
             </label>
         </section>
     </div>
 
-    <script src="questions.js"></script>
-    <script src="characters.js"></script>
-    <script src="app.js?v=15"></script>
+    <script src="app.js?v=17"></script>
 </body>
 
 </html>

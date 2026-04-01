@@ -5,6 +5,8 @@ const MAX_GUESS_ATTEMPTS = 3;
 const GUESS_THRESHOLD = 0.92;
 const MARGIN_THRESHOLD   = 0.25;
 const MIN_QUESTIONS_AFTER_NO = 3;
+const FALLBACK_IMAGE = "assets/loghetto.webp";
+const TUTORIAL_STORAGE_KEY = "genio_indovino_tutorial_hide_v1";
 
 // ── Gruppi di trait mutualmente esclusivi ───────────────────
 const EXCLUSIVE_GROUPS = [
@@ -22,8 +24,10 @@ function getGroup(trait) {
     return null;
 }
 
-// ── Chiavi trait (dalle domande) ──────────────────────────
-const TRAIT_KEYS = QUESTION_BANK.map(q => q.key);
+// ── Dati caricati da JSON ─────────────────────────────────
+let QUESTION_BANK = [];
+let TRAIT_KEYS = [];
+let LOCAL_SEED = [];
 
 // ── Tutorial ────────────────────────────────────────────────
 const TUTORIAL_STEPS = [
@@ -82,7 +86,8 @@ const el = {
     tutorialBody:    document.getElementById("tutorialBody"),
     tutorialDots:    document.getElementById("tutorialDots"),
     tutorialNext:    document.getElementById("tutorialNext"),
-    tutorialSkip:    document.getElementById("tutorialSkip")
+    tutorialSkip:    document.getElementById("tutorialSkip"),
+    tutorialNever:   document.getElementById("tutorialNever")
 };
 
 // ── Personaggi locali ────────────────────────────────────────
@@ -106,24 +111,42 @@ function seedCharacter(id, name, image, trueKeys) {
     };
 }
 
-const LOCAL_SEED = (typeof SHARED_CHARACTERS_DATA !== "undefined")
-    ? SHARED_CHARACTERS_DATA.map(d => seedCharacter(...d.args))
-    : [];
+async function loadGameData() {
+    const [questionsRes, charactersRes] = await Promise.all([
+        fetch("data/questions.json"),
+        fetch("data/characters.json")
+    ]);
 
-    function setSafeImage(img, src) {
-        if (!src || typeof src !== "string") {
-            img.src = "assets/fallback.png";
-            return;
-        }
-    
-        img.src = src;
-    
-        img.onerror = function () {
-            console.warn("IMG ERROR:", src);
-            this.onerror = null;
-            this.src = "assets/fallback.png";
-        };
+    if (!questionsRes.ok || !charactersRes.ok) {
+        throw new Error("Errore nel caricamento dei dati JSON.");
     }
+
+    const [questions, characters] = await Promise.all([
+        questionsRes.json(),
+        charactersRes.json()
+    ]);
+
+    QUESTION_BANK = Array.isArray(questions) ? questions : [];
+    TRAIT_KEYS = QUESTION_BANK.map(q => q.key);
+
+    const rawCharacters = Array.isArray(characters) ? characters : [];
+    LOCAL_SEED = rawCharacters.map(c => seedCharacter(c.id, c.name, c.image, c.traits));
+}
+
+function setSafeImage(img, src) {
+    if (!src || typeof src !== "string") {
+        img.src = FALLBACK_IMAGE;
+        return;
+    }
+
+    img.src = src;
+
+    img.onerror = function () {
+        console.warn("IMG ERROR:", src);
+        this.onerror = null;
+        this.src = FALLBACK_IMAGE;
+    };
+}
 
 // ── Algoritmo Bayesiano ─────────────────────────────────────
 function initPosteriors() {
@@ -352,7 +375,10 @@ function setProgressVisible(visible) {
 
 function updateProgress() {
     if (el.progressLabel) {
-        el.progressLabel.textContent = `DOMANDA ${state.askedCount +1}`;
+        const total = QUESTION_BANK.length;
+        el.progressLabel.textContent = total
+            ? `DOMANDA ${state.askedCount + 1} / ${total}`
+            : `DOMANDA ${state.askedCount + 1}`;
     }
     const top = rankCandidates()[0]?.probability || 0;
     let progress = top * 100;
@@ -393,10 +419,7 @@ function setGuideCharacter() {
     state.characterViewToken++;
     if (el.characterFrame) el.characterFrame.classList.remove("person-mode");
     if (el.characterImage) {
-        el.characterImage.src = "assets/zorina.png";
-        el.characterImage.onerror = () => {
-            el.characterImage.src = "fallback.png";
-        };
+        setSafeImage(el.characterImage, "assets/zorina.webp");
     }
     if (el.characterName) {
         el.characterName.textContent = "";
@@ -412,9 +435,6 @@ function setCandidateCharacter(character) {
 
     if (el.characterImage) {
         setSafeImage(el.characterImage, character.image);
-        el.characterImage.onerror = () => {
-            el.characterImage.src = "fallback.png";
-        };
     }
 }
 
@@ -666,7 +686,22 @@ function bootstrap() {
     if (el.btnNo) el.btnNo.addEventListener("click", () => onAnswer("no"));
 }
 
-bootstrap();
+async function init() {
+    try {
+        await loadGameData();
+        bootstrap();
+    } catch (err) {
+        console.error(err);
+        setQuestionText(
+            "Errore nel caricamento dei dati.",
+            "Apri il sito con un server locale (es. Live Server) o verifica il percorso dei JSON."
+        );
+        setButtons(false);
+        setProgressVisible(false);
+    }
+}
+
+init();
 
 //FUNZIONI DI TEST
 
@@ -884,6 +919,9 @@ function checkDiscriminativePower() {
 //TUTORIAL
 function showTutorial() {
     if (!el.tutorialOverlay) return;
+    try {
+        if (localStorage.getItem(TUTORIAL_STORAGE_KEY) === "1") return;
+    } catch {}
 
     el.tutorialOverlay.hidden = false;
     document.body.classList.add("tutorial-open");
@@ -922,6 +960,11 @@ function nextTutorialStep() {
 function closeTutorial() {
     if (el.tutorialOverlay) el.tutorialOverlay.hidden = true;
     document.body.classList.remove("tutorial-open");
+    try {
+        if (el.tutorialNever?.checked) {
+            localStorage.setItem(TUTORIAL_STORAGE_KEY, "1");
+        }
+    } catch {}
 }
 
 if (el.tutorialNext) {

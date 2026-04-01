@@ -4,15 +4,10 @@ const CATALOG_CACHE_KEY = "genio_indovino_catalog_v4_clear";
 const GUIDE_IMAGE_FALLBACK = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Question_mark_alternate.svg/400px-Question_mark_alternate.svg.png";
 const CHARACTER_IMAGE_CACHE_KEY = "genio_indovino_guide_images_v4";
 const CHARACTER_IMAGE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
+const FALLBACK_IMAGE = "assets/loghetto.webp";
 
 // -------------------- DATA --------------------
-
-const FALLBACK_CHARACTERS = typeof SHARED_CHARACTERS_DATA !== 'undefined'
-    ? SHARED_CHARACTERS_DATA.map(d => ({
-        name: d.args[1],
-        image: sanitizeHttpUrl(d.args[2])
-    }))
-    : [];
+const CHARACTERS_JSON_URL = "data/characters.json";
 
 // -------------------- STATE --------------------
 
@@ -55,6 +50,20 @@ function normalizeName(value) {
     return String(value || "").trim().toLowerCase();
 }
 
+async function loadCharacters() {
+    const response = await fetch(CHARACTERS_JSON_URL);
+    if (!response.ok) {
+        throw new Error("Errore nel caricamento dei personaggi.");
+    }
+
+    const data = await response.json();
+    const list = Array.isArray(data) ? data : [];
+
+    return list.map(c => ({
+        name: c.name,
+        image: sanitizeHttpUrl(c.image)
+    }));
+}
 
 
 // -------------------- CACHE --------------------
@@ -76,7 +85,7 @@ function saveImageCache() {
 
 function setSafeImage(img, src) {
     if (!src || typeof src !== "string") {
-        img.src = "assets/fallback.png";
+        img.src = FALLBACK_IMAGE;
         return;
     }
 
@@ -85,7 +94,7 @@ function setSafeImage(img, src) {
     img.onerror = function () {
         console.warn("IMG ERROR:", src);
         this.onerror = null;
-        this.src = "assets/fallback.png";
+        this.src = FALLBACK_IMAGE;
     };
 }
 
@@ -216,14 +225,21 @@ function bindEvents() {
     el.characterSearch?.addEventListener("input", applyFilter);
 }
 
-function bootstrap() {
+async function bootstrap() {
     bindEvents();
     localStorage.removeItem(CHARACTER_IMAGE_CACHE_KEY);
 
     loadImageCache();
 
-    activateCharacters(FALLBACK_CHARACTERS);
-    setStatus("Lista caricata correttamente");
+    try {
+        const characters = await loadCharacters();
+        activateCharacters(characters);
+        setStatus("Lista caricata correttamente");
+    } catch (err) {
+        console.error(err);
+        activateCharacters([]);
+        setStatus("Impossibile caricare i personaggi");
+    }
 }
 
 bootstrap();

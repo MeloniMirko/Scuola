@@ -1,5 +1,7 @@
 "use strict";
 
+const FALLBACK_IMAGE = "assets/loghetto.webp";
+
 function renderLeaderboard() {
     const container = document.getElementById("leaderboardContainer");
     if (!container) return;
@@ -21,7 +23,7 @@ function renderLeaderboard() {
             return `
                 <li class="leaderboard-item">
                     <div class="leaderboard-rank">#${index + 1}</div>
-                    <img src="${imageSrc}" onerror="this.onerror=null;this.src='assets/fallback.png';">
+                    <img src="${imageSrc}" onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}';">
                     <div class="leaderboard-info">
                         <h3>${item.name}</h3>
                         <p>Indovinato ${item.count} ${timesWord}</p>

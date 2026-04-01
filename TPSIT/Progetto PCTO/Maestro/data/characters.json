@@ -1,0 +1,140 @@
+[
+  {
+    "id": "alan-turing",
+    "name": "Alan Turing",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/79/Alan_Turing_az_1930-as_%C3%A9vekben.jpg",
+    "traits": ["mathematician", "computer_pioneer", "programming", "born_before_1950", "european", "from_uk", "male"]
+  },
+  {
+    "id": "einstein",
+    "name": "Albert Einstein",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg",
+    "traits": ["physicist", "nobel", "relativity", "born_before_1950", "european", "from_germany", "male"]
+  },
+  {
+    "id": "alessandro-volta",
+    "name": "Alessandro Volta",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Alessandro_Volta.jpg",
+    "traits": ["physicist", "inventor", "electricity", "battery", "born_before_1950", "european", "from_italy", "male"]
+  },
+  {
+    "id": "bill-gates",
+    "name": "Bill Gates",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg",
+    "traits": ["tech_founder", "billionaire", "alive", "microsoft", "born_1950_1980", "from_usa", "male", "software", "modern_era", "business", "digital_business"]
+  },
+  {
+    "id": "blaise-pascal",
+    "name": "Blaise Pascal",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/98/Blaise_Pascal_Versailles.JPG",
+    "traits": ["mathematician", "physicist", "probability_theory", "born_before_1950", "european", "from_france", "male", "theoretical_science"]
+  },
+  {
+    "id": "cartesio",
+    "name": "Cartesio",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg",
+    "traits": ["mathematician", "philosopher", "geometry_founder", "born_before_1950", "european", "from_france", "male"]
+  },
+  {
+    "id": "charles-darwin",
+    "name": "Charles Darwin",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Charles_Darwin_seated_crop.jpg",
+    "traits": ["biologist", "evolution", "born_before_1950", "european", "from_uk", "male"]
+  },
+  {
+    "id": "elon-musk",
+    "name": "Elon Musk",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/85/Elon_Musk_Royal_Society_%28crop1%29.jpg",
+    "traits": ["engineer", "tech_founder", "billionaire", "alive", "spacex", "tesla", "born_1950_1980", "from_usa", "male", "modern_era", "business", "digital_business"]
+  },
+  {
+    "id": "enrico-fermi",
+    "name": "Enrico Fermi",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Enrico_Fermi_1943-49.jpg",
+    "traits": ["physicist", "nobel", "atomic_bomb", "born_before_1950", "european", "from_italy", "male"]
+  },
+  {
+    "id": "galileo",
+    "name": "Galileo Galilei",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Galileo.arp.300pix.jpg",
+    "traits": ["physicist", "astronomer", "telescope", "heliocentrism", "born_before_1950", "european", "from_italy", "male"]
+  },
+  {
+    "id": "isaac-newton",
+    "name": "Isaac Newton",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/39/GodfreyKneller-IsaacNewton-1689.jpg",
+    "traits": ["physicist", "mathematician", "gravity_laws", "calculus", "born_before_1950", "european", "from_uk", "male"]
+  },
+  {
+    "id": "jeff-bezos",
+    "name": "Jeff Bezos",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Jeff_Bezos_%28cropped%29.jpg",
+    "traits": ["tech_founder", "billionaire", "alive", "amazon", "born_1950_1980", "from_usa", "male", "ecommerce", "modern_era", "business", "digital_business"]
+  },
+  {
+    "id": "john-von-neumann",
+    "name": "John von Neumann",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a9/John_von_Neumann.jpg",
+    "traits": ["mathematician", "game_theory", "computer_architecture", "born_before_1950", "european", "from_hungary", "male", "modern_computing"]
+  },
+  {
+    "id": "leonardo-da-vinci",
+    "name": "Leonardo da Vinci",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/38/Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg",
+    "traits": ["inventor", "engineer", "renaissance", "born_before_1950", "european", "from_italy", "male"]
+  },
+  {
+    "id": "leonhard-euler",
+    "name": "Leonhard Euler",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/76/Leonhard_Euler_Kupferstich-2.png",
+    "traits": ["mathematician", "pure_mathematics", "euler_formula", "born_before_1950", "european", "from_switzerland", "male"]
+  },
+  {
+    "id": "louis-pasteur",
+    "name": "Louis Pasteur",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Louis_Pasteur%2C_foto_av_Paul_Nadar%2C_Crisco_edit.jpg",
+    "traits": ["biologist", "chemist", "pasteurization", "born_before_1950", "european", "from_france", "male"]
+  },
+  {
+    "id": "marie-curie",
+    "name": "Marie Curie",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Marie_Curie_c1920.jpg",
+    "traits": ["female", "physicist", "chemist", "nobel", "radioactivity", "born_before_1950", "european", "from_france"]
+  },
+  {
+    "id": "nikola-tesla",
+    "name": "Nikola Tesla",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/77/Tesla_Sarony.jpg",
+    "traits": ["inventor", "physicist", "engineer", "electricity", "ac_current", "born_before_1950", "european", "from_serbia", "male"]
+  },
+  {
+    "id": "thomas-edison",
+    "name": "Thomas Edison",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Thomas_Edison2.jpg",
+    "traits": ["inventor", "engineer", "light_bulb", "dc_current", "born_before_1950", "from_usa", "male"]
+  },
+  {
+    "id": "james-watt",
+    "name": "James Watt",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/06/James_Watt_portrait.jpg",
+    "traits": ["inventor", "engineer", "steam_engine", "industrial_revolution", "born_before_1950", "european", "from_uk", "male"]
+  },
+  {
+    "id": "guglielmo-marconi",
+    "name": "Guglielmo Marconi",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Guglielmo_Marconi.jpg",
+    "traits": ["inventor", "engineer", "radio", "wireless", "nobel", "born_before_1950", "european", "from_italy", "male"]
+  },
+  {
+    "id": "ada-lovelace",
+    "name": "Ada Lovelace",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Ada_Lovelace_portrait.jpg",
+    "traits": ["female", "mathematician", "computer_pioneer", "born_before_1950", "european", "from_uk", "first_programmer"]
+  },
+  {
+    "id": "grace-hopper",
+    "name": "Grace Hopper",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Commodore_Grace_M._Hopper%2C_USN_%28covered%29.jpg",
+    "traits": ["female", "engineer", "inventor", "computer_pioneer", "programming", "compiler", "born_before_1950", "from_usa", "navy"]
+  }
+]
