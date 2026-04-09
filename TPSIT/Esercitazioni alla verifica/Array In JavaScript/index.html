@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Dati</title>
+</head>
+<body>
+
+<h1>Gestione Dati</h1>
+
+<p id="dati"></p>
+<p id="messaggio"></p>
+
+<button onclick="aggiungi()">Aggiungi</button>
+<button onclick="cerca()">Cerca</button>
+<button onclick="elimina()">Elimina</button>
+<button onclick="visualizza()">Visualizza</button>
+
+<script>
+// ===== ARRAY =====
+let array1 = [];
+let array2 = [];
+let array3 = [];
+let i = 0;
+
+// ===== AGGIUNTA =====
+function aggiungi() {
+    let valore1 = prompt("Inserisci Nome");
+    let valore2 = prompt("Inserisci Quantita") * 1;
+    let valore3 = prompt("Inserisci Prezzo") * 1;
+
+    array1[i] = valore1;
+    array2[i] = valore2;
+    array3[i] = valore3;
+
+    i++;
+
+    alert("Elemento inserito correttamente");
+}
+
+// ===== VISUALIZZA =====
+function visualizza() {
+    document.getElementById("dati").innerHTML = "";
+
+    let risultato;
+
+    for (let j = 0; j < array1.length; j++) {
+
+        risultato = array2[j] * array3[j];
+
+        document.getElementById("dati").innerHTML +=
+            j + " - " +
+            array1[j] + " " +
+            array2[j] + " x " +
+            array3[j] + " = " +
+            risultato + "<br/>";
+    }
+}
+
+// ===== RICERCA =====
+function ricercaElemento(valore) {
+    for (let j = 0; j < array1.length; j++) {
+        if (array1[j] == valore) {
+            return j;
+        }
+    }
+    return -1;
+}
+
+// ===== CERCA =====
+function cerca() {
+    let valore = prompt("Cosa cerchi?");
+    let risultato = ricercaElemento(valore);
+
+    if (risultato == -1) {
+        document.getElementById("messaggio").innerHTML = "Elemento non trovato";
+    } else {
+        document.getElementById("messaggio").innerHTML =
+            array1[risultato] + " " +
+            array2[risultato] + " x " +
+            array3[risultato];
+    }
+}
+
+// ===== ELIMINA =====
+function elimina() {
+    let valore = prompt("Cosa vuoi eliminare?");
+    let risultato = ricercaElemento(valore);
+
+    if (risultato == -1) {
+        alert("Elemento non trovato");
+    } else {
+        array1.splice(risultato, 1);
+        array2.splice(risultato, 1);
+        array3.splice(risultato, 1);
+
+        i--;
+
+        alert("Elemento eliminato");
+        visualizza();
+    }
+}
+</script>
+</body>
+</html>
