@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Noleggio Film</title>
+        <script src="./script.js"></script>
+    </head>
+    <body>
+        <h1>Gestione Noleggio Film</h1>
+
+        <label>Titolo film:</label>
+        <input type="text" id="titolo">
+        <br>
+        <label>Nome utente:</label>
+        <input type="text" id="utente">
+        <br>
+        <label>Giorni noleggio:</label>
+        <input type="number" id="giorni">
+        <br><br>
+
+        <button onclick="registraNoleggio()">Registra noleggio</button>
+        <button onclick="controllaNoleggio()">Controlla noleggio</button>
+        <button onclick="restituisciFilm()">Restituisci film</button>
+        <button onclick="elencoNoleggi()">Elenco noleggi</button>
+
+        <p id="paragrafo">Nessun noleggio registrato</p>
+    </body>
+</html>
