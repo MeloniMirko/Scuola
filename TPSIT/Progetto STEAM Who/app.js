@@ -152,9 +152,23 @@ function seedCharacter(id, name, image, trueKeys) {
 }
 
 async function loadGameData() {
+    if (window.GENIO_DATA?.questions && window.GENIO_DATA?.characters) {
+        const questions = window.GENIO_DATA.questions;
+        const characters = window.GENIO_DATA.characters;
+
+        QUESTION_BANK = Array.isArray(questions) ? questions : [];
+        TRAIT_KEYS = QUESTION_BANK.map(q => q.key);
+
+        const rawCharacters = Array.isArray(characters) ? characters : [];
+        LOCAL_SEED = rawCharacters.map(c =>
+            seedCharacter(c.id, c.name, toWikimediaThumb(c.image), c.traits)
+        );
+        return;
+    }
+
     const [questionsRes, charactersRes] = await Promise.all([
-        fetch("data/questions.json"),
-        fetch("data/characters.json")
+        fetch("./data/questions.json"),
+        fetch("./data/characters.json")
     ]);
 
     if (!questionsRes.ok || !charactersRes.ok) {

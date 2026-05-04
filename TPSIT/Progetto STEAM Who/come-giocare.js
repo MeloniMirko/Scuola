@@ -85,6 +85,17 @@ function fromWikimediaThumb(url) {
 }
 
 async function loadCharacters() {
+    if (window.GENIO_DATA?.characters) {
+        const list = Array.isArray(window.GENIO_DATA.characters)
+            ? window.GENIO_DATA.characters
+            : [];
+
+        return list.map(c => ({
+            name: c.name,
+            image: sanitizeHttpUrl(toWikimediaThumb(c.image))
+        }));
+    }
+
     const response = await fetch(CHARACTERS_JSON_URL);
     if (!response.ok) {
         throw new Error("Errore nel caricamento dei personaggi.");
