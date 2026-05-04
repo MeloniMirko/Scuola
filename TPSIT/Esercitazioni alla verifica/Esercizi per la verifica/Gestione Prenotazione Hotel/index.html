@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Prenotazioni Hotel</title>
+        <script src="./script.js"></script>
+    </head>
+    <body>
+        <h1>Gestione Prenotazioni Hotel</h1>
+
+        <label>Numero stanza:</label>
+        <input type="text" id="stanza">
+        <br>
+        <label>Nome cliente:</label>
+        <input type="text" id="cliente">
+        <br>
+        <label>Numero notti:</label>
+        <input type="number" id="notti">
+        <br><br>
+
+        <button onclick="registraPrenotazione()">Registra prenotazione</button>
+        <button onclick="controllaPrenotazione()">Controlla prenotazione</button>
+        <button onclick="cancellaPrenotazione()">Cancella prenotazione</button>
+        <button onclick="elencoPrenotazioni()">Elenco prenotazioni</button>
+
+        <p id="paragrafo">Nessuna prenotazione registrata</p>
+    </body>
+</html>

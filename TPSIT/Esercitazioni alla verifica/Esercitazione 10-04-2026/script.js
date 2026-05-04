@@ -1,41 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Gestione Prestiti</title>
-</head>
-<body>
-
-<h2>Biblioteca - Prestiti</h2>
-
-<!-- INPUT -->
-<input type="text" id="libro" placeholder="Titolo libro"><br><br>
-<input type="text" id="utente" placeholder="Nome utente"><br><br>
-<input type="number" id="giorni" placeholder="Giorni prestito"><br><br>
-
-<!-- OUTPUT -->
-<p id="output">Nessun prestito registrato</p>
-
-<!-- BOTTONI -->
-<button onclick="registra()">Registra prestito</button>
-<button onclick="controlla()">Controlla prestito</button>
-<button onclick="restituisci()">Restituisci libro</button>
-<button onclick="elenco()">Elenco prestiti</button>
-
-<script>
-
-// =======================
-// ARRAY PARALLELI
-// =======================
 let libri = [];
 let utenti = [];
 let giorni = [];
-let i = 0; // indice inserimento
+let i = 0;
 
-
-// =======================
-// FUNZIONE CERCA (IMPORTANTISSIMA)
-// ritorna posizione oppure -1
-// =======================
+// funzione cerca (come il prof)
 function cerca(titolo) {
     for (let k = 0; k < libri.length; k++) {
         if (titolo == libri[k]) {
@@ -45,86 +13,66 @@ function cerca(titolo) {
     return -1;
 }
 
-
-// =======================
 // 1. REGISTRA PRESTITO
-// =======================
 function registra() {
-
-    // leggo input
     let libro = document.getElementById("libro").value;
     let utente = document.getElementById("utente").value;
     let giorno = document.getElementById("giorni").value;
 
-    // controllo campi vuoti
     if (libro == "" || utente == "" || giorno == "") {
         alert("Compila tutti i campi");
         return;
     }
 
-    // controllo se già esiste
-    let pos = cerca(libro);
+    let posizione = cerca(libro);
 
-    if (pos >= 0) {
+    if (posizione >= 0) {
         alert("Libro già in prestito");
     } else {
-
-        // inserimento negli array
         libri[i] = libro;
         utenti[i] = utente;
         giorni[i] = giorno;
         i++;
 
-        alert("Prestito registrato");
+        alert("Prestito registrato correttamente");
 
-        // svuota campi
+        // svuota input
         document.getElementById("libro").value = "";
         document.getElementById("utente").value = "";
         document.getElementById("giorni").value = "";
     }
 }
 
-
-// =======================
 // 2. CONTROLLA PRESTITO
-// =======================
 function controlla() {
-
     let titolo = prompt("Inserisci titolo libro");
+    let posizione = cerca(titolo);
 
-    let pos = cerca(titolo);
-
-    if (pos < 0) {
+    if (posizione < 0) {
         alert("Libro non presente");
     } else {
         document.getElementById("output").innerHTML =
-            "Utente: " + utenti[pos] +
-            " - Giorni: " + giorni[pos];
+            "Utente: " + utenti[posizione] +
+            " - Giorni: " + giorni[posizione];
     }
 }
 
-
-// =======================
 // 3. RESTITUISCI LIBRO
-// =======================
 function restituisci() {
-
     let titolo = prompt("Inserisci titolo da restituire");
+    let posizione = cerca(titolo);
 
-    let pos = cerca(titolo);
-
-    if (pos < 0) {
+    if (posizione < 0) {
         alert("Libro non trovato");
     } else {
 
-        // shift (sposta elementi a sinistra)
-        for (let k = pos; k < libri.length - 1; k++) {
+        // shift manuale (stile semplice)
+        for (let k = posizione; k < libri.length - 1; k++) {
             libri[k] = libri[k + 1];
             utenti[k] = utenti[k + 1];
             giorni[k] = giorni[k + 1];
         }
 
-        // accorcia array
         libri.length--;
         utenti.length--;
         giorni.length--;
@@ -135,12 +83,8 @@ function restituisci() {
     }
 }
 
-
-// =======================
 // 4. ELENCO PRESTITI
-// =======================
 function elenco() {
-
     let testo = "";
 
     for (let k = 0; k < libri.length; k++) {
@@ -153,8 +97,3 @@ function elenco() {
 
     document.getElementById("output").innerHTML = testo;
 }
-
-</script>
-
-</body>
-</html>
