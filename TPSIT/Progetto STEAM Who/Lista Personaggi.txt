@@ -1,0 +1,26 @@
+1 Alan Turing
+2 Albert Einstein
+3 Alessandro Volta
+4 Bill Gates
+5 Blaise Pascal
+6 Cartesio
+7 Charles Darwin
+8 Elon Musk
+9 Enrico Fermi
+10 Galileo Galilei
+11 Isaac Newton
+12 Jeff Bezos
+13 John von Neumann
+14 Leonardo da Vinci
+15 Louis Pasteur
+16 Marie Curie
+16 Mark Zuckerberg
+17 Michael Faraday
+18 Nikola Tesla
+19 Pierre Curie
+20 Robert Oppenheimer
+21 Stephen Hawking
+22 Steve Jobs
+23 Thomas Edison
+24 James Watt
+25 Guglielmo Marcon

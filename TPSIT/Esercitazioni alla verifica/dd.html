@@ -1,0 +1,121 @@
+// Array paralleli
+let libri = [];
+let utenti = [];
+let giorni = [];
+
+// 1. REGISTRA PRESTITO
+function registraPrestito() {
+    let titolo = document.getElementById("libro").value;
+    let nome = document.getElementById("utente").value;
+    let numGiorni = document.getElementById("giorni").value;
+
+    if (titolo == "" || nome == "" || numGiorni == "") {
+        alert("Inserire tutti i campi");
+        return;
+    }
+
+    let posizione = cercaLibro(titolo);
+
+    if (posizione != -1) {
+        alert("Libro già in prestito");
+    } else {
+        libri.push(titolo);
+        utenti.push(nome);
+        giorni.push(numGiorni);
+
+        alert("Prestito registrato correttamente");
+
+        // svuota campi
+        document.getElementById("libro").value = "";
+        document.getElementById("utente").value = "";
+        document.getElementById("giorni").value = "";
+    }
+}
+
+// 2. CONTROLLA PRESTITO
+function controllaPrestito() {
+    let titolo = prompt("Inserisci il titolo del libro:");
+
+    let posizione = cercaLibro(titolo);
+
+    if (posizione == -1) {
+        alert("Libro non presente");
+    } else {
+        document.getElementById("output").innerHTML =
+            "Libro: " + libri[posizione] + "<br>" +
+            "Utente: " + utenti[posizione] + "<br>" +
+            "Giorni: " + giorni[posizione];
+    }
+}
+
+// 3. RESTITUISCI LIBRO
+function restituisciLibro() {
+    let titolo = prompt("Inserisci il titolo del libro da restituire:");
+
+    let posizione = cercaLibro(titolo);
+
+    if (posizione == -1) {
+        alert("Libro non trovato");
+    } else {
+        libri.splice(posizione, 1);
+        utenti.splice(posizione, 1);
+        giorni.splice(posizione, 1);
+
+        alert("Libro restituito");
+    }
+}
+
+// 4. ELENCO PRESTITI
+function elencoPrestiti() {
+    let testo = "";
+
+    if (libri.length == 0) {
+        testo = "Nessun prestito registrato";
+    } else {
+        for (let i = 0; i < libri.length; i++) {
+            testo += libri[i] + " - " + utenti[i] + " - " + giorni[i] + " giorni<br>";
+        }
+    }
+
+    document.getElementById("output").innerHTML = testo;
+}
+
+// FUNZIONE DI SUPPORTO
+function cercaLibro(titolo) {
+    for (let i = 0; i < libri.length; i++) {
+        if (libri[i] == titolo) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestione Prestiti Biblioteca</title>
+</head>
+<body>
+
+<h2>Gestione Prestiti</h2>
+
+<input type="text" id="libro" placeholder="Titolo libro"><br><br>
+<input type="text" id="utente" placeholder="Nome utente"><br><br>
+<input type="number" id="giorni" placeholder="Giorni prestito"><br><br>
+
+<button onclick="registraPrestito()">Registra prestito</button>
+<button onclick="controllaPrestito()">Controlla prestito</button>
+<button onclick="restituisciLibro()">Restituisci libro</button>
+<button onclick="elencoPrestiti()">Elenco prestiti</button>
+
+<p id="output">Nessun prestito registrato</p>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
