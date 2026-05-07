@@ -60,3 +60,33 @@ function cerca()
         pagine[posizione] +
         " pagine";
 }
+
+function preleva()
+{
+    let prodotto =
+        document.getElementById("prodotto").value;
+
+    let qta = parseInt(
+        document.getElementById("quantita").value
+    );
+
+    let posizione = prodotti.indexOf(prodotto);
+
+    if(posizione == -1)
+    {
+        alert("Prodotto non trovato");
+
+        return;
+    }
+
+    if(quantita[posizione] < qta)
+    {
+        alert("Quantità insufficiente");
+
+        return;
+    }
+
+    quantita[posizione] -= qta;
+
+    alert("Prelievo effettuato");
+}
