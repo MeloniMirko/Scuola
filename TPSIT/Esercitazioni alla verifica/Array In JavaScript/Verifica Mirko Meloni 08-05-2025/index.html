@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreria Digitale</title>
+    <script src="./Script.js"></script>
+</head>
+<body>
+
+    <h1>Libreria Digitale</h1>
+
+    <input type="text" id="libro" placeholder="Inserisci Titolo Del Libro">
+    <input type="text" id="autore" placeholder="Inserisci Nome Autore">
+
+   
+
+    <button onclick="Aggiungi()">
+        Aggiungi Libro
+    </button>
+
+    <button onclick="Cerca()">
+        Cerca Per Titolo
+    </button>
+
+    <button onclick="Vedi()">
+        Vedi Libreria
+    </button>
+
+    <button onclick="Elimina()">
+        Elimina Un Libro
+    </button>
+
+     <br><br>
+
+    <table border="1"> 
+        <tr>
+            <th>
+                <p>Titolo Libro</p>
+                
+            </th>
+            <th>
+                <p>Autore</p>
+               
+            </th>   
+
+        </tr>
+        <tr>
+            <td>
+                <p id="outputlibri"></p>
+            </td>
+
+            <td>
+                <p id="outputautori"></p>
+            </td>
+        </tr>
+        
+    </table>
+
+    <div id="output"></div>
+
+    <h1>Vecchi titoli</h1>
+
+    <p id="VecchiTitoli">Pensa bambino pensa</p>
+
+    <button onclick="AggiungiVecchioTitolo()">
+        aggiungi alla libreria
+    </button>
+
+   
+</body>
+</html>
