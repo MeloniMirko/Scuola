@@ -6,14 +6,14 @@ function Aggiungi(){
     let libro = document.getElementById("libro").value;
     let autore =document.getElementById("autore").value;
 
-    if(libro ==""| autore ==""){
+    if(libro =="\" || autore ==""){
         alert("Errore nell'inserimento dei campi , Riprovare");
 
         return;
     }
 
     let posizione = libri.indexOf(libro);
-
+  
     if (posizione != -1){
         alert("Il Libro è gia esistente");
 
