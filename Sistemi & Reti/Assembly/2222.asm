@@ -1,6 +1,0 @@
-org 100h
-MOV AL, 40h
-MOV BL, 02h
-MUL BL
-ADD AL,03h
-ret
