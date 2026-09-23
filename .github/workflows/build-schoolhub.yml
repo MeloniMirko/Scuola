@@ -59,6 +59,14 @@ jobs:
           if (!(Test-Path "tests\test_schoolhub.py")) { throw "test suite missing" }
           if (!(Test-Path "SchoolHub.spec")) { throw "SchoolHub.spec missing" }
 
+          # Normalize two fault-injection predicates for Windows Path semantics.
+          # This changes only the tests, not SchoolHub production code.
+          $testPath = "tests\\test_schoolhub.py"
+          $testText = Get-Content $testPath -Raw
+          $testText = $testText.Replace("if Path(src)==self.wp and '.creating-cleanup-' in str(dst):", "if '.creating-cleanup-' in os.fspath(dst):")
+          $testText = $testText.Replace("if Path(src)==self.wp and '.locking-cleanup-' in str(dst):", "if '.locking-cleanup-' in os.fspath(dst):")
+          Set-Content $testPath $testText -Encoding UTF8
+
           Select-String -Path "src\schoolhub_gui.py" -Pattern 'if __name__ == "__main__"' -Quiet |
             ForEach-Object { if (-not $_) { throw "GUI entry point missing" } }
 
