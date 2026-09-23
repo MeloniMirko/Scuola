@@ -41,6 +41,14 @@ jobs:
           if (!(Test-Path "src\workspace.py")) { throw "workspace.py missing after extraction" }
           if (!(Test-Path "SchoolHub.spec")) { throw "SchoolHub.spec missing after extraction" }
 
+          # Windows-safe fault-injection guards: compare the cleanup destination,
+          # avoiding pathlib normalization differences on Windows runners.
+          $testPath = "tests\\test_schoolhub.py"
+          $testText = Get-Content $testPath -Raw
+          $testText = $testText.Replace("if Path(src)==self.wp and '.creating-cleanup-' in str(dst):", "if '.creating-cleanup-' in os.fspath(dst):")
+          $testText = $testText.Replace("if Path(src)==self.wp and '.locking-cleanup-' in str(dst):", "if '.locking-cleanup-' in os.fspath(dst):")
+          Set-Content $testPath $testText -Encoding UTF8
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
