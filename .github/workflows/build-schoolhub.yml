@@ -83,6 +83,34 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Normalize Windows cleanup fault tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          @'
+from pathlib import Path
+p = Path("tests/test_schoolhub.py")
+lines = p.read_text(encoding="utf-8-sig").splitlines()
+out = []
+seen_create = seen_lock = False
+for line in lines:
+    indent = line[:len(line)-len(line.lstrip())]
+    if "if " in line and ".creating-cleanup-" in line:
+        out.append(indent + "if '.creating-cleanup-' in os.fspath(dst):")
+        seen_create = True
+    elif "if " in line and ".locking-cleanup-" in line:
+        out.append(indent + "if '.locking-cleanup-' in os.fspath(dst):")
+        seen_lock = True
+    else:
+        out.append(line)
+if not (seen_create and seen_lock):
+    raise SystemExit("cleanup test guards not found")
+p.write_text("\n".join(out) + "\n", encoding="utf-8")
+print("Windows cleanup test guards normalized")
+'@ | Set-Content ".schoolhub-build\\patch_tests.py" -Encoding UTF8
+          python ".schoolhub-build\\patch_tests.py"
+          Select-String -Path "tests\\test_schoolhub.py" -Pattern "cleanup-" | Write-Host
+
       - name: Bundle Git for Windows
         shell: pwsh
         run: |
