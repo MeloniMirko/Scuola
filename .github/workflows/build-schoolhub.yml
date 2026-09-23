@@ -63,19 +63,25 @@ jobs:
               raise SystemExit('APP_VERSION marker not found')
           gui = gui.replace('APP_VERSION = "2.2.0"', 'APP_VERSION = "2.3.0"', 1)
           
-          marker = 'root.mainloop()'
-          if gui.count(marker) != 1:
-              raise SystemExit(f'Expected one root.mainloop(), got {gui.count(marker)}')
-          replacement = '''try:
-                  import pyi_splash
-                  if pyi_splash.is_alive():
-                      pyi_splash.update_text("SchoolHub pronto")
-                      pyi_splash.close()
-              except Exception:
-                  pass
-          
-              root.mainloop()'''
-          gui = gui.replace(marker, replacement, 1)
+          lines = gui.splitlines()
+          matches = [i for i, line in enumerate(lines) if line.strip() == 'root.mainloop()']
+          if len(matches) != 1:
+              raise SystemExit(f'Expected one root.mainloop(), got {len(matches)}')
+          i = matches[0]
+          indent = lines[i][:len(lines[i]) - len(lines[i].lstrip())]
+          block = [
+              indent + 'try:',
+              indent + '    import pyi_splash',
+              indent + '    if pyi_splash.is_alive():',
+              indent + '        pyi_splash.update_text("SchoolHub pronto")',
+              indent + '        pyi_splash.close()',
+              indent + 'except Exception:',
+              indent + '    pass',
+              '',
+              indent + 'root.mainloop()',
+          ]
+          lines[i:i+1] = block
+          gui = '\n'.join(lines) + '\n'
           gui_path.write_text(gui, encoding='utf-8')
           (root / 'VERSION.txt').write_text('2.3.0\n', encoding='utf-8')
           
