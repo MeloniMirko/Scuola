@@ -6,7 +6,7 @@ on:
       - schoolhub-build
     paths:
       - ".github/workflows/build-schoolhub.yml"
-      - ".schoolhub-v2.1/**"
+      - ".schoolhub-v2.2/**"
   workflow_dispatch:
 
 permissions:
@@ -15,18 +15,18 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 45
+    timeout-minutes: 50
 
     steps:
       - name: Checkout build branch
         uses: actions/checkout@v4
 
-      - name: Reconstruct and verify SchoolHub v2 source
+      - name: Reconstruct and verify SchoolHub 2.2 source
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $parts = Get-ChildItem ".schoolhub-v2.1\source.part*" | Sort-Object Name
-          if ($parts.Count -ne 6) { throw "Expected 6 SchoolHub v2 source parts, got $($parts.Count)" }
+          $parts = Get-ChildItem ".schoolhub-v2.2\source.part*" | Sort-Object Name
+          if ($parts.Count -ne 31) { throw "Expected 31 SchoolHub 2.2 source parts, got $($parts.Count)" }
 
           $b64 = [System.Text.StringBuilder]::new()
           foreach ($part in $parts) {
@@ -34,36 +34,35 @@ jobs:
           }
 
           $bytes = [Convert]::FromBase64String($b64.ToString())
-          [IO.File]::WriteAllBytes("schoolhub_v2_source.tar.xz", $bytes)
+          [IO.File]::WriteAllBytes("schoolhub_v2_2_source.tar.xz", $bytes)
+          $actualHash = (Get-FileHash "schoolhub_v2_2_source.tar.xz" -Algorithm SHA256).Hash.ToLower()
+          $expectedHash = "11a25bb9e4b54868a2754b15d3c665b5384fb24cc06946a3fb0f29af6f135ba8"
+          if ($actualHash -ne $expectedHash) { throw "Source bundle SHA256 mismatch: $actualHash" }
 
-          $actualHash = (Get-FileHash "schoolhub_v2_source.tar.xz" -Algorithm SHA256).Hash.ToLower()
-          $expectedHash = "2e6cffe523102548bb43a351cf3008d4ea7cc31c17a37fdecbd1f277affd42e7"
-          if ($actualHash -ne $expectedHash) {
-            throw "Source bundle SHA256 mismatch: $actualHash"
-          }
-
-          tar -xf "schoolhub_v2_source.tar.xz"
-          @("src\schoolhub_gui.py","src\workspace.py","src\updater.py","tests\test_schoolhub.py","SchoolHub.spec","VERSION.txt") |
-            ForEach-Object { if (!(Test-Path $_)) { throw "Missing source file: $_" } }
+          tar -xf "schoolhub_v2_2_source.tar.xz"
+          @(
+            "src\schoolhub_gui.py",
+            "src\workspace.py",
+            "tests\test_schoolhub.py",
+            "tests\test_media_streaming.py",
+            "SchoolHub.spec",
+            "VERSION.txt",
+            "schoolhub.ico",
+            "schoolhub_icon.png"
+          ) | ForEach-Object { if (!(Test-Path $_)) { throw "Missing source file: $_" } }
 
       - name: Privacy audit
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
           @'
-          import pathlib, re, sys
+          import pathlib, re
           root = pathlib.Path(".")
-          files = [
-              root/"src"/"schoolhub_gui.py",
-              root/"src"/"workspace.py",
-              root/"src"/"updater.py",
-              root/"tests"/"test_schoolhub.py",
-          ]
+          files = [root/"src"/"schoolhub_gui.py", root/"src"/"workspace.py"]
           forbidden = {
               "GitHub PAT": re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
               "GitHub classic token": re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
               "private key": re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
-              "old public data remote": re.compile(r"https://github\.com/MeloniMirko/Scuola\.git", re.I),
           }
           for p in files:
               text = p.read_text(encoding="utf-8")
@@ -75,9 +74,11 @@ jobs:
               raise SystemExit("Privacy audit failed: default data remote must be empty")
           if '"auto_sync": False' not in gui:
               raise SystemExit("Privacy audit failed: auto sync must default to false")
+          if 'APP_VERSION = "2.2.0"' not in gui:
+              raise SystemExit("Version constant mismatch")
           print("Privacy audit OK")
-          '@ | Set-Content ".schoolhub-v2.1\privacy_audit.py" -Encoding UTF8
-          python ".schoolhub-v2.1\privacy_audit.py"
+          '@ | Set-Content ".schoolhub-v2.2\privacy_audit.py" -Encoding UTF8
+          python ".schoolhub-v2.2\privacy_audit.py"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -98,9 +99,7 @@ jobs:
           $ErrorActionPreference = "Stop"
           $gitCmd = (Get-Command git.exe).Source
           $gitRoot = Split-Path (Split-Path $gitCmd -Parent) -Parent
-          if (!(Test-Path (Join-Path $gitRoot "cmd\git.exe"))) {
-            throw "Could not determine Git for Windows root"
-          }
+          if (!(Test-Path (Join-Path $gitRoot "cmd\git.exe"))) { throw "Could not determine Git for Windows root" }
           New-Item -ItemType Directory -Force "vendor" | Out-Null
           Copy-Item $gitRoot "vendor\git" -Recurse -Force
           & "vendor\git\cmd\git.exe" --version
@@ -136,9 +135,10 @@ jobs:
           $result | ConvertTo-Json -Depth 8
           if (-not $result.ok) { throw "EXE self-test reported failure" }
           if (-not $result.checks.vault_roundtrip) { throw "Vault round-trip failed" }
+          if (-not $result.checks.media_streaming) { throw "Media streaming encryption failed" }
           if (-not $result.checks.git_bundled) { throw "EXE did not use bundled Git" }
           if (-not $result.checks.safe_default_remote) { throw "Unsafe default remote" }
-          if ($result.checks.version -ne "2.1.0") { throw "Unexpected EXE version" }
+          if ($result.checks.version -ne "2.2.0") { throw "Unexpected EXE version" }
 
       - name: GUI startup smoke test
         shell: pwsh
@@ -147,9 +147,7 @@ jobs:
           $p = Start-Process ".\dist\SchoolHub.exe" -PassThru
           Start-Sleep -Seconds 8
           $p.Refresh()
-          if ($p.HasExited) {
-            throw "SchoolHub GUI exited during startup (code $($p.ExitCode))"
-          }
+          if ($p.HasExited) { throw "SchoolHub GUI exited during startup (code $($p.ExitCode))" }
           Stop-Process -Id $p.Id -Force
 
       - name: Generate checksum
@@ -162,7 +160,7 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SchoolHub-Windows-OneFile-v2.1.0
+          name: SchoolHub-Windows-OneFile-v2.2.0
           path: |
             dist/SchoolHub.exe
             dist/SchoolHub.exe.sha256.txt
@@ -177,18 +175,23 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = "Stop"
-          $tag = "schoolhub-v2.1.0"
-          $title = "SchoolHub 2.1.0"
+          $tag = "schoolhub-v2.2.0"
+          $title = "SchoolHub 2.2.0"
           $notes = @"
-          SchoolHub 2.1.0
+          SchoolHub 2.2.0
 
-          - Blocca la sincronizzazione verso repository GitHub pubblici.
-          - Nessun repository dati preconfigurato e auto-sync disattivata nelle migrazioni pre-v5.
-          - Git con timeout: niente sincronizzazioni infinite.
+          - Nuova interfaccia grafica e icona SchoolHub.
+          - Versione visibile nelle Impostazioni e controllo aggiornamenti integrato.
+          - Nuova finestra password con mostra/nascondi e conferma.
+          - Finestra di avanzamento con percentuale, fase reale, file corrente e tempo trascorso.
+          - Cifratura SHENC2 a blocchi per immagini, audio, video e file grandi.
+          - Compatibilità in lettura con i Vault SHENC1 precedenti.
+          - Git con timeout massimo: niente sync infinite.
           - Clone shallow per ridurre tempi e traffico.
-          - Aggiornamento automatico verificato con SHA-256, senza reinstallazione.\n          - Cifratura SHENC2 a blocchi per immagini, audio, video e file grandi senza caricarli interamente in RAM.\n          - Compatibilità in lettura con i Vault SHENC1 creati dalle versioni precedenti.\n          - Rilevamento di file cifrati troncati o danneggiati.
+          - Repository dati pubblico bloccato; nessun repository dati predefinito.
+          - Aggiornamento automatico verificato SHA-256 senza reinstallazione.
           - Git for Windows incorporato nell'EXE.
-          - 25 test sorgente + self-test EXE + smoke test GUI Windows.
+          - 20 test sorgente + self-test EXE + smoke test GUI Windows.
           "@
 
           if (gh release view $tag --repo "$env:GITHUB_REPOSITORY" *> $null) {
