@@ -1,0 +1,137 @@
+name: Build SchoolHub Windows EXE
+
+on:
+  push:
+    branches:
+      - schoolhub-build
+    paths:
+      - ".github/workflows/build-schoolhub.yml"
+      - ".schoolhub-build/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout build branch
+        uses: actions/checkout@v4
+
+      - name: Reconstruct SchoolHub source bundle
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $parts = Get-ChildItem ".schoolhub-build\source.part*" | Sort-Object Name
+          if ($parts.Count -lt 1) { throw "Source bundle parts not found" }
+
+          $b64 = [System.Text.StringBuilder]::new()
+          foreach ($part in $parts) {
+            [void]$b64.Append((Get-Content $part.FullName -Raw).Trim())
+          }
+
+          $bytes = [Convert]::FromBase64String($b64.ToString())
+          [IO.File]::WriteAllBytes("schoolhub_source_bundle.tar.xz", $bytes)
+          tar -xf "schoolhub_source_bundle.tar.xz"
+
+          if (!(Test-Path "src\schoolhub_gui.py")) { throw "schoolhub_gui.py missing after extraction" }
+          if (!(Test-Path "src\workspace.py")) { throw "workspace.py missing after extraction" }
+          if (!(Test-Path "SchoolHub.spec")) { throw "SchoolHub.spec missing after extraction" }
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install Python build dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Bundle Git for Windows runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $gitCmd = (Get-Command git.exe).Source
+          Write-Host "Runner Git: $gitCmd"
+          $gitRoot = Split-Path (Split-Path $gitCmd -Parent) -Parent
+
+          if (!(Test-Path (Join-Path $gitRoot "cmd\git.exe"))) {
+            throw "Could not determine Git for Windows root: $gitRoot"
+          }
+
+          New-Item -ItemType Directory -Force "vendor" | Out-Null
+          Copy-Item $gitRoot "vendor\git" -Recurse -Force
+
+          if (!(Test-Path "vendor\git\cmd\git.exe")) {
+            throw "Bundled git.exe missing"
+          }
+
+          & "vendor\git\cmd\git.exe" --version
+
+      - name: Run source test suite
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          python -m unittest discover -s tests -v
+
+      - name: Build one-file Windows EXE
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          python -m PyInstaller --clean --noconfirm SchoolHub.spec
+          if (!(Test-Path "dist\SchoolHub.exe")) {
+            throw "SchoolHub.exe was not produced"
+          }
+          Get-Item "dist\SchoolHub.exe" | Format-List Name,Length,FullName
+
+      - name: Self-test compiled EXE
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $out = Join-Path $PWD "dist\selftest.json"
+          & ".\dist\SchoolHub.exe" --self-test $out
+          if ($LASTEXITCODE -ne 0) { throw "SchoolHub.exe self-test exited with code $LASTEXITCODE" }
+          if (!(Test-Path $out)) { throw "Self-test result file missing" }
+
+          $result = Get-Content $out -Raw | ConvertFrom-Json
+          $result | ConvertTo-Json -Depth 8
+          if (-not $result.ok) { throw "Compiled EXE self-test reported failure: $($result.error)" }
+          if (-not $result.checks.vault_roundtrip) { throw "Vault round-trip did not pass" }
+          if (-not $result.checks.git_bundled) { throw "The compiled EXE is not using bundled Git" }
+
+      - name: GUI startup smoke test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $p = Start-Process ".\dist\SchoolHub.exe" -PassThru
+          Start-Sleep -Seconds 8
+          $p.Refresh()
+          if ($p.HasExited) {
+            throw "SchoolHub GUI exited during startup (code $($p.ExitCode))"
+          }
+          Stop-Process -Id $p.Id -Force
+
+      - name: Generate checksum
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash ".\dist\SchoolHub.exe" -Algorithm SHA256).Hash.ToLower()
+          "$hash  SchoolHub.exe" | Set-Content ".\dist\SchoolHub.exe.sha256.txt" -Encoding ASCII
+          Get-Content ".\dist\SchoolHub.exe.sha256.txt"
+
+      - name: Upload final executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: SchoolHub-Windows-OneFile
+          path: |
+            dist/SchoolHub.exe
+            dist/SchoolHub.exe.sha256.txt
+            dist/selftest.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
