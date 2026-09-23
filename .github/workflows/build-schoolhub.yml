@@ -118,8 +118,11 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           $out = Join-Path $PWD "dist\selftest.json"
-          & ".\dist\SchoolHub.exe" --self-test $out
-          if ($LASTEXITCODE -ne 0) { throw "EXE self-test exited with code $LASTEXITCODE" }
+          $p = Start-Process ".\dist\SchoolHub.exe" -ArgumentList @("--self-test", $out) -PassThru -Wait
+          if ($p.ExitCode -ne 0) {
+            if (Test-Path $out) { Get-Content $out -Raw | Write-Host }
+            throw "EXE self-test exited with code $($p.ExitCode)"
+          }
           if (!(Test-Path $out)) { throw "Self-test result missing" }
 
           $result = Get-Content $out -Raw | ConvertFrom-Json
