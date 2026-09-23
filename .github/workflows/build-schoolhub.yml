@@ -6,11 +6,11 @@ on:
       - schoolhub-build
     paths:
       - ".github/workflows/build-schoolhub.yml"
-      - ".schoolhub-build/**"
+      - ".schoolhub-v2/**"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -21,54 +21,63 @@ jobs:
       - name: Checkout build branch
         uses: actions/checkout@v4
 
-      - name: Reconstruct and verify SchoolHub source
+      - name: Reconstruct and verify SchoolHub v2 source
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          $parts = Get-ChildItem ".schoolhub-v2\source.part*" | Sort-Object Name
+          if ($parts.Count -ne 6) { throw "Expected 6 SchoolHub v2 source parts, got $($parts.Count)" }
+
           $b64 = [System.Text.StringBuilder]::new()
-
-          for ($i = 0; $i -le 12; $i++) {
-            $plain = ".schoolhub-build\source.part{0:D2}" -f $i
-            $hex = "$plain.hex"
-
-            if (Test-Path $plain) {
-              $text = (Get-Content $plain -Raw).Trim()
-            } elseif (Test-Path $hex) {
-              $hexText = (Get-Content $hex -Raw).Trim()
-              $text = [System.Text.Encoding]::UTF8.GetString([Convert]::FromHexString($hexText))
-            } else {
-              throw "Missing source bundle part $i"
-            }
-
-            [void]$b64.Append($text)
+          foreach ($part in $parts) {
+            [void]$b64.Append((Get-Content $part.FullName -Raw).Trim())
           }
 
           $bytes = [Convert]::FromBase64String($b64.ToString())
-          [IO.File]::WriteAllBytes("schoolhub_source_bundle.tar.xz", $bytes)
+          [IO.File]::WriteAllBytes("schoolhub_v2_source.tar.xz", $bytes)
 
-          $actualHash = (Get-FileHash "schoolhub_source_bundle.tar.xz" -Algorithm SHA256).Hash.ToLower()
-          $expectedHash = "10382cf92c94723083168561a58b7d2438fe8696e4bb0635e5323f91bb1d260d"
+          $actualHash = (Get-FileHash "schoolhub_v2_source.tar.xz" -Algorithm SHA256).Hash.ToLower()
+          $expectedHash = "014ad1df99dbd43e19477e2fc1a292ad9077a7deab1923808c858b7293b19430"
           if ($actualHash -ne $expectedHash) {
             throw "Source bundle SHA256 mismatch: $actualHash"
           }
 
-          tar -xf "schoolhub_source_bundle.tar.xz"
+          tar -xf "schoolhub_v2_source.tar.xz"
+          @("src\schoolhub_gui.py","src\workspace.py","src\updater.py","tests\test_schoolhub.py","SchoolHub.spec","VERSION.txt") |
+            ForEach-Object { if (!(Test-Path $_)) { throw "Missing source file: $_" } }
 
-          if (!(Test-Path "src\schoolhub_gui.py")) { throw "schoolhub_gui.py missing" }
-          if (!(Test-Path "src\workspace.py")) { throw "workspace.py missing" }
-          if (!(Test-Path "tests\test_schoolhub.py")) { throw "test suite missing" }
-          if (!(Test-Path "SchoolHub.spec")) { throw "SchoolHub.spec missing" }
-
-          # Normalize two fault-injection predicates for Windows Path semantics.
-          # This changes only the tests, not SchoolHub production code.
-          $testPath = "tests\\test_schoolhub.py"
-          $testText = Get-Content $testPath -Raw
-          $testText = $testText.Replace("if Path(src)==self.wp and '.creating-cleanup-' in str(dst):", "if '.creating-cleanup-' in os.fspath(dst):")
-          $testText = $testText.Replace("if Path(src)==self.wp and '.locking-cleanup-' in str(dst):", "if '.locking-cleanup-' in os.fspath(dst):")
-          Set-Content $testPath $testText -Encoding UTF8
-
-          Select-String -Path "src\schoolhub_gui.py" -Pattern 'if __name__ == "__main__"' -Quiet |
-            ForEach-Object { if (-not $_) { throw "GUI entry point missing" } }
+      - name: Privacy audit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          @'
+          import pathlib, re, sys
+          root = pathlib.Path(".")
+          files = [
+              root/"src"/"schoolhub_gui.py",
+              root/"src"/"workspace.py",
+              root/"src"/"updater.py",
+              root/"tests"/"test_schoolhub.py",
+          ]
+          forbidden = {
+              "GitHub PAT": re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
+              "GitHub classic token": re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
+              "private key": re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
+              "old public data remote": re.compile(r"https://github\.com/MeloniMirko/Scuola\.git", re.I),
+          }
+          for p in files:
+              text = p.read_text(encoding="utf-8")
+              for label, pattern in forbidden.items():
+                  if pattern.search(text):
+                      raise SystemExit(f"Privacy audit failed: {label} found in {p}")
+          gui = (root/"src"/"schoolhub_gui.py").read_text(encoding="utf-8")
+          if 'DEFAULT_REMOTE = ""' not in gui:
+              raise SystemExit("Privacy audit failed: default data remote must be empty")
+          if '"auto_sync": False' not in gui:
+              raise SystemExit("Privacy audit failed: auto sync must default to false")
+          print("Privacy audit OK")
+          '@ | Set-Content ".schoolhub-v2\privacy_audit.py" -Encoding UTF8
+          python ".schoolhub-v2\privacy_audit.py"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -83,54 +92,21 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Normalize Windows cleanup fault tests
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "Stop"
-          $testPath = "tests\\test_schoolhub.py"
-          $lines = Get-Content $testPath
-          $seenCreate = $false
-          $seenLock = $false
-          $patched = foreach ($line in $lines) {
-            $indent = [regex]::Match($line, '^\s*').Value
-            if ($line -match "\.creating-cleanup-" -and $line -match "^\s*if ") {
-              $seenCreate = $true
-              $indent + "if '.creating-cleanup-' in os.fspath(dst):"
-            } elseif ($line -match "\.locking-cleanup-" -and $line -match "^\s*if ") {
-              $seenLock = $true
-              $indent + "if '.locking-cleanup-' in os.fspath(dst):"
-            } else {
-              $line
-            }
-          }
-          if (-not ($seenCreate -and $seenLock)) { throw "cleanup test guards not found" }
-          $patched | Set-Content $testPath -Encoding UTF8
-          Select-String -Path $testPath -Pattern "cleanup-" | Write-Host
-
       - name: Bundle Git for Windows
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
           $gitCmd = (Get-Command git.exe).Source
           $gitRoot = Split-Path (Split-Path $gitCmd -Parent) -Parent
-          Write-Host "Bundling Git from: $gitRoot"
-
           if (!(Test-Path (Join-Path $gitRoot "cmd\git.exe"))) {
             throw "Could not determine Git for Windows root"
           }
-
           New-Item -ItemType Directory -Force "vendor" | Out-Null
           Copy-Item $gitRoot "vendor\git" -Recurse -Force
-
-          if (!(Test-Path "vendor\git\cmd\git.exe")) {
-            throw "Bundled git.exe missing"
-          }
-
           & "vendor\git\cmd\git.exe" --version
           if ($LASTEXITCODE -ne 0) { throw "Bundled Git cannot start" }
 
       - name: Run source test suite
-        continue-on-error: true
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -156,14 +132,13 @@ jobs:
             if (Test-Path $out) { Get-Content $out -Raw | Write-Host }
             throw "EXE self-test exited with code $($p.ExitCode)"
           }
-          if (!(Test-Path $out)) { throw "Self-test result missing" }
-
           $result = Get-Content $out -Raw | ConvertFrom-Json
           $result | ConvertTo-Json -Depth 8
-
-          if (-not $result.ok) { throw "EXE self-test reported failure: $($result.error)" }
+          if (-not $result.ok) { throw "EXE self-test reported failure" }
           if (-not $result.checks.vault_roundtrip) { throw "Vault round-trip failed" }
           if (-not $result.checks.git_bundled) { throw "EXE did not use bundled Git" }
+          if (-not $result.checks.safe_default_remote) { throw "Unsafe default remote" }
+          if ($result.checks.version -ne "2.0.0") { throw "Unexpected EXE version" }
 
       - name: GUI startup smoke test
         shell: pwsh
@@ -172,11 +147,9 @@ jobs:
           $p = Start-Process ".\dist\SchoolHub.exe" -PassThru
           Start-Sleep -Seconds 8
           $p.Refresh()
-
           if ($p.HasExited) {
             throw "SchoolHub GUI exited during startup (code $($p.ExitCode))"
           }
-
           Stop-Process -Id $p.Id -Force
 
       - name: Generate checksum
@@ -186,10 +159,10 @@ jobs:
           "$hash  SchoolHub.exe" | Set-Content ".\dist\SchoolHub.exe.sha256.txt" -Encoding ASCII
           Get-Content ".\dist\SchoolHub.exe.sha256.txt"
 
-      - name: Upload final executable
+      - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SchoolHub-Windows-OneFile
+          name: SchoolHub-Windows-OneFile-v2.0.0
           path: |
             dist/SchoolHub.exe
             dist/SchoolHub.exe.sha256.txt
@@ -197,3 +170,30 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
+
+      - name: Publish auto-update release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $tag = "schoolhub-v2.0.0"
+          $title = "SchoolHub 2.0.0"
+          $notes = @"
+          SchoolHub 2.0.0
+
+          - Blocca la sincronizzazione verso repository GitHub pubblici.
+          - Nessun repository dati preconfigurato e auto-sync disattivata nelle migrazioni pre-v5.
+          - Git con timeout: niente sincronizzazioni infinite.
+          - Clone shallow per ridurre tempi e traffico.
+          - Aggiornamento automatico verificato con SHA-256, senza reinstallazione.
+          - Git for Windows incorporato nell'EXE.
+          - 21 test sorgente + self-test EXE + smoke test GUI Windows.
+          "@
+
+          if (gh release view $tag --repo "$env:GITHUB_REPOSITORY" *> $null) {
+            gh release upload $tag ".\dist\SchoolHub.exe#SchoolHub.exe" ".\dist\SchoolHub.exe.sha256.txt#SchoolHub.exe.sha256.txt" --clobber --repo "$env:GITHUB_REPOSITORY"
+            gh release edit $tag --title $title --notes $notes --latest --repo "$env:GITHUB_REPOSITORY"
+          } else {
+            gh release create $tag ".\dist\SchoolHub.exe#SchoolHub.exe" ".\dist\SchoolHub.exe.sha256.txt#SchoolHub.exe.sha256.txt" --target "$env:GITHUB_SHA" --title $title --notes $notes --latest --repo "$env:GITHUB_REPOSITORY"
+          }
