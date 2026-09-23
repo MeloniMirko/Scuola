@@ -6,7 +6,7 @@ on:
       - schoolhub-build
     paths:
       - ".github/workflows/build-schoolhub.yml"
-      - ".schoolhub-v2/**"
+      - ".schoolhub-v2.1/**"
   workflow_dispatch:
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $parts = Get-ChildItem ".schoolhub-v2\source.part*" | Sort-Object Name
+          $parts = Get-ChildItem ".schoolhub-v2.1\source.part*" | Sort-Object Name
           if ($parts.Count -ne 6) { throw "Expected 6 SchoolHub v2 source parts, got $($parts.Count)" }
 
           $b64 = [System.Text.StringBuilder]::new()
@@ -37,7 +37,7 @@ jobs:
           [IO.File]::WriteAllBytes("schoolhub_v2_source.tar.xz", $bytes)
 
           $actualHash = (Get-FileHash "schoolhub_v2_source.tar.xz" -Algorithm SHA256).Hash.ToLower()
-          $expectedHash = "014ad1df99dbd43e19477e2fc1a292ad9077a7deab1923808c858b7293b19430"
+          $expectedHash = "2e6cffe523102548bb43a351cf3008d4ea7cc31c17a37fdecbd1f277affd42e7"
           if ($actualHash -ne $expectedHash) {
             throw "Source bundle SHA256 mismatch: $actualHash"
           }
@@ -76,8 +76,8 @@ jobs:
           if '"auto_sync": False' not in gui:
               raise SystemExit("Privacy audit failed: auto sync must default to false")
           print("Privacy audit OK")
-          '@ | Set-Content ".schoolhub-v2\privacy_audit.py" -Encoding UTF8
-          python ".schoolhub-v2\privacy_audit.py"
+          '@ | Set-Content ".schoolhub-v2.1\privacy_audit.py" -Encoding UTF8
+          python ".schoolhub-v2.1\privacy_audit.py"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -138,7 +138,7 @@ jobs:
           if (-not $result.checks.vault_roundtrip) { throw "Vault round-trip failed" }
           if (-not $result.checks.git_bundled) { throw "EXE did not use bundled Git" }
           if (-not $result.checks.safe_default_remote) { throw "Unsafe default remote" }
-          if ($result.checks.version -ne "2.0.0") { throw "Unexpected EXE version" }
+          if ($result.checks.version -ne "2.1.0") { throw "Unexpected EXE version" }
 
       - name: GUI startup smoke test
         shell: pwsh
@@ -162,7 +162,7 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SchoolHub-Windows-OneFile-v2.0.0
+          name: SchoolHub-Windows-OneFile-v2.1.0
           path: |
             dist/SchoolHub.exe
             dist/SchoolHub.exe.sha256.txt
@@ -177,18 +177,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = "Stop"
-          $tag = "schoolhub-v2.0.0"
-          $title = "SchoolHub 2.0.0"
+          $tag = "schoolhub-v2.1.0"
+          $title = "SchoolHub 2.1.0"
           $notes = @"
-          SchoolHub 2.0.0
+          SchoolHub 2.1.0
 
           - Blocca la sincronizzazione verso repository GitHub pubblici.
           - Nessun repository dati preconfigurato e auto-sync disattivata nelle migrazioni pre-v5.
           - Git con timeout: niente sincronizzazioni infinite.
           - Clone shallow per ridurre tempi e traffico.
-          - Aggiornamento automatico verificato con SHA-256, senza reinstallazione.
+          - Aggiornamento automatico verificato con SHA-256, senza reinstallazione.\n          - Cifratura SHENC2 a blocchi per immagini, audio, video e file grandi senza caricarli interamente in RAM.\n          - Compatibilità in lettura con i Vault SHENC1 creati dalle versioni precedenti.\n          - Rilevamento di file cifrati troncati o danneggiati.
           - Git for Windows incorporato nell'EXE.
-          - 21 test sorgente + self-test EXE + smoke test GUI Windows.
+          - 25 test sorgente + self-test EXE + smoke test GUI Windows.
           "@
 
           if (gh release view $tag --repo "$env:GITHUB_REPOSITORY" *> $null) {
