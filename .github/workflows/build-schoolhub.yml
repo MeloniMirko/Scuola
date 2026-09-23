@@ -26,7 +26,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           $parts = Get-ChildItem ".schoolhub-build\source.part*" | Sort-Object Name
-          if ($parts.Count -lt 1) { throw "Source bundle parts not found" }
+          if ($parts.Count -lt 1) { throw "Minimal source bundle parts not found" }
 
           $b64 = [System.Text.StringBuilder]::new()
           foreach ($part in $parts) {
