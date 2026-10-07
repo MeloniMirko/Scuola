@@ -1,12 +1,12 @@
 {
   "app_version": "2.6.0",
   "data_branch": "master",
-  "data_head": "",
+  "data_head": "08de9b5d3e3d9ef27b2028e7fa53a1c40a92f2ba",
   "device_id": "37e0008dc75242149921ee9acfa355b6",
-  "last_seen_utc": "2026-10-07T06:45:48+00:00",
+  "last_seen_utc": "2026-10-07T06:47:00+00:00",
   "local_pending": 0,
   "name": "Dispositivo 37E000",
   "remote_pending": 0,
   "schema": 1,
-  "state": "unknown"
+  "state": "updated"
 }
