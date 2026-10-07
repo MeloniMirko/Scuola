@@ -1,0 +1,2226 @@
+
+### PROGRAMMA ###
+
+Programma 1 – Vendite
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di vendite registrabili
+
+// Struct per la data
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+// Struct per la vendita
+typedef struct {
+    int codice;
+    char nome[30];
+    int quantita;
+    float prezzo;
+    Data dataVendita;
+} Vendita;
+
+// Array di vendite
+Vendita vendite[N];
+
+// Dichiarazione funzioni
+void aggiungiVendita();
+void mostraVendite();
+float totaleVendite();
+
+int main() {
+    int scelta;
+    char continua;
+
+    do {
+        printf("\n=== GESTIONE VENDITE ===\n");
+        printf("1) Aggiungi una nuova vendita\n");
+        printf("2) Mostra tutte le vendite\n");
+        printf("3) Calcola il totale delle vendite\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiVendita(); break;
+            case 2: mostraVendite(); break;
+            case 3: printf("Totale vendite: %.2f\n", totaleVendite()); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+// Funzione per aggiungere una vendita
+void aggiungiVendita() {
+    for(int i=0; i<N; i++) {
+        if(vendite[i].codice == 0) { // Controlla se lo slot è vuoto
+            printf("Inserisci il codice del prodotto: ");
+            scanf("%d", &vendite[i].codice);
+
+            printf("Inserisci il nome del prodotto: ");
+            scanf("%s", vendite[i].nome);
+
+            printf("Inserisci la quantita': ");
+            scanf("%d", &vendite[i].quantita);
+
+            printf("Inserisci il prezzo unitario: ");
+            scanf("%f", &vendite[i].prezzo);
+
+            printf("Inserisci la data di vendita (gg mm aaaa): ");
+            scanf("%d %d %d", &vendite[i].dataVendita.giorno, &vendite[i].dataVendita.mese, &vendite[i].dataVendita.anno);
+
+            printf("Vendita aggiunta!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+// Funzione per mostrare tutte le vendite
+void mostraVendite() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(vendite[i].codice != 0) {
+            count++;
+            printf("\nVendita %d\n", count);
+            printf("Codice: %d\n", vendite[i].codice);
+            printf("Nome: %s\n", vendite[i].nome);
+            printf("Quantita': %d\n", vendite[i].quantita);
+            printf("Prezzo unitario: %.2f\n", vendite[i].prezzo);
+            printf("Prezzo totale: %.2f\n", vendite[i].quantita * vendite[i].prezzo);
+            printf("Data vendita: %02d/%02d/%04d\n", vendite[i].dataVendita.giorno, vendite[i].dataVendita.mese, vendite[i].dataVendita.anno);
+        }
+    }
+    if(count == 0) printf("Nessuna vendita registrata.\n");
+}
+
+// Funzione per calcolare il totale delle vendite
+float totaleVendite() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(vendite[i].codice != 0) {
+            totale += vendite[i].quantita * vendite[i].prezzo;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 2 – Studenti
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di studenti
+
+// Struct per la data
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+// Struct per lo studente
+typedef struct {
+    int matricola;
+    char nome[30];
+    char cognome[30];
+    int eta;
+    float mediaVoti;
+    Data dataIscrizione;
+} Studente;
+
+// Array di studenti
+Studente studenti[N];
+
+// Dichiarazione funzioni
+void aggiungiStudente();
+void mostraStudenti();
+float mediaGenerale();
+
+int main() {
+    int scelta;
+    char continua;
+
+    do {
+        printf("\n=== GESTIONE STUDENTI ===\n");
+        printf("1) Aggiungi studente\n");
+        printf("2) Mostra tutti gli studenti\n");
+        printf("3) Calcola media generale dei voti\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiStudente(); break;
+            case 2: mostraStudenti(); break;
+            case 3: printf("Media generale: %.2f\n", mediaGenerale()); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+// Funzione per aggiungere uno studente
+void aggiungiStudente() {
+    for(int i=0; i<N; i++) {
+        if(studenti[i].matricola == 0) { // Controlla se lo slot è vuoto
+            printf("Inserisci la matricola: ");
+            scanf("%d", &studenti[i].matricola);
+
+            printf("Inserisci il nome: ");
+            scanf("%s", studenti[i].nome);
+
+            printf("Inserisci il cognome: ");
+            scanf("%s", studenti[i].cognome);
+
+            printf("Inserisci l'eta': ");
+            scanf("%d", &studenti[i].eta);
+
+            printf("Inserisci la media voti: ");
+            scanf("%f", &studenti[i].mediaVoti);
+
+            printf("Inserisci la data di iscrizione (gg mm aaaa): ");
+            scanf("%d %d %d", &studenti[i].dataIscrizione.giorno, &studenti[i].dataIscrizione.mese, &studenti[i].dataIscrizione.anno);
+
+            printf("Studente aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+// Funzione per mostrare tutti gli studenti
+void mostraStudenti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(studenti[i].matricola != 0) {
+            count++;
+            printf("\nStudente %d\n", count);
+            printf("Matricola: %d\n", studenti[i].matricola);
+            printf("Nome: %s\n", studenti[i].nome);
+            printf("Cognome: %s\n", studenti[i].cognome);
+            printf("Eta': %d\n", studenti[i].eta);
+            printf("Media voti: %.2f\n", studenti[i].mediaVoti);
+            printf("Data iscrizione: %02d/%02d/%04d\n", studenti[i].dataIscrizione.giorno, studenti[i].dataIscrizione.mese, studenti[i].dataIscrizione.anno);
+        }
+    }
+    if(count == 0) printf("Nessuno studente registrato.\n");
+}
+
+// Funzione per calcolare la media generale dei voti
+float mediaGenerale() {
+    float totale = 0;
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(studenti[i].matricola != 0) {
+            totale += studenti[i].mediaVoti;
+            count++;
+        }
+    }
+    if(count == 0) return 0;
+    return totale / count;
+}
+
+
+### PROGRAMMA ###
+
+Programma 3 – Libri in biblioteca
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di libri
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int codice;
+    char titolo[30];
+    char autore[30];
+    int pagine;
+    Data dataAcquisto;
+} Libro;
+
+Libro biblioteca[N];
+
+void aggiungiLibro();
+void mostraLibri();
+int totalePagine();
+
+int main() {
+    int scelta;
+    char continua;
+
+    do {
+        printf("\n=== GESTIONE LIBRI ===\n");
+        printf("1) Aggiungi libro\n");
+        printf("2) Mostra tutti i libri\n");
+        printf("3) Calcola totale pagine\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiLibro(); break;
+            case 2: mostraLibri(); break;
+            case 3: printf("Totale pagine: %d\n", totalePagine()); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiLibro() {
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].codice == 0) {
+            printf("Codice libro: ");
+            scanf("%d", &biblioteca[i].codice);
+
+            printf("Titolo: ");
+            scanf("%s", biblioteca[i].titolo);
+
+            printf("Autore: ");
+            scanf("%s", biblioteca[i].autore);
+
+            printf("Numero pagine: ");
+            scanf("%d", &biblioteca[i].pagine);
+
+            printf("Data acquisto (gg mm aaaa): ");
+            scanf("%d %d %d", &biblioteca[i].dataAcquisto.giorno, &biblioteca[i].dataAcquisto.mese, &biblioteca[i].dataAcquisto.anno);
+
+            printf("Libro aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraLibri() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].codice != 0) {
+            count++;
+            printf("\nLibro %d\n", count);
+            printf("Codice: %d\n", biblioteca[i].codice);
+            printf("Titolo: %s\n", biblioteca[i].titolo);
+            printf("Autore: %s\n", biblioteca[i].autore);
+            printf("Pagine: %d\n", biblioteca[i].pagine);
+            printf("Data acquisto: %02d/%02d/%04d\n", biblioteca[i].dataAcquisto.giorno, biblioteca[i].dataAcquisto.mese, biblioteca[i].dataAcquisto.anno);
+        }
+    }
+    if(count == 0) printf("Nessun libro registrato.\n");
+}
+
+int totalePagine() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].codice != 0) {
+            totale += biblioteca[i].pagine;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 4 – Prenotazioni alberghiere
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di prenotazioni
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idPrenotazione;
+    char nomeCliente[30];
+    int numeroPersone;
+    int numeroNotti;
+    float prezzoNotte;
+    Data dataArrivo;
+} Prenotazione;
+
+Prenotazione prenotazioni[N];
+
+void aggiungiPrenotazione();
+void mostraPrenotazioni();
+float incassoTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE PRENOTAZIONI ALBERGHIERE ===\n");
+        printf("1) Aggiungi prenotazione\n");
+        printf("2) Mostra tutte le prenotazioni\n");
+        printf("3) Calcola incasso totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiPrenotazione(); break;
+            case 2: mostraPrenotazioni(); break;
+            case 3: totale = incassoTotale(); printf("Incasso totale: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiPrenotazione() {
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione == 0) {
+            printf("ID prenotazione: ");
+            scanf("%d", &prenotazioni[i].idPrenotazione);
+
+            printf("Nome cliente: ");
+            scanf("%s", prenotazioni[i].nomeCliente);
+
+            printf("Numero persone: ");
+            scanf("%d", &prenotazioni[i].numeroPersone);
+
+            printf("Numero notti: ");
+            scanf("%d", &prenotazioni[i].numeroNotti);
+
+            printf("Prezzo per notte: ");
+            scanf("%f", &prenotazioni[i].prezzoNotte);
+
+            printf("Data arrivo (gg mm aaaa): ");
+            scanf("%d %d %d", &prenotazioni[i].dataArrivo.giorno, &prenotazioni[i].dataArrivo.mese, &prenotazioni[i].dataArrivo.anno);
+
+            printf("Prenotazione aggiunta!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraPrenotazioni() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione != 0) {
+            count++;
+            printf("\nPrenotazione %d\n", count);
+            printf("ID: %d\n", prenotazioni[i].idPrenotazione);
+            printf("Cliente: %s\n", prenotazioni[i].nomeCliente);
+            printf("Persone: %d\n", prenotazioni[i].numeroPersone);
+            printf("Notti: %d\n", prenotazioni[i].numeroNotti);
+            printf("Prezzo/notte: %.2f\n", prenotazioni[i].prezzoNotte);
+            printf("Data arrivo: %02d/%02d/%04d\n", prenotazioni[i].dataArrivo.giorno, prenotazioni[i].dataArrivo.mese, prenotazioni[i].dataArrivo.anno);
+        }
+    }
+    if(count == 0) printf("Nessuna prenotazione registrata.\n");
+}
+
+float incassoTotale() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione != 0) {
+            totale += prenotazioni[i].numeroPersone * prenotazioni[i].numeroNotti * prenotazioni[i].prezzoNotte;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 5 – Film in videoteca
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di film
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idFilm;
+    char titolo[30];
+    char genere[20];
+    char regista[30];
+    int durata; // in minuti
+    Data dataAcquisto;
+} Film;
+
+Film videoteca[N];
+
+void aggiungiFilm();
+void mostraFilm();
+int durataTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE FILM IN VIDEOTECA ===\n");
+        printf("1) Aggiungi film\n");
+        printf("2) Mostra tutti i film\n");
+        printf("3) Calcola durata totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiFilm(); break;
+            case 2: mostraFilm(); break;
+            case 3: totale = durataTotale(); printf("Durata totale: %d minuti\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiFilm() {
+    for(int i=0; i<N; i++) {
+        if(videoteca[i].idFilm == 0) {
+            printf("ID film: ");
+            scanf("%d", &videoteca[i].idFilm);
+
+            printf("Titolo: ");
+            scanf("%s", videoteca[i].titolo);
+
+            printf("Genere: ");
+            scanf("%s", videoteca[i].genere);
+
+            printf("Regista: ");
+            scanf("%s", videoteca[i].regista);
+
+            printf("Durata (minuti): ");
+            scanf("%d", &videoteca[i].durata);
+
+            printf("Data acquisto (gg mm aaaa): ");
+            scanf("%d %d %d", &videoteca[i].dataAcquisto.giorno, &videoteca[i].dataAcquisto.mese, &videoteca[i].dataAcquisto.anno);
+
+            printf("Film aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraFilm() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(videoteca[i].idFilm != 0) {
+            count++;
+            printf("\nFilm %d\n", count);
+            printf("ID: %d\n", videoteca[i].idFilm);
+            printf("Titolo: %s\n", videoteca[i].titolo);
+            printf("Genere: %s\n", videoteca[i].genere);
+            printf("Regista: %s\n", videoteca[i].regista);
+            printf("Durata: %d minuti\n", videoteca[i].durata);
+            printf("Data acquisto: %02d/%02d/%04d\n", videoteca[i].dataAcquisto.giorno, videoteca[i].dataAcquisto.mese, videoteca[i].dataAcquisto.anno);
+        }
+    }
+    if(count == 0) printf("Nessun film registrato.\n");
+}
+
+int durataTotale() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(videoteca[i].idFilm != 0) {
+            totale += videoteca[i].durata;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 6 – Ricette di cucina
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di ricette
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idRicetta;
+    char nome[30];
+    char tipo[20];       // es. primo, secondo, dolce
+    int tempoPreparazione; // minuti
+    int porzioni;
+    Data dataInserimento;
+} Ricetta;
+
+Ricetta ricette[N];
+
+void aggiungiRicetta();
+void mostraRicette();
+int tempoTotalePreparazione();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE RICETTE ===\n");
+        printf("1) Aggiungi ricetta\n");
+        printf("2) Mostra tutte le ricette\n");
+        printf("3) Calcola tempo totale preparazione\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiRicetta(); break;
+            case 2: mostraRicette(); break;
+            case 3: totale = tempoTotalePreparazione(); printf("Tempo totale: %d minuti\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiRicetta() {
+    for(int i=0; i<N; i++) {
+        if(ricette[i].idRicetta == 0) {
+            printf("ID ricetta: ");
+            scanf("%d", &ricette[i].idRicetta);
+
+            printf("Nome: ");
+            scanf("%s", ricette[i].nome);
+
+            printf("Tipo: ");
+            scanf("%s", ricette[i].tipo);
+
+            printf("Tempo preparazione (minuti): ");
+            scanf("%d", &ricette[i].tempoPreparazione);
+
+            printf("Porzioni: ");
+            scanf("%d", &ricette[i].porzioni);
+
+            printf("Data inserimento (gg mm aaaa): ");
+            scanf("%d %d %d", &ricette[i].dataInserimento.giorno, &ricette[i].dataInserimento.mese, &ricette[i].dataInserimento.anno);
+
+            printf("Ricetta aggiunta!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraRicette() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(ricette[i].idRicetta != 0) {
+            count++;
+            printf("\nRicetta %d\n", count);
+            printf("ID: %d\n", ricette[i].idRicetta);
+            printf("Nome: %s\n", ricette[i].nome);
+            printf("Tipo: %s\n", ricette[i].tipo);
+            printf("Tempo preparazione: %d minuti\n", ricette[i].tempoPreparazione);
+            printf("Porzioni: %d\n", ricette[i].porzioni);
+            printf("Data inserimento: %02d/%02d/%04d\n", ricette[i].dataInserimento.giorno, ricette[i].dataInserimento.mese, ricette[i].dataInserimento.anno);
+        }
+    }
+    if(count == 0) printf("Nessuna ricetta registrata.\n");
+}
+
+int tempoTotalePreparazione() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(ricette[i].idRicetta != 0) {
+            totale += ricette[i].tempoPreparazione;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 7 – Animali nello zoo
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di animali
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idAnimale;
+    char nome[30];
+    char specie[30];
+    int eta;
+    Data dataArrivo;
+} Animale;
+
+Animale zoo[N];
+
+void aggiungiAnimale();
+void mostraAnimali();
+float etaTotaleAnimali();
+
+int main() {
+    int scelta;
+    char continua;
+    float totaleEta;
+
+    do {
+        printf("\n=== GESTIONE ANIMALI NELLO ZOO ===\n");
+        printf("1) Aggiungi animale\n");
+        printf("2) Mostra tutti gli animali\n");
+        printf("3) Calcola eta' totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiAnimale(); break;
+            case 2: mostraAnimali(); break;
+            case 3: totaleEta = etaTotaleAnimali(); printf("Eta' totale degli animali: %.2f anni\n", totaleEta); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiAnimale() {
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale == 0) {
+            printf("ID animale: ");
+            scanf("%d", &zoo[i].idAnimale);
+
+            printf("Nome: ");
+            scanf("%s", zoo[i].nome);
+
+            printf("Specie: ");
+            scanf("%s", zoo[i].specie);
+
+            printf("Eta': ");
+            scanf("%d", &zoo[i].eta);
+
+            printf("Data arrivo (gg mm aaaa): ");
+            scanf("%d %d %d", &zoo[i].dataArrivo.giorno, &zoo[i].dataArrivo.mese, &zoo[i].dataArrivo.anno);
+
+            printf("Animale aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraAnimali() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale != 0) {
+            count++;
+            printf("\nAnimale %d\n", count);
+            printf("ID: %d\n", zoo[i].idAnimale);
+            printf("Nome: %s\n", zoo[i].nome);
+            printf("Specie: %s\n", zoo[i].specie);
+            printf("Eta': %d\n", zoo[i].eta);
+            printf("Data arrivo: %02d/%02d/%04d\n", zoo[i].dataArrivo.giorno, zoo[i].dataArrivo.mese, zoo[i].dataArrivo.anno);
+        }
+    }
+    if(count == 0) printf("Nessun animale registrato.\n");
+}
+
+float etaTotaleAnimali() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale != 0) {
+            totale += zoo[i].eta;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 8 – Clienti di un negozio
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di clienti
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idCliente;
+    char nome[30];
+    char cognome[30];
+    int eta;
+    float spesaTotale;
+    Data dataIscrizione;
+} Cliente;
+
+Cliente clienti[N];
+
+void aggiungiCliente();
+void mostraClienti();
+float totaleSpese();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE CLIENTI DEL NEGOZIO ===\n");
+        printf("1) Aggiungi cliente\n");
+        printf("2) Mostra tutti i clienti\n");
+        printf("3) Calcola totale spese\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiCliente(); break;
+            case 2: mostraClienti(); break;
+            case 3: totale = totaleSpese(); printf("Spesa totale dei clienti: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiCliente() {
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente == 0) {
+            printf("ID cliente: ");
+            scanf("%d", &clienti[i].idCliente);
+
+            printf("Nome: ");
+            scanf("%s", clienti[i].nome);
+
+            printf("Cognome: ");
+            scanf("%s", clienti[i].cognome);
+
+            printf("Eta': ");
+            scanf("%d", &clienti[i].eta);
+
+            printf("Spesa totale: ");
+            scanf("%f", &clienti[i].spesaTotale);
+
+            printf("Data iscrizione (gg mm aaaa): ");
+            scanf("%d %d %d", &clienti[i].dataIscrizione.giorno, &clienti[i].dataIscrizione.mese, &clienti[i].dataIscrizione.anno);
+
+            printf("Cliente aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraClienti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente != 0) {
+            count++;
+            printf("\nCliente %d\n", count);
+            printf("ID: %d\n", clienti[i].idCliente);
+            printf("Nome: %s\n", clienti[i].nome);
+            printf("Cognome: %s\n", clienti[i].cognome);
+            printf("Eta': %d\n", clienti[i].eta);
+            printf("Spesa totale: %.2f\n", clienti[i].spesaTotale);
+            printf("Data iscrizione: %02d/%02d/%04d\n", clienti[i].dataIscrizione.giorno, clienti[i].dataIscrizione.mese, clienti[i].dataIscrizione.anno);
+        }
+    }
+    if(count == 0) printf("Nessun cliente registrato.\n");
+}
+
+float totaleSpese() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente != 0) {
+            totale += clienti[i].spesaTotale;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 9 – Prodotti agricoli
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di prodotti
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idProdotto;
+    char nome[30];
+    char tipo[20]; // es. frutta, verdura
+    float prezzoUnitario;
+    int quantita;
+    Data dataRaccolta;
+} Prodotto;
+
+Prodotto prodotti[N];
+
+void aggiungiProdotto();
+void mostraProdotti();
+float valoreTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE PRODOTTI AGRICOLI ===\n");
+        printf("1) Aggiungi prodotto\n");
+        printf("2) Mostra tutti i prodotti\n");
+        printf("3) Calcola valore totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiProdotto(); break;
+            case 2: mostraProdotti(); break;
+            case 3: totale = valoreTotale(); printf("Valore totale prodotti: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiProdotto() {
+    for(int i=0; i<N; i++) {
+        if(prodotti[i].idProdotto == 0) {
+            printf("ID prodotto: ");
+            scanf("%d", &prodotti[i].idProdotto);
+
+            printf("Nome: ");
+            scanf("%s", prodotti[i].nome);
+
+            printf("Tipo: ");
+            scanf("%s", prodotti[i].tipo);
+
+            printf("Prezzo unitario: ");
+            scanf("%f", &prodotti[i].prezzoUnitario);
+
+            printf("Quantita': ");
+            scanf("%d", &prodotti[i].quantita);
+
+            printf("Data raccolta (gg mm aaaa): ");
+            scanf("%d %d %d", &prodotti[i].dataRaccolta.giorno, &prodotti[i].dataRaccolta.mese, &prodotti[i].dataRaccolta.anno);
+
+            printf("Prodotto aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraProdotti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(prodotti[i].idProdotto != 0) {
+            count++;
+            printf("\nProdotto %d\n", count);
+            printf("ID: %d\n", prodotti[i].idProdotto);
+            printf("Nome: %s\n", prodotti[i].nome);
+            printf("Tipo: %s\n", prodotti[i].tipo);
+            printf("Prezzo unitario: %.2f\n", prodotti[i].prezzoUnitario);
+            printf("Quantita': %d\n", prodotti[i].quantita);
+            printf("Data raccolta: %02d/%02d/%04d\n", prodotti[i].dataRaccolta.giorno, prodotti[i].dataRaccolta.mese, prodotti[i].dataRaccolta.anno);
+        }
+    }
+    if(count == 0) printf("Nessun prodotto registrato.\n");
+}
+
+float valoreTotale() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(prodotti[i].idProdotto != 0) {
+            totale += prodotti[i].prezzoUnitario * prodotti[i].quantita;
+        }
+    }
+    return totale;
+}
+
+### PROGRAMMA ###
+
+Programma 10 – Veicoli in officina
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di veicoli
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idVeicolo;
+    char marca[30];
+    char modello[30];
+    int annoProduzione;
+    float costoRiparazione;
+    Data dataIngresso;
+} Veicolo;
+
+Veicolo officina[N];
+
+void aggiungiVeicolo();
+void mostraVeicoli();
+float totaleRiparazioni();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE VEICOLI IN OFFICINA ===\n");
+        printf("1) Aggiungi veicolo\n");
+        printf("2) Mostra tutti i veicoli\n");
+        printf("3) Calcola totale riparazioni\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiVeicolo(); break;
+            case 2: mostraVeicoli(); break;
+            case 3: totale = totaleRiparazioni(); printf("Totale riparazioni: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiVeicolo() {
+    for(int i=0; i<N; i++) {
+        if(officina[i].idVeicolo == 0) {
+            printf("ID veicolo: ");
+            scanf("%d", &officina[i].idVeicolo);
+
+            printf("Marca: ");
+            scanf("%s", officina[i].marca);
+
+            printf("Modello: ");
+            scanf("%s", officina[i].modello);
+
+            printf("Anno produzione: ");
+            scanf("%d", &officina[i].annoProduzione);
+
+            printf("Costo riparazione: ");
+            scanf("%f", &officina[i].costoRiparazione);
+
+            printf("Data ingresso (gg mm aaaa): ");
+            scanf("%d %d %d", &officina[i].dataIngresso.giorno, &officina[i].dataIngresso.mese, &officina[i].dataIngresso.anno);
+
+            printf("Veicolo aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraVeicoli() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(officina[i].idVeicolo != 0) {
+            count++;
+            printf("\nVeicolo %d\n", count);
+            printf("ID: %d\n", officina[i].idVeicolo);
+            printf("Marca: %s\n", officina[i].marca);
+            printf("Modello: %s\n", officina[i].modello);
+            printf("Anno produzione: %d\n", officina[i].annoProduzione);
+            printf("Costo riparazione: %.2f\n", officina[i].costoRiparazione);
+            printf("Data ingresso: %02d/%02d/%04d\n", officina[i].dataIngresso.giorno, officina[i].dataIngresso.mese, officina[i].dataIngresso.anno);
+        }
+    }
+    if(count == 0) printf("Nessun veicolo registrato.\n");
+}
+
+float totaleRiparazioni() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(officina[i].idVeicolo != 0) {
+            totale += officina[i].costoRiparazione;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 11 – Canzoni in playlist
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di canzoni
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idCanzone;
+    char titolo[30];
+    char artista[30];
+    int durata; // in secondi
+    Data dataAggiunta;
+} Canzone;
+
+Canzone playlist[N];
+
+void aggiungiCanzone();
+void mostraCanzoni();
+int durataTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE CANZONI IN PLAYLIST ===\n");
+        printf("1) Aggiungi canzone\n");
+        printf("2) Mostra tutte le canzoni\n");
+        printf("3) Calcola durata totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiCanzone(); break;
+            case 2: mostraCanzoni(); break;
+            case 3: totale = durataTotale(); printf("Durata totale: %d secondi\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiCanzone() {
+    for(int i=0; i<N; i++) {
+        if(playlist[i].idCanzone == 0) {
+            printf("ID canzone: ");
+            scanf("%d", &playlist[i].idCanzone);
+
+            printf("Titolo: ");
+            scanf("%s", playlist[i].titolo);
+
+            printf("Artista: ");
+            scanf("%s", playlist[i].artista);
+
+            printf("Durata (secondi): ");
+            scanf("%d", &playlist[i].durata);
+
+            printf("Data aggiunta (gg mm aaaa): ");
+            scanf("%d %d %d", &playlist[i].dataAggiunta.giorno, &playlist[i].dataAggiunta.mese, &playlist[i].dataAggiunta.anno);
+
+            printf("Canzone aggiunta!\n");
+            return;
+        }
+    }
+    printf("Playlist piena!\n");
+}
+
+void mostraCanzoni() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(playlist[i].idCanzone != 0) {
+            count++;
+            printf("\nCanzone %d\n", count);
+            printf("ID: %d\n", playlist[i].idCanzone);
+            printf("Titolo: %s\n", playlist[i].titolo);
+            printf("Artista: %s\n", playlist[i].artista);
+            printf("Durata: %d secondi\n", playlist[i].durata);
+            printf("Data aggiunta: %02d/%02d/%04d\n", playlist[i].dataAggiunta.giorno, playlist[i].dataAggiunta.mese, playlist[i].dataAggiunta.anno);
+        }
+    }
+    if(count == 0) printf("Nessuna canzone registrata.\n");
+}
+
+int durataTotale() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(playlist[i].idCanzone != 0) {
+            totale += playlist[i].durata;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 12 – Film in streaming
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di film
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idFilm;
+    char titolo[30];
+    char genere[20];
+    int durata; // in minuti
+    Data dataAggiunta;
+} FilmStreaming;
+
+FilmStreaming catalogo[N];
+
+void aggiungiFilm();
+void mostraFilm();
+int durataTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE FILM IN STREAMING ===\n");
+        printf("1) Aggiungi film\n");
+        printf("2) Mostra tutti i film\n");
+        printf("3) Calcola durata totale\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiFilm(); break;
+            case 2: mostraFilm(); break;
+            case 3: totale = durataTotale(); printf("Durata totale: %d minuti\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiFilm() {
+    for(int i=0; i<N; i++) {
+        if(catalogo[i].idFilm == 0) {
+            printf("ID film: ");
+            scanf("%d", &catalogo[i].idFilm);
+
+            printf("Titolo: ");
+            scanf("%s", catalogo[i].titolo);
+
+            printf("Genere: ");
+            scanf("%s", catalogo[i].genere);
+
+            printf("Durata (minuti): ");
+            scanf("%d", &catalogo[i].durata);
+
+            printf("Data aggiunta (gg mm aaaa): ");
+            scanf("%d %d %d", &catalogo[i].dataAggiunta.giorno, &catalogo[i].dataAggiunta.mese, &catalogo[i].dataAggiunta.anno);
+
+            printf("Film aggiunto!\n");
+            return;
+        }
+    }
+    printf("Catalogo pieno!\n");
+}
+
+void mostraFilm() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(catalogo[i].idFilm != 0) {
+            count++;
+            printf("\nFilm %d\n", count);
+            printf("ID: %d\n", catalogo[i].idFilm);
+            printf("Titolo: %s\n", catalogo[i].titolo);
+            printf("Genere: %s\n", catalogo[i].genere);
+            printf("Durata: %d minuti\n", catalogo[i].durata);
+            printf("Data aggiunta: %02d/%02d/%04d\n", catalogo[i].dataAggiunta.giorno, catalogo[i].dataAggiunta.mese, catalogo[i].dataAggiunta.anno);
+        }
+    }
+    if(count == 0) printf("Nessun film registrato.\n");
+}
+
+int durataTotale() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(catalogo[i].idFilm != 0) {
+            totale += catalogo[i].durata;
+        }
+    }
+    return totale;
+}
+
+### PROGRAMMA ###
+
+Programma 13 – Clienti in palestra
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di clienti
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idCliente;
+    char nome[30];
+    char cognome[30];
+    int eta;
+    float abbonamentoMensile;
+    Data dataIscrizione;
+} ClientePalestra;
+
+ClientePalestra clienti[N];
+
+void aggiungiCliente();
+void mostraClienti();
+float totaleAbbonamenti();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE CLIENTI PALESTRA ===\n");
+        printf("1) Aggiungi cliente\n");
+        printf("2) Mostra tutti i clienti\n");
+        printf("3) Calcola totale abbonamenti\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiCliente(); break;
+            case 2: mostraClienti(); break;
+            case 3: totale = totaleAbbonamenti(); printf("Totale abbonamenti: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiCliente() {
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente == 0) {
+            printf("ID cliente: ");
+            scanf("%d", &clienti[i].idCliente);
+
+            printf("Nome: ");
+            scanf("%s", clienti[i].nome);
+
+            printf("Cognome: ");
+            scanf("%s", clienti[i].cognome);
+
+            printf("Eta': ");
+            scanf("%d", &clienti[i].eta);
+
+            printf("Abbonamento mensile: ");
+            scanf("%f", &clienti[i].abbonamentoMensile);
+
+            printf("Data iscrizione (gg mm aaaa): ");
+            scanf("%d %d %d", &clienti[i].dataIscrizione.giorno, &clienti[i].dataIscrizione.mese, &clienti[i].dataIscrizione.anno);
+
+            printf("Cliente aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraClienti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente != 0) {
+            count++;
+            printf("\nCliente %d\n", count);
+            printf("ID: %d\n", clienti[i].idCliente);
+            printf("Nome: %s\n", clienti[i].nome);
+            printf("Cognome: %s\n", clienti[i].cognome);
+            printf("Eta': %d\n", clienti[i].eta);
+            printf("Abbonamento mensile: %.2f\n", clienti[i].abbonamentoMensile);
+            printf("Data iscrizione: %02d/%02d/%04d\n", clienti[i].dataIscrizione.giorno, clienti[i].dataIscrizione.mese, clienti[i].dataIscrizione.anno);
+        }
+    }
+    if(count == 0) printf("Nessun cliente registrato.\n");
+}
+
+float totaleAbbonamenti() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(clienti[i].idCliente != 0) {
+            totale += clienti[i].abbonamentoMensile;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 14 – Libri in biblioteca
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di libri
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idLibro;
+    char titolo[30];
+    char autore[30];
+    int pagine;
+    Data dataAcquisto;
+} Libro;
+
+Libro biblioteca[N];
+
+void aggiungiLibro();
+void mostraLibri();
+int totalePagine();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE LIBRI IN BIBLIOTECA ===\n");
+        printf("1) Aggiungi libro\n");
+        printf("2) Mostra tutti i libri\n");
+        printf("3) Calcola totale pagine\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiLibro(); break;
+            case 2: mostraLibri(); break;
+            case 3: totale = totalePagine(); printf("Totale pagine: %d\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiLibro() {
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].idLibro == 0) {
+            printf("ID libro: ");
+            scanf("%d", &biblioteca[i].idLibro);
+
+            printf("Titolo: ");
+            scanf("%s", biblioteca[i].titolo);
+
+            printf("Autore: ");
+            scanf("%s", biblioteca[i].autore);
+
+            printf("Numero pagine: ");
+            scanf("%d", &biblioteca[i].pagine);
+
+            printf("Data acquisto (gg mm aaaa): ");
+            scanf("%d %d %d", &biblioteca[i].dataAcquisto.giorno, &biblioteca[i].dataAcquisto.mese, &biblioteca[i].dataAcquisto.anno);
+
+            printf("Libro aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraLibri() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].idLibro != 0) {
+            count++;
+            printf("\nLibro %d\n", count);
+            printf("ID: %d\n", biblioteca[i].idLibro);
+            printf("Titolo: %s\n", biblioteca[i].titolo);
+            printf("Autore: %s\n", biblioteca[i].autore);
+            printf("Numero pagine: %d\n", biblioteca[i].pagine);
+            printf("Data acquisto: %02d/%02d/%04d\n", biblioteca[i].dataAcquisto.giorno, biblioteca[i].dataAcquisto.mese, biblioteca[i].dataAcquisto.anno);
+        }
+    }
+    if(count == 0) printf("Nessun libro registrato.\n");
+}
+
+int totalePagine() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(biblioteca[i].idLibro != 0) {
+            totale += biblioteca[i].pagine;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 15 – Studenti in classe
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di studenti
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idStudente;
+    char nome[30];
+    char cognome[30];
+    int eta;
+    float mediaVoti;
+    Data dataIscrizione;
+} Studente;
+
+Studente classe[N];
+
+void aggiungiStudente();
+void mostraStudenti();
+float mediaTotale();
+
+int main() {
+    int scelta;
+    char continua;
+    float media;
+
+    do {
+        printf("\n=== GESTIONE STUDENTI IN CLASSE ===\n");
+        printf("1) Aggiungi studente\n");
+        printf("2) Mostra tutti gli studenti\n");
+        printf("3) Calcola media totale voti\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiStudente(); break;
+            case 2: mostraStudenti(); break;
+            case 3: media = mediaTotale(); printf("Media totale voti: %.2f\n", media); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiStudente() {
+    for(int i=0; i<N; i++) {
+        if(classe[i].idStudente == 0) {
+            printf("ID studente: ");
+            scanf("%d", &classe[i].idStudente);
+
+            printf("Nome: ");
+            scanf("%s", classe[i].nome);
+
+            printf("Cognome: ");
+            scanf("%s", classe[i].cognome);
+
+            printf("Eta': ");
+            scanf("%d", &classe[i].eta);
+
+            printf("Media voti: ");
+            scanf("%f", &classe[i].mediaVoti);
+
+            printf("Data iscrizione (gg mm aaaa): ");
+            scanf("%d %d %d", &classe[i].dataIscrizione.giorno, &classe[i].dataIscrizione.mese, &classe[i].dataIscrizione.anno);
+
+            printf("Studente aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraStudenti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(classe[i].idStudente != 0) {
+            count++;
+            printf("\nStudente %d\n", count);
+            printf("ID: %d\n", classe[i].idStudente);
+            printf("Nome: %s\n", classe[i].nome);
+            printf("Cognome: %s\n", classe[i].cognome);
+            printf("Eta': %d\n", classe[i].eta);
+            printf("Media voti: %.2f\n", classe[i].mediaVoti);
+            printf("Data iscrizione: %02d/%02d/%04d\n", classe[i].dataIscrizione.giorno, classe[i].dataIscrizione.mese, classe[i].dataIscrizione.anno);
+        }
+    }
+    if(count == 0) printf("Nessuno studente registrato.\n");
+}
+
+float mediaTotale() {
+    float totale = 0;
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(classe[i].idStudente != 0) {
+            totale += classe[i].mediaVoti;
+            count++;
+        }
+    }
+    if(count == 0) return 0;
+    return totale / count;
+}
+
+
+### PROGRAMMA ###
+
+Programma 16 – Ordini online
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di ordini
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idOrdine;
+    char prodotto[30];
+    int quantita;
+    float prezzoUnitario;
+    Data dataOrdine;
+} Ordine;
+
+Ordine ordini[N];
+
+void aggiungiOrdine();
+void mostraOrdini();
+float totaleOrdini();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE ORDINI ONLINE ===\n");
+        printf("1) Aggiungi ordine\n");
+        printf("2) Mostra tutti gli ordini\n");
+        printf("3) Calcola totale ordini\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiOrdine(); break;
+            case 2: mostraOrdini(); break;
+            case 3: totale = totaleOrdini(); printf("Totale ordini: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiOrdine() {
+    for(int i=0; i<N; i++) {
+        if(ordini[i].idOrdine == 0) {
+            printf("ID ordine: ");
+            scanf("%d", &ordini[i].idOrdine);
+
+            printf("Prodotto: ");
+            scanf("%s", ordini[i].prodotto);
+
+            printf("Quantita': ");
+            scanf("%d", &ordini[i].quantita);
+
+            printf("Prezzo unitario: ");
+            scanf("%f", &ordini[i].prezzoUnitario);
+
+            printf("Data ordine (gg mm aaaa): ");
+            scanf("%d %d %d", &ordini[i].dataOrdine.giorno, &ordini[i].dataOrdine.mese, &ordini[i].dataOrdine.anno);
+
+            printf("Ordine aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraOrdini() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(ordini[i].idOrdine != 0) {
+            count++;
+            printf("\nOrdine %d\n", count);
+            printf("ID: %d\n", ordini[i].idOrdine);
+            printf("Prodotto: %s\n", ordini[i].prodotto);
+            printf("Quantita': %d\n", ordini[i].quantita);
+            printf("Prezzo unitario: %.2f\n", ordini[i].prezzoUnitario);
+            printf("Prezzo totale: %.2f\n", ordini[i].quantita * ordini[i].prezzoUnitario);
+            printf("Data ordine: %02d/%02d/%04d\n", ordini[i].dataOrdine.giorno, ordini[i].dataOrdine.mese, ordini[i].dataOrdine.anno);
+        }
+    }
+    if(count == 0) printf("Nessun ordine registrato.\n");
+}
+
+float totaleOrdini() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(ordini[i].idOrdine != 0) {
+            totale += ordini[i].quantita * ordini[i].prezzoUnitario;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 17 – Prenotazioni albergo
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di prenotazioni
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idPrenotazione;
+    char nomeCliente[30];
+    int numeroPersone;
+    int numeroNotti;
+    float prezzoPerNotte;
+    Data dataCheckIn;
+} Prenotazione;
+
+Prenotazione prenotazioni[N];
+
+void aggiungiPrenotazione();
+void mostraPrenotazioni();
+float totaleIncassi();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE PRENOTAZIONI ALBERGO ===\n");
+        printf("1) Aggiungi prenotazione\n");
+        printf("2) Mostra tutte le prenotazioni\n");
+        printf("3) Calcola totale incassi\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiPrenotazione(); break;
+            case 2: mostraPrenotazioni(); break;
+            case 3: totale = totaleIncassi(); printf("Totale incassi: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiPrenotazione() {
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione == 0) {
+            printf("ID prenotazione: ");
+            scanf("%d", &prenotazioni[i].idPrenotazione);
+
+            printf("Nome cliente: ");
+            scanf("%s", prenotazioni[i].nomeCliente);
+
+            printf("Numero persone: ");
+            scanf("%d", &prenotazioni[i].numeroPersone);
+
+            printf("Numero notti: ");
+            scanf("%d", &prenotazioni[i].numeroNotti);
+
+            printf("Prezzo per notte: ");
+            scanf("%f", &prenotazioni[i].prezzoPerNotte);
+
+            printf("Data check-in (gg mm aaaa): ");
+            scanf("%d %d %d", &prenotazioni[i].dataCheckIn.giorno, &prenotazioni[i].dataCheckIn.mese, &prenotazioni[i].dataCheckIn.anno);
+
+            printf("Prenotazione aggiunta!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraPrenotazioni() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione != 0) {
+            count++;
+            printf("\nPrenotazione %d\n", count);
+            printf("ID: %d\n", prenotazioni[i].idPrenotazione);
+            printf("Nome cliente: %s\n", prenotazioni[i].nomeCliente);
+            printf("Numero persone: %d\n", prenotazioni[i].numeroPersone);
+            printf("Numero notti: %d\n", prenotazioni[i].numeroNotti);
+            printf("Prezzo per notte: %.2f\n", prenotazioni[i].prezzoPerNotte);
+            printf("Data check-in: %02d/%02d/%04d\n", prenotazioni[i].dataCheckIn.giorno, prenotazioni[i].dataCheckIn.mese, prenotazioni[i].dataCheckIn.anno);
+        }
+    }
+    if(count == 0) printf("Nessuna prenotazione registrata.\n");
+}
+
+float totaleIncassi() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(prenotazioni[i].idPrenotazione != 0) {
+            totale += prenotazioni[i].numeroNotti * prenotazioni[i].prezzoPerNotte * prenotazioni[i].numeroPersone;
+        }
+    }
+    return totale;
+}
+
+
+### PROGRAMMA ###
+
+Programma 18 – Animali in uno zoo
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di animali
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idAnimale;
+    char specie[30];
+    char nome[30];
+    int eta;
+    char habitat[30];
+    Data dataArrivo;
+} Animale;
+
+Animale zoo[N];
+
+void aggiungiAnimale();
+void mostraAnimali();
+int contaAnimali();
+
+int main() {
+    int scelta;
+    char continua;
+    int totale;
+
+    do {
+        printf("\n=== GESTIONE ANIMALI ZOO ===\n");
+        printf("1) Aggiungi animale\n");
+        printf("2) Mostra tutti gli animali\n");
+        printf("3) Conta animali\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiAnimale(); break;
+            case 2: mostraAnimali(); break;
+            case 3: totale = contaAnimali(); printf("Totale animali: %d\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiAnimale() {
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale == 0) {
+            printf("ID animale: ");
+            scanf("%d", &zoo[i].idAnimale);
+
+            printf("Specie: ");
+            scanf("%s", zoo[i].specie);
+
+            printf("Nome: ");
+            scanf("%s", zoo[i].nome);
+
+            printf("Eta': ");
+            scanf("%d", &zoo[i].eta);
+
+            printf("Habitat: ");
+            scanf("%s", zoo[i].habitat);
+
+            printf("Data arrivo (gg mm aaaa): ");
+            scanf("%d %d %d", &zoo[i].dataArrivo.giorno, &zoo[i].dataArrivo.mese, &zoo[i].dataArrivo.anno);
+
+            printf("Animale aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraAnimali() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale != 0) {
+            count++;
+            printf("\nAnimale %d\n", count);
+            printf("ID: %d\n", zoo[i].idAnimale);
+            printf("Specie: %s\n", zoo[i].specie);
+            printf("Nome: %s\n", zoo[i].nome);
+            printf("Eta': %d\n", zoo[i].eta);
+            printf("Habitat: %s\n", zoo[i].habitat);
+            printf("Data arrivo: %02d/%02d/%04d\n", zoo[i].dataArrivo.giorno, zoo[i].dataArrivo.mese, zoo[i].dataArrivo.anno);
+        }
+    }
+    if(count == 0) printf("Nessun animale registrato.\n");
+}
+
+int contaAnimali() {
+    int totale = 0;
+    for(int i=0; i<N; i++) {
+        if(zoo[i].idAnimale != 0) totale++;
+    }
+    return totale;
+}
+
+### PROGRAMMA ###
+
+Programma 19 – Giochi in un negozio
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di giochi
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idGioco;
+    char nome[30];
+    char piattaforma[20];
+    float prezzo;
+    Data dataArrivo;
+} Gioco;
+
+Gioco negozio[N];
+
+void aggiungiGioco();
+void mostraGiochi();
+float totalePrezzi();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE GIOCHI NEL NEGOZIO ===\n");
+        printf("1) Aggiungi gioco\n");
+        printf("2) Mostra tutti i giochi\n");
+        printf("3) Calcola totale prezzi\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiGioco(); break;
+            case 2: mostraGiochi(); break;
+            case 3: totale = totalePrezzi(); printf("Totale prezzi: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiGioco() {
+    for(int i=0; i<N; i++) {
+        if(negozio[i].idGioco == 0) {
+            printf("ID gioco: ");
+            scanf("%d", &negozio[i].idGioco);
+
+            printf("Nome: ");
+            scanf("%s", negozio[i].nome);
+
+            printf("Piattaforma: ");
+            scanf("%s", negozio[i].piattaforma);
+
+            printf("Prezzo: ");
+            scanf("%f", &negozio[i].prezzo);
+
+            printf("Data arrivo (gg mm aaaa): ");
+            scanf("%d %d %d", &negozio[i].dataArrivo.giorno, &negozio[i].dataArrivo.mese, &negozio[i].dataArrivo.anno);
+
+            printf("Gioco aggiunto!\n");
+            return;
+        }
+    }
+    printf("Archivio pieno!\n");
+}
+
+void mostraGiochi() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(negozio[i].idGioco != 0) {
+            count++;
+            printf("\nGioco %d\n", count);
+            printf("ID: %d\n", negozio[i].idGioco);
+            printf("Nome: %s\n", negozio[i].nome);
+            printf("Piattaforma: %s\n", negozio[i].piattaforma);
+            printf("Prezzo: %.2f\n", negozio[i].prezzo);
+            printf("Data arrivo: %02d/%02d/%04d\n", negozio[i].dataArrivo.giorno, negozio[i].dataArrivo.mese, negozio[i].dataArrivo.anno);
+        }
+    }
+    if(count == 0) printf("Nessun gioco registrato.\n");
+}
+
+float totalePrezzi() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(negozio[i].idGioco != 0) totale += negozio[i].prezzo;
+    }
+    return totale;
+}
+
+### PROGRAMMA ###
+
+Programma 20 – Prodotti in un supermercato
+#include <stdio.h>
+#include <string.h>
+
+#define N 20 // Numero massimo di prodotti
+
+typedef struct {
+    int giorno;
+    int mese;
+    int anno;
+} Data;
+
+typedef struct {
+    int idProdotto;
+    char nome[30];
+    int quantita;
+    float prezzoUnitario;
+    Data dataArrivo;
+} Prodotto;
+
+Prodotto supermercato[N];
+
+void aggiungiProdotto();
+void mostraProdotti();
+float totaleMagazzino();
+
+int main() {
+    int scelta;
+    char continua;
+    float totale;
+
+    do {
+        printf("\n=== GESTIONE PRODOTTI SUPERMERCATO ===\n");
+        printf("1) Aggiungi prodotto\n");
+        printf("2) Mostra tutti i prodotti\n");
+        printf("3) Calcola totale magazzino\n");
+        printf("Scelta: ");
+        scanf("%d", &scelta);
+
+        switch(scelta) {
+            case 1: aggiungiProdotto(); break;
+            case 2: mostraProdotti(); break;
+            case 3: totale = totaleMagazzino(); printf("Totale valore magazzino: %.2f\n", totale); break;
+            default: printf("Scelta non valida\n");
+        }
+
+        printf("Vuoi continuare? (S/N): ");
+        scanf(" %c", &continua);
+
+    } while(continua=='S' || continua=='s');
+
+    return 0;
+}
+
+void aggiungiProdotto() {
+    for(int i=0; i<N; i++) {
+        if(supermercato[i].idProdotto == 0) {
+            printf("ID prodotto: ");
+            scanf("%d", &supermercato[i].idProdotto);
+
+            printf("Nome prodotto: ");
+            scanf("%s", supermercato[i].nome);
+
+            printf("Quantita': ");
+            scanf("%d", &supermercato[i].quantita);
+
+            printf("Prezzo unitario: ");
+            scanf("%f", &supermercato[i].prezzoUnitario);
+
+            printf("Data arrivo (gg mm aaaa): ");
+            scanf("%d %d %d", &supermercato[i].dataArrivo.giorno, &supermercato[i].dataArrivo.mese, &supermercato[i].dataArrivo.anno);
+
+            printf("Prodotto aggiunto!\n");
+            return;
+        }
+    }
+    printf("Magazzino pieno!\n");
+}
+
+void mostraProdotti() {
+    int count = 0;
+    for(int i=0; i<N; i++) {
+        if(supermercato[i].idProdotto != 0) {
+            count++;
+            printf("\nProdotto %d\n", count);
+            printf("ID: %d\n", supermercato[i].idProdotto);
+            printf("Nome: %s\n", supermercato[i].nome);
+            printf("Quantita': %d\n", supermercato[i].quantita);
+            printf("Prezzo unitario: %.2f\n", supermercato[i].prezzoUnitario);
+            printf("Prezzo totale: %.2f\n", supermercato[i].quantita * supermercato[i].prezzoUnitario);
+            printf("Data arrivo: %02d/%02d/%04d\n", supermercato[i].dataArrivo.giorno, supermercato[i].dataArrivo.mese, supermercato[i].dataArrivo.anno);
+        }
+    }
+    if(count == 0) printf("Nessun prodotto registrato.\n");
+}
+
+float totaleMagazzino() {
+    float totale = 0;
+    for(int i=0; i<N; i++) {
+        if(supermercato[i].idProdotto != 0) {
+            totale += supermercato[i].quantita * supermercato[i].prezzoUnitario;
+        }
+    }
+    return totale;
+}

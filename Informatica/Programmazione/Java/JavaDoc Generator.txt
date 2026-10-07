@@ -1,0 +1,3 @@
+vai nel terminale con cd entri dentro la cartella madre e dopo scrivi questo codice e crea automaticamente il file javadoc
+
+javadoc -d docs -sourcepath src <nome-package>

@@ -1,0 +1,42 @@
+🔵 1. AUTO START (IMPORTANTE)
+premi:
+Win + R
+scrivi:
+shell:startup
+dentro quella cartella crea collegamento a:
+01_start_sync.bat
+
+👉 risultato: pull automatico quando accendi PC
+
+🟡 2. AUTO SYNC OGNI 10 MIN
+apri:
+Task Scheduler
+crea nuova attività:
+Nome: Git Auto Sync
+Trigger: ogni 10 minuti
+Azione:
+C:\SyncTools\02_auto_sync.bat
+
+🔴 3. SHUTDOWN SYNC (OPZIONALE MA CONSIGLIATO)
+
+Metodo semplice:
+ 
+Task Scheduler → evento shutdown → esegue file
+
+🧠 COME LO USI 
+
+🟢 ACCENDI PC
+
+✔ si aggiorna da solo
+
+💻 LAVORI
+
+✔ salva da solo ogni 10 min
+
+🔴 FINISCI / SPEGNI
+
+✔ clic su shutdown sync (o automatico)
+
+🟣 EMERGENZA
+
+✔ click su manual sync

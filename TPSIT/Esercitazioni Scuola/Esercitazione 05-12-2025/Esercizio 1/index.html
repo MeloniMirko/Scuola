@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Meteo Personale</title>
+    <script src="./script.js"></script>
+</head>
+<body>
+    <h1>Registro Meteo Personale</h1>
+    <input type="text" placeholder="Inserisci il tipo di meteo" id="tipo">
+    <input type="number" placeholder="Inserisci  la temperatura rilevata" id="temperatura">
+    <input type="number" placeholder="Inserisci  il giorno" id="giorno">
+    <input type="button" value="Registra Meteo" onclick="Meteo()">
+    <p>Giorno recente: <span id="g"></span></p>
+    <p>Utima temperatura registrata: <span id="gradi">- °C</span></p>
+    <p id="Elenco"></p>
+    <p>Meteo corrente per città: <span id="luogo">Nessuna</span></p>
+    <input type="button" value="Imposta città" onclick="Imposta()">
+    <br>
+    <br>
+    <br>
+    <input type="button" value="Mostra riepilogo giornaliero" onclick="Riepilogo()">
+</body>
+</html>

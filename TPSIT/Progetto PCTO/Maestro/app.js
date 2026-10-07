@@ -1,0 +1,1109 @@
+"use strict";
+
+// ── Costanti ────────────────────────────────────────────────
+const MAX_GUESS_ATTEMPTS = 3;
+const GUESS_THRESHOLD = 0.92;
+const MARGIN_THRESHOLD   = 0.25;
+const MIN_QUESTIONS_AFTER_NO = 3;
+const FALLBACK_IMAGE = "assets/loghetto.webp";
+const WIKIMEDIA_THUMB_WIDTH = 320;
+const TUTORIAL_STORAGE_KEY = "genio_indovino_tutorial_hide_v1";
+const LEADERBOARD_KEY = "genio_indovino_leaderboard";
+
+// ── Gruppi di trait mutualmente esclusivi ───────────────────
+const EXCLUSIVE_GROUPS = [
+    ["female", "male"],
+    ["born_before_1950", "born_1950_1980", "born_after_1980"],
+    ["from_italy", "from_usa", "from_uk", "from_france", "from_germany", "from_poland", "from_netherlands", "from_switzerland", "from_sweden", "from_hungary", "from_serbia"],
+    ["physicist", "mathematician", "biologist", "chemist", "astronomer", "inventor", "engineer", "tech_founder", "scientist", "philosopher"],
+    ["nobel", "oscar", "grammy"]
+];
+
+function getGroup(trait) {
+    for (const group of EXCLUSIVE_GROUPS) {
+        if (group.includes(trait)) return group;
+    }
+    return null;
+}
+
+// ── Dati caricati da JSON ─────────────────────────────────
+let QUESTION_BANK = [];
+let TRAIT_KEYS = [];
+let LOCAL_SEED = [];
+
+function toWikimediaThumb(url, width = WIKIMEDIA_THUMB_WIDTH) {
+    if (!url || typeof url !== "string") return url;
+    if (!url.includes("upload.wikimedia.org")) return url;
+    if (url.includes("/wikipedia/commons/thumb/")) return url;
+
+    try {
+        const parsed = new URL(url);
+        const prefix = "/wikipedia/commons/";
+        if (!parsed.pathname.startsWith(prefix)) return url;
+
+        const pathAfter = parsed.pathname.slice(prefix.length);
+        const fileName = pathAfter.split("/").pop();
+        if (!fileName) return url;
+
+        parsed.pathname = `${prefix}thumb/${pathAfter}/${width}px-${fileName}`;
+        return parsed.toString();
+    } catch {
+        return url;
+    }
+}
+
+function fromWikimediaThumb(url) {
+    if (!url || typeof url !== "string") return "";
+    if (!url.includes("/wikipedia/commons/thumb/")) return "";
+    try {
+        const parsed = new URL(url);
+        parsed.pathname = parsed.pathname.replace("/wikipedia/commons/thumb/", "/wikipedia/commons/");
+        parsed.pathname = parsed.pathname.replace(/\/\d+px-[^/]+$/, (match) => {
+            const parts = match.split("/");
+            return parts.length > 1 ? "" : match;
+        });
+        return parsed.toString();
+    } catch {
+        return "";
+    }
+}
+
+// ── Tutorial ────────────────────────────────────────────────
+const TUTORIAL_STEPS = [
+    { title: "Pensa al personaggio", text: "Scegli in segreto un personaggio famoso STEM. Non dirlo al gioco!" },
+    { title: "Rispondi onestamente", text: "Il Genio ti farà domande. Rispondi solo con SÌ o NO." },
+    { title: "Indovina!", text: "Quando sarà sicuro, ti proporrà il personaggio. Se è quello giusto, premi SÌ!" }
+];
+
+const INTRO_NO_LINES = [
+    { question: "Dai, non fare il timido!", instruction: "Premi SÌ per iniziare" },
+    { question: "Sarà divertente, te lo prometto!", instruction: "Premi SÌ" },
+    { question: "Ok ok, nessuna fretta!", instruction: "Quando sei pronto, premi SÌ!" }
+];
+
+// ── Stato ─────────────────────────────────────────────────
+const state = {
+    mode: "intro",
+    characters: [],
+    posteriors: [],
+    askedKeys: new Set(),
+    answers: {},
+    askedCount: 0,
+    questionsAfterLastNo: 0,
+    currentQuestionKey: null,
+    guessOrder: [],
+    guessIndex: 0,
+    guessAttempts: 0,
+    introNoCount: 0,
+    tutorialIndex: 0,
+    characterViewToken: 0,
+    leaderboardCache: null
+};
+
+// ── Elementi DOM ───────────────────────────────────────────
+const el = {
+    questionBox:     document.getElementById("questionBox"),
+    progressBlock:   document.getElementById("progressBlock"),
+    progressLabel:   document.getElementById("progressLabel"),
+    progressFill:    document.getElementById("progressFill"),
+    characterFrame:  document.querySelector(".character-frame"),
+    characterImage:  document.getElementById("characterImage"),
+    characterName:   document.getElementById("characterName"),
+    instruction:     document.getElementById("instruction"),
+    questionText:    document.getElementById("questionText"),
+    btnYes:          document.getElementById("btnYes"),
+    btnNo:           document.getElementById("btnNo"),
+    attemptsStat:    document.getElementById("attemptsStat"),
+    answersStat:     document.getElementById("answersStat"),
+    attemptsValue:   document.getElementById("attemptsValue"),
+    answersValue:    document.getElementById("answersValue"),
+    datasetStat:     document.getElementById("datasetStat"),
+    sourceStat:      document.getElementById("sourceStat"),
+    statusLine:      document.getElementById("statusLine"),
+    candidateList:   document.getElementById("candidateList"),
+    tutorialOverlay: document.getElementById("tutorialOverlay"),
+    tutorialTitle:   document.getElementById("tutorialTitle"),
+    tutorialBody:    document.getElementById("tutorialBody"),
+    tutorialDots:    document.getElementById("tutorialDots"),
+    tutorialNext:    document.getElementById("tutorialNext"),
+    tutorialSkip:    document.getElementById("tutorialSkip"),
+    tutorialNever:   document.getElementById("tutorialNever")
+};
+
+// ── Personaggi locali ────────────────────────────────────────
+function buildTraits(trueKeys) {
+    const t = {};
+    TRAIT_KEYS.forEach(k => { t[k] = false; }); 
+
+    (trueKeys || []).forEach(k => { 
+        if (k in t) t[k] = true; 
+    });
+
+    return t;
+}
+
+function seedCharacter(id, name, image, trueKeys) {
+    return {
+        id,
+        name,
+        image: image || "",
+        traits: Array.isArray(trueKeys) ? [...trueKeys] : []
+    };
+}
+
+async function loadGameData() {
+    const [questionsRes, charactersRes] = await Promise.all([
+        fetch("data/questions.json"),
+        fetch("data/characters.json")
+    ]);
+
+    if (!questionsRes.ok || !charactersRes.ok) {
+        throw new Error("Errore nel caricamento dei dati JSON.");
+    }
+
+    const [questions, characters] = await Promise.all([
+        questionsRes.json(),
+        charactersRes.json()
+    ]);
+
+    QUESTION_BANK = Array.isArray(questions) ? questions : [];
+    TRAIT_KEYS = QUESTION_BANK.map(q => q.key);
+
+    const rawCharacters = Array.isArray(characters) ? characters : [];
+    LOCAL_SEED = rawCharacters.map(c =>
+        seedCharacter(c.id, c.name, toWikimediaThumb(c.image), c.traits)
+    );
+}
+
+function setSafeImage(img, src, token, onReady) {
+    const safeSrc = typeof src === "string" ? src.trim() : "";
+    if (!safeSrc) {
+        img.src = FALLBACK_IMAGE;
+        if (typeof onReady === "function") onReady(false);
+        return;
+    }
+
+    if (img.dataset.currentSrc !== safeSrc) {
+        img.src = FALLBACK_IMAGE;
+        img.dataset.currentSrc = safeSrc;
+        img.dataset.originalTried = "";
+    }
+
+    const originalSrc = fromWikimediaThumb(safeSrc);
+
+    img.onload = function () {
+        if (token && state.characterViewToken !== token) return;
+        this.onload = null;
+        if (typeof onReady === "function") onReady(true);
+    };
+
+    img.onerror = function () {
+        if (token && state.characterViewToken !== token) return;
+        if (originalSrc && this.dataset.originalTried !== "1") {
+            this.dataset.originalTried = "1";
+            this.src = originalSrc;
+            return;
+        }
+        console.warn("IMG ERROR:", safeSrc);
+        this.onerror = null;
+        this.src = FALLBACK_IMAGE;
+        if (typeof onReady === "function") onReady(false);
+    };
+
+    requestAnimationFrame(() => {
+        if (token && state.characterViewToken !== token) return;
+        img.src = safeSrc;
+    });
+}
+
+// ── Algoritmo Bayesiano ─────────────────────────────────────
+function initPosteriors() {
+    const base = 1 / Math.max(1, state.characters.length);
+    return state.characters.map(() => base);
+}
+
+function traitLikelihood(trait, answerYes) {
+    if (trait === true && answerYes) return 0.99;
+    if (trait === true && !answerYes) return 0.01;
+
+    if (trait === false && !answerYes) return 0.99;
+    if (trait === false && answerYes) return 0.01;
+
+    return 0.5;
+}
+
+function shannonEntropy(probs) {
+    let h = 0;
+    for (const p of probs) { if (p > 0) h -= p * Math.log2(p); }
+    return h;
+}
+
+function normalizeProbabilities(probs) {
+    const sum = probs.reduce((a, b) => a + b, 0);
+    if (sum === 0 || !isFinite(sum)) return probs.map(() => 1 / probs.length);
+    return probs.map(p => p / sum);
+}
+
+function scoreQuestion(q) {
+    const traitKey = q.key;
+    let yesW = [], noW = [], pYes = 0, pNo = 0, knownMass = 0;
+    for (let i = 0; i < state.characters.length; i++) {
+        const p = state.posteriors[i] || 0;
+        const trait = state.characters[i].traits.includes(traitKey);
+        if (trait === true || trait === false) knownMass += p;
+        const wY = p * traitLikelihood(trait, true);
+        const wN = p * traitLikelihood(trait, false);
+        yesW.push(wY); noW.push(wN);
+        pYes += wY; pNo += wN;
+    }
+    const H_yes = shannonEntropy(normalizeProbabilities(yesW));
+    const H_no  = shannonEntropy(normalizeProbabilities(noW));
+    const expectedH = pYes * H_yes + pNo * H_no;
+    return { expectedH, knownMass };
+}
+
+function shouldSkipQuestion(key) {
+    if (state.answers[key] !== undefined) return true;
+
+    const group = getGroup(key);
+
+    if (group) {
+        for (const g of group) {
+            if (state.answers[g] === "yes") return true;
+        }
+
+        const others = group.filter(g => g !== key);
+        if (others.every(g => state.answers[g] === "no")) return true;
+    }
+
+    if (state.answers["born_before_1950"] === "yes") {
+        if (["billionaire", "tech_founder", "alive"].includes(key)) return true;
+    }
+
+    if (key === "alive" &&
+        state.answers["born_before_1950"] === undefined &&
+        state.answers["born_1950_1980"] === undefined &&
+        state.answers["born_after_1980"] === undefined
+    ) return true;
+
+    if ((key === "male" || key === "female") &&
+        (state.answers["male"] === "yes" || state.answers["female"] === "yes")
+    ) return true;
+
+    return false;
+}
+
+function chooseBestQuestion() {
+
+    const unanswered = QUESTION_BANK.filter(q => !shouldSkipQuestion(q.key));
+    if (!unanswered.length) return null;
+
+    const ranked = rankCandidates();
+    const topCandidates = ranked.slice(0, 4); 
+
+    if (topCandidates.length <= 4) {
+
+        let bestQ = null;
+        let bestScore = -Infinity;
+
+        for (const q of unanswered) {
+
+            let yes = 0;
+            let no = 0;
+
+            for (const r of topCandidates) {
+                if (r.character.traits.includes(q.key)) yes++;
+                else no++;
+            }
+
+            if (yes === 0 || no === 0) continue;
+
+            const split = Math.min(yes, no);
+
+            const balance = 1 - Math.abs(yes - no) / topCandidates.length;
+
+            const score =
+                split * 4.0 +     
+                balance * 2.0;
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestQ = q;
+            }
+        }
+
+        if (bestQ) return bestQ;
+    }
+    const H_current = shannonEntropy(state.posteriors);
+
+    let best = null;
+    let bestScore = -Infinity;
+
+    for (const q of unanswered) {
+
+        let yesWeights = [];
+        let noWeights = [];
+
+        let yesMass = 0;
+        let noMass = 0;
+        let knownMass = 0;
+
+        for (let i = 0; i < state.characters.length; i++) {
+
+            const p = state.posteriors[i];
+            const hasTrait = state.characters[i].traits.includes(q.key);
+
+            if (hasTrait === true || hasTrait === false) {
+                knownMass += p;
+            }
+
+            const wYes = p * traitLikelihood(hasTrait, true);
+            const wNo  = p * traitLikelihood(hasTrait, false);
+
+            yesWeights.push(wYes);
+            noWeights.push(wNo);
+
+            if (hasTrait) yesMass += p;
+            else noMass += p;
+        }
+
+        // filtri minimi
+        if (knownMass < 0.15) continue;
+        if (yesMass < 0.05 || noMass < 0.05) continue;
+
+        const H_yes = shannonEntropy(normalizeProbabilities(yesWeights));
+        const H_no  = shannonEntropy(normalizeProbabilities(noWeights));
+
+        const expectedH = yesMass * H_yes + noMass * H_no;
+
+        const infoGain = H_current - expectedH;
+
+        const balance = 1 - Math.abs(yesMass - noMass);
+
+        const score =
+            infoGain * 6.0 +   // 🔥 dominante
+            balance * 1.5;
+
+        if (score > bestScore) {
+            bestScore = score;
+            best = q;
+        }
+    }
+
+    return best || unanswered[0];
+}
+
+function rankCandidates() {
+    return state.characters
+        .map((c, i) => ({ character: c, probability: state.posteriors[i] || 0 }))
+        .sort((a, b) => b.probability - a.probability);
+}
+
+function applyEvidence(questionKey, answerType) {
+    const answerYes = answerType === "yes";
+    state.answers[questionKey] = answerType;
+
+    const next = state.characters.map((c, i) => {
+
+        const trait = c.traits.includes(questionKey);
+
+        let p = state.posteriors[i];
+        if (!p || p <= 0) p = 1e-6; 
+
+        let likelihood;
+
+        if (answerYes) {
+            likelihood = trait ? 0.999 : 0.001;
+        } else {
+            likelihood = trait ? 0.001 : 0.999;
+        }
+
+        return p * likelihood;
+    });
+
+    state.posteriors = normalizeProbabilities(next);
+    state.askedKeys.add(questionKey);
+    state.askedCount++;
+    state.questionsAfterLastNo++;
+}
+// ── UI ──────────────────────────────────────────────────────
+function setQuestionText(text, instruction = "") {
+    if (el.instruction) el.instruction.textContent = instruction || "";
+    if (el.questionText) el.questionText.textContent = text;
+    if (el.instruction) {
+        el.instruction.classList.remove("question-flash");
+        void el.instruction.offsetWidth;
+        el.instruction.classList.add("question-flash");
+    }
+    if (el.questionText) {
+        el.questionText.classList.remove("question-flash");
+        void el.questionText.offsetWidth;
+        el.questionText.classList.add("question-flash");
+    }
+}
+
+function setButtons(enabled) {
+    if (el.btnYes) el.btnYes.disabled = !enabled;
+    if (el.btnNo) el.btnNo.disabled = !enabled;
+}
+
+function setProgressVisible(visible) {
+    if (el.progressBlock) el.progressBlock.hidden = !visible;
+}
+
+function updateProgress() {
+    if (el.progressLabel) {
+        el.progressLabel.textContent = `DOMANDA ${state.askedCount + 1}`;
+    }
+    const top = rankCandidates()[0]?.probability || 0;
+    let progress = top * 100;
+    if (state.askedCount < 3) {
+        progress = Math.max(progress, state.askedCount * 10);
+    }
+    progress = Math.min(100, progress);
+    if (el.progressFill) {
+        el.progressFill.style.width = `${progress}%`;
+    }
+    if (el.answersStat) {
+        el.answersStat.textContent = `Risposte: ${state.askedCount}`;
+    }
+    if (el.answersValue) {
+        el.answersValue.textContent = state.askedCount;
+    }
+}
+
+function updateAttemptsStat() {
+    if (el.attemptsStat) el.attemptsStat.textContent = `Tentativi: ${state.guessAttempts}/${MAX_GUESS_ATTEMPTS}`;
+    if (el.attemptsValue) el.attemptsValue.textContent = `${state.guessAttempts}/${MAX_GUESS_ATTEMPTS}`;
+}
+
+function updateStaticStats() {
+    if (el.datasetStat) el.datasetStat.textContent = `Personaggi: ${state.characters.length}`;
+    if (el.sourceStat) el.sourceStat.textContent = `Sorgente: locale`;
+}
+
+function updateCandidateList() {
+    if (!el.candidateList) return;
+    const ranked = rankCandidates().slice(0, 5);
+    el.candidateList.innerHTML = ranked.map(r =>
+        `<li>${r.character.name} <small>${Math.round(r.probability * 100)}%</small></li>`
+    ).join("");
+}
+
+function setGuideCharacter() {
+    state.characterViewToken++;
+    const token = state.characterViewToken;
+    if (el.characterFrame) el.characterFrame.classList.remove("person-mode");
+    if (el.characterImage) {
+        setSafeImage(el.characterImage, "assets/zorina.webp", token);
+    }
+    if (el.characterName) {
+        el.characterName.textContent = "";
+    }
+}
+
+function setCandidateCharacter(character) {
+    state.characterViewToken++;
+    const token = state.characterViewToken;
+
+    if (el.characterName) el.characterName.textContent = "";
+
+    if (el.characterFrame) el.characterFrame.classList.add("person-mode");
+
+    if (el.characterImage) {
+        setSafeImage(el.characterImage, character.image, token, () => {
+            if (state.characterViewToken !== token) return;
+            if (el.characterName) el.characterName.textContent = character.name;
+        });
+    } else if (el.characterName) {
+        el.characterName.textContent = character.name;
+    }
+}
+
+// ── Flusso Gioco ────────────────────────────────────────────
+function showIntroPrompt() {
+    state.mode = "intro";
+    state.introNoCount = 0;
+    setProgressVisible(false);
+    setButtons(true);
+    setGuideCharacter();
+    setQuestionText("SEI PRONTO PER GIOCARE?", "Il Genio Indovino è pronto...");
+    updateProgress();
+    updateAttemptsStat();
+    if (el.questionBox) el.questionBox.classList.add("intro-mode");
+}
+
+function startGame() {
+    state.characters = LOCAL_SEED.map(c => ({
+        ...c,
+        traits: [...c.traits]
+    }));
+
+    state.posteriors = initPosteriors();
+    state.askedKeys = new Set();
+    state.answers = {};
+    state.askedCount = 0;
+    state.questionsAfterLastNo = 0;
+    state.guessIndex = 0;
+    state.guessAttempts = 0;
+    state.mode = "asking";
+    state.currentQuestionKey = null;
+
+    if (el.questionBox) el.questionBox.classList.remove("intro-mode");
+
+    if (el.characterFrame) {
+        el.characterFrame.classList.remove("reveal", "win");
+    }
+
+    setButtons(true);
+    setProgressVisible(true);
+    setGuideCharacter();
+    updateStaticStats();
+    updateProgress();
+    updateAttemptsStat();
+    updateCandidateList();
+
+    askNextQuestion();
+}
+function askNextQuestion() {
+    const ranked = rankCandidates();
+    const top = ranked[0];
+    const second = ranked[1] || { probability: 0 };
+    const margin = top.probability - second.probability;
+    const entropy = shannonEntropy(state.posteriors);
+    const strongCandidates = ranked.filter(r => r.probability > 0.1).length;
+
+    if (
+        state.askedCount >= 6 &&
+        (
+            (top.probability > 0.80 && margin > 0.30 && strongCandidates <= 2)
+            || (entropy < 0.8 && strongCandidates <= 2)
+        )
+    ) {
+        prepareGuessing();
+        return;
+    }
+
+    const next = chooseBestQuestion();
+
+    if (!next) {
+        prepareGuessing();
+        return;
+    }
+
+    state.currentQuestionKey = next.key;
+    setQuestionText(next.text, "Rispondi con SÌ o NO");
+    updateCandidateList();
+}
+
+function applyAnswer(answerType) {
+    if (!state.currentQuestionKey) return;
+    applyEvidence(state.currentQuestionKey, answerType);
+    state.currentQuestionKey = null;
+    updateProgress();
+    updateCandidateList();
+    askNextQuestion();
+}
+
+function prepareGuessing() {
+    state.mode = "guessing";
+    state.guessOrder = rankCandidates();
+    state.guessIndex = 0;
+    showCurrentGuess();
+}
+
+function showCurrentGuess(isRetry = false) {
+    const row = state.guessOrder[state.guessIndex];
+    if (!row) { finishGame(false); return; }
+    const guess = row.character;
+    const pct = Math.round(row.probability * 100);
+    const instr = isRetry ? "Riprovo..." : `Confidenza: ${pct}%`;
+    setQuestionText(`Il tuo personaggio è ${guess.name}?`, instr);
+    setCandidateCharacter(guess);
+    el.characterFrame.classList.remove("reveal");
+    void el.characterFrame.offsetWidth;
+    el.characterFrame.classList.add("reveal");
+    el.characterFrame.classList.add("win");
+    updateAttemptsStat();
+    updateCandidateList();
+}
+
+function handleGuess(answerType) {
+    if (answerType === "yes") {
+        const winner = state.guessOrder[state.guessIndex]?.character;
+    
+        saveToLeaderboard(winner);
+    
+        el.characterFrame.classList.add("win");
+    
+        setQuestionText(
+            `Ho indovinato! È ${winner?.name}!`,
+            "Il Genio è imbattibile!"
+        );
+    
+        finishGame(true);
+        return;
+    }
+
+    const wrongGuess = state.guessOrder[state.guessIndex]?.character;
+    const wrongIndex = state.characters.findIndex(c => c.id === wrongGuess?.id);
+
+    if (wrongIndex >= 0) {
+        state.posteriors[wrongIndex] *= 0.01;
+    }
+
+    state.posteriors = normalizeProbabilities(state.posteriors);
+
+    state.guessAttempts++;
+
+    if (state.guessAttempts >= MAX_GUESS_ATTEMPTS) {
+        setGuideCharacter();
+        setQuestionText(
+            "Non riesco a indovinare... forse il personaggio non è nel mio database!",
+            "Vuoi riprovare? Premi SÌ."
+        );
+        finishGame(false);
+        return;
+    }
+
+    state.mode = "asking";
+    state.guessIndex = 0;
+    state.questionsAfterLastNo = 0;
+
+    setGuideCharacter();
+    setQuestionText(
+        "Ok, mi serve qualche informazione in più...",
+        "Rispondi con SÌ o NO"
+    );
+
+    askNextQuestion();
+}
+
+function getLeaderboard() {
+    if (state.leaderboardCache) return state.leaderboardCache;
+    try {
+        const raw = localStorage.getItem(LEADERBOARD_KEY) || "[]";
+        const list = JSON.parse(raw);
+        state.leaderboardCache = Array.isArray(list) ? list : [];
+    } catch {
+        state.leaderboardCache = [];
+    }
+    return state.leaderboardCache;
+}
+
+function persistLeaderboard(list) {
+    state.leaderboardCache = list;
+    try {
+        localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(list));
+    } catch {}
+}
+
+function saveToLeaderboard(character) {
+    if (!character) return;
+
+    const list = getLeaderboard();
+    const existing = list.find(c => c.id === character.id);
+
+    if (existing) {
+        existing.count++;
+    } else {
+        list.push({
+            id: character.id,
+            name: character.name,
+            image: character.image,
+            count: 1
+        });
+    }
+
+    persistLeaderboard(list);
+}
+
+function finishGame(won) {
+    state.mode = "finished";
+    setProgressVisible(false);
+    setButtons(true);
+    if (!won) {
+        setGuideCharacter();
+        setQuestionText("Non ci sono riuscita...", "Vuoi riprovare? Premi SÌ.");
+    } else {
+        setQuestionText("Vuoi sfidare ancora il Genio?", "Premi SÌ per giocare ancora!");
+    }
+}
+
+function onAnswer(answerType) {
+    const btn = answerType === "yes" ? el.btnYes : el.btnNo;
+    btn.classList.add("flash");
+    setTimeout(() => btn.classList.remove("flash"), 250);
+    switch (state.mode) {
+        case "intro":
+            if (answerType === "yes") startGame();
+            else {
+                state.mode = "intro_no";
+                state.introNoCount++;
+                const line = INTRO_NO_LINES[(state.introNoCount - 1) % INTRO_NO_LINES.length];
+                setQuestionText(line.question, line.instruction);
+            }
+            break;
+        case "intro_no":
+            if (answerType === "yes") startGame();
+            else {
+                state.introNoCount++;
+                const line = INTRO_NO_LINES[(state.introNoCount - 1) % INTRO_NO_LINES.length];
+                setQuestionText(line.question, line.instruction);
+            }
+            break;
+        case "asking":
+            applyAnswer(answerType);
+            break;
+        case "guessing":
+            handleGuess(answerType);
+            break;
+        case "finished":
+            if (answerType === "yes") {
+                startGame(); 
+            } else {
+                showIntroPrompt(); 
+            }
+            break;
+    }
+}
+
+// ── Bootstrap ────────────────────────────────────────────────
+function bootstrap() {
+    state.characters = LOCAL_SEED.map(c => ({ ...c, traits: [...c.traits] }));
+    updateStaticStats();
+    showIntroPrompt();
+    showTutorial();
+    bindAnswerButtons();
+    preventDoubleTapZoom();
+}
+
+async function init() {
+    try {
+        await loadGameData();
+        bootstrap();
+        updateProgress();
+    } catch (err) {
+        console.error(err);
+        setQuestionText(
+            "Errore nel caricamento dei dati.",
+            "Apri il sito con un server locale (es. Live Server) o verifica il percorso dei JSON."
+        );
+        setButtons(false);
+        setProgressVisible(false);
+    }
+}
+
+init();
+
+function bindAnswerButtons() {
+    const bind = (btn, answer) => {
+        if (!btn) return;
+        let lastTouch = 0;
+        btn.addEventListener("touchend", (event) => {
+            event.preventDefault();
+            lastTouch = Date.now();
+            onAnswer(answer);
+        }, { passive: false });
+        btn.addEventListener("click", () => {
+            if (Date.now() - lastTouch < 500) return;
+            onAnswer(answer);
+        });
+    };
+
+    bind(el.btnYes, "yes");
+    bind(el.btnNo, "no");
+}
+
+function preventDoubleTapZoom() {
+    let lastTouchEnd = 0;
+    const handler = (event) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    };
+    document.addEventListener("touchend", handler, { passive: false });
+    if (el.btnYes) el.btnYes.addEventListener("touchend", handler, { passive: false });
+    if (el.btnNo) el.btnNo.addEventListener("touchend", handler, { passive: false });
+    document.addEventListener("dblclick", (event) => event.preventDefault(), { passive: false });
+    document.addEventListener("gesturestart", (event) => event.preventDefault(), { passive: false });
+}
+
+//FUNZIONI DI TEST
+
+function simulateGame(targetId) {
+    startGame();
+
+    state.won = false;
+
+    let safety = 100;
+    let questions = 0;
+
+    const character = state.characters.find(c => c.id === targetId);
+
+    if (!character) {
+        console.error("❌ Personaggio non trovato:", targetId);
+        return { success: false, questions: 0 };
+    }
+
+    while (state.mode !== "finished" && safety-- > 0) {
+
+        // ─────────────── ASKING ───────────────
+        if (state.mode === "asking") {
+            const key = state.currentQuestionKey;
+            if (!key) {
+                askNextQuestion();
+                continue;
+            }
+
+            questions++;
+
+            let answer = character.traits.includes(key) ? "yes" : "no";
+
+            // rumore realistico (10%)
+            if (Math.random() < 0.03) {
+                answer = answer === "yes" ? "no" : "yes";
+            }
+
+            applyAnswer(answer);
+        }
+
+        // ─────────────── GUESSING ───────────────
+        else if (state.mode === "guessing") {
+
+            const guess = state.guessOrder[state.guessIndex]?.character;
+            if (!guess) break;
+        
+            // indovinato
+            if (guess.id === targetId) {
+                state.won = true;
+                break;
+            } 
+            
+            //  sbagliato → simula gioco reale
+            else {
+        
+                const wrongIndex = state.characters.findIndex(c => c.id === guess.id);
+        
+                if (wrongIndex >= 0) {
+                    state.posteriors[wrongIndex] *= 0.01;
+                }
+        
+                state.posteriors = normalizeProbabilities(state.posteriors);
+        
+                state.guessAttempts++;
+        
+                // se finiti tentativi → fallimento
+                if (state.guessAttempts >= MAX_GUESS_ATTEMPTS) {
+                    break;
+                }
+        
+                // torna a fare domande
+                state.mode = "asking";
+                state.currentQuestionKey = null;
+                state.questionsAfterLastNo = 0;
+        
+                askNextQuestion();
+            }
+        }
+    }
+
+    return {
+        success: state.won === true,
+        questions,
+        wrongGuesses: state.guessAttempts
+    };
+}
+
+function testAllCharacters() {
+    let success = 0;
+    let totalQuestions = 0;
+    let totalWrongGuesses = 0;
+    const failures = [];
+
+    for (const c of state.characters) {
+        const result = simulateGame(c.id);
+
+        if (result.success) {
+            success++;
+        } else {
+            failures.push(c.id);
+        }
+
+        totalQuestions += result.questions;
+        totalWrongGuesses += result.wrongGuesses || 0;
+    }
+
+    console.log("Accuracy:", ((success / state.characters.length) * 100).toFixed(2) + "%");
+    console.log("Avg Questions:", (totalQuestions / state.characters.length).toFixed(2));
+    console.log("Avg Wrong Guesses:", (totalWrongGuesses / state.characters.length).toFixed(2));
+
+    if (failures.length > 0) {
+        console.log(" Fallimenti:");
+        failures.forEach(f => console.log("-", f));
+    } else {
+        console.log(" Perfetto: nessun errore!");
+    }
+}
+
+
+function findIndistinguishablePairs() {
+
+    if (!state.characters || state.characters.length === 0) {
+        console.warn(" Nessun personaggio caricato. Avvia prima startGame()");
+        return [];
+    }
+
+    const collisions = [];
+
+    for (let i = 0; i < state.characters.length; i++) {
+        for (let j = i + 1; j < state.characters.length; j++) {
+
+            const c1 = state.characters[i];
+            const c2 = state.characters[j];
+
+            let identical = true;
+            const differences = [];
+
+            for (const key of TRAIT_KEYS) {
+
+                const t1 = c1.traits.includes(key);
+                const t2 = c2.traits.includes(key);
+
+                if (t1 !== t2) {
+                    identical = false;
+                    differences.push(key);
+                }
+            }
+
+            if (identical) {
+                collisions.push({
+                    type: "IDENTICAL",
+                    c1: c1.name,
+                    c2: c2.name
+                });
+            } 
+            else if (differences.length <= 2) {
+                collisions.push({
+                    type: "VERY_SIMILAR",
+                    c1: c1.name,
+                    c2: c2.name,
+                    differences
+                });
+            }
+        }
+    }
+
+    return collisions;
+}
+
+function testCollisions() {
+
+    // assicura che i personaggi siano caricati
+    if (!state.characters || state.characters.length === 0) {
+        state.characters = LOCAL_SEED.map(c => ({
+            ...c,
+            traits: [...c.traits]
+        }));
+    }
+
+    const results = findIndistinguishablePairs();
+
+    if (!results || results.length === 0) {
+        console.log(" Tutti i personaggi sono distinguibili!");
+        return;
+    }
+
+    console.log(" Problemi trovati:\n");
+
+    results.forEach(r => {
+        if (r.type === "IDENTICAL") {
+            console.log(` IDENTICI: ${r.c1} = ${r.c2}`);
+        } else {
+            console.log(` SIMILI: ${r.c1} vs ${r.c2}`);
+            console.log("   Differenze:", r.differences.join(", "));
+        }
+    });
+}
+function checkDiscriminativePower() {
+    const stats = {};
+
+    for (const key of TRAIT_KEYS) {
+        let count = 0;
+
+        for (const c of state.characters) {
+            if (c.traits.includes(key)) count++;
+        }
+
+        stats[key] = count;
+    }
+
+    console.log("Distribuzione trait:");
+    console.table(stats);
+}
+
+//TUTORIAL
+function showTutorial() {
+    if (!el.tutorialOverlay) return;
+    try {
+        if (localStorage.getItem(TUTORIAL_STORAGE_KEY) === "1") return;
+    } catch {}
+
+    el.tutorialOverlay.hidden = false;
+    document.body.classList.add("tutorial-open");
+
+    state.tutorialIndex = 0;
+    renderTutorialStep();
+}
+
+function renderTutorialStep() {
+    const step = TUTORIAL_STEPS[state.tutorialIndex];
+    if (!step) return;
+
+    if (el.tutorialTitle) el.tutorialTitle.textContent = step.title;
+    if (el.tutorialBody) el.tutorialBody.textContent = step.text;
+
+    // dots
+    if (el.tutorialDots) {
+        el.tutorialDots.innerHTML = TUTORIAL_STEPS
+            .map((_, i) =>
+                `<span class="dot ${i === state.tutorialIndex ? "active" : ""}"></span>`
+            )
+            .join("");
+    }
+}
+
+function nextTutorialStep() {
+    state.tutorialIndex++;
+
+    if (state.tutorialIndex >= TUTORIAL_STEPS.length) {
+        closeTutorial();
+    } else {
+        renderTutorialStep();
+    }
+}
+
+function closeTutorial() {
+    if (el.tutorialOverlay) el.tutorialOverlay.hidden = true;
+    document.body.classList.remove("tutorial-open");
+    try {
+        if (el.tutorialNever?.checked) {
+            localStorage.setItem(TUTORIAL_STORAGE_KEY, "1");
+        }
+    } catch {}
+}
+
+if (el.tutorialNext) {
+    el.tutorialNext.addEventListener("click", nextTutorialStep);
+}
+
+if (el.tutorialSkip) {
+    el.tutorialSkip.addEventListener("click", closeTutorial);
+}
+
+const tutorialClose = document.getElementById("tutorialClose");
+if (tutorialClose) {
+    tutorialClose.addEventListener("click", closeTutorial);
+}

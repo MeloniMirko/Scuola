@@ -1,0 +1,149 @@
+================================================================================
+                       GENIO INDOVINO - MANUALE UTENTE
+================================================================================
+
+SOMMARIO
+--------
+1. Cos’è Genio Indovino
+2. Avvio rapido
+3. Come si gioca (dettagli)
+4. Come ragiona l’algoritmo (in breve)
+5. Dati e personalizzazione
+6. Struttura dei file
+7. Requisiti tecnici
+8. Risoluzione problemi
+9. Note finali
+
+================================================================================
+1. COS’È GENIO INDOVINO
+================================================================================
+
+Genio Indovino è un gioco stile Akinator: tu pensi a un personaggio STEM
+(scienziati, inventori, matematici, ingegneri, tech founder) e il gioco prova
+a indovinarlo facendoti domande con risposta SÌ o NO.
+
+Il cuore del gioco è un algoritmo probabilistico che aggiorna le possibilità
+in base alle tue risposte e sceglie la domanda successiva più utile.
+
+================================================================================
+2. AVVIO RAPIDO
+================================================================================
+
+1) Apri il sito (consigliato da server locale o GitHub Pages).
+2) Pensa a un personaggio e non dirlo al gioco.
+3) Rispondi alle domande con SÌ o NO.
+4) Quando il Genio è sicuro, ti propone il personaggio.
+
+================================================================================
+3. COME SI GIOCA (DETTAGLI)
+================================================================================
+
+PASSO 1: SCEGLI IL PERSONAGGIO
+Scegli in testa un personaggio STEM presente nel database.
+
+PASSO 2: RISPONDI ALLE DOMANDE
+Il Genio ti fa domande “chiuse”. Rispondi solo con:
+  - SÌ  → se è vero
+  - NO  → se è falso
+
+PASSO 3: PROPOSTA DEL GENIO
+Dopo alcune domande, il Genio ti propone un nome e una foto.
+  - Se è giusto → premi SÌ e la partita è vinta.
+  - Se è sbagliato → premi NO e il Genio continua.
+
+PASSO 4: TENTATIVI
+Il Genio ha fino a 3 tentativi per indovinare.
+
+PASSO 5: CLASSIFICA
+Ogni volta che il Genio indovina, il personaggio viene salvato in classifica
+locale (browser).
+
+================================================================================
+4. COME RAGIONA L’ALGORITMO (IN BREVE)
+================================================================================
+
+L’algoritmo:
+1) Parte con probabilità uguali per tutti i personaggi.
+2) Sceglie la domanda che separa meglio i candidati.
+3) Aggiorna le probabilità con le tue risposte (Bayes).
+4) Quando la probabilità di un candidato diventa alta, prova a indovinare.
+
+In pratica: meno domande inutili, più efficienza nel restringere il campo.
+
+================================================================================
+5. DATI E PERSONALIZZAZIONE
+================================================================================
+
+Le domande e i personaggi sono in JSON:
+- data/questions.json
+- data/characters.json
+
+Formato domande:
+{
+  "key": "female",
+  "text": "Il tuo personaggio è una donna?",
+  "weight": 2.0
+}
+
+Formato personaggi:
+{
+  "id": "alan-turing",
+  "name": "Alan Turing",
+  "image": "https://...",
+  "traits": ["mathematician", "computer_pioneer", "born_before_1950"]
+}
+
+IMPORTANTE:
+- Le “traits” dei personaggi devono corrispondere alle “key” delle domande.
+- Se aggiungi nuove domande, puoi usarle subito nei personaggi.
+
+================================================================================
+6. STRUTTURA DEI FILE
+================================================================================
+
+index.html          → Pagina principale del gioco
+app.js              → Logica del gioco e algoritmo
+data/questions.json → Elenco domande
+data/characters.json→ Elenco personaggi
+come-giocare.html   → Guida rapida + elenco personaggi
+come-giocare.js     → Script pagina guida
+classifica.html     → Classifica locale
+classifica.js       → Script classifica
+style.css           → Stili e grafica
+assets/             → Immagini e risorse (WebP)
+MANUALE.txt         → Questo manuale
+
+================================================================================
+7. REQUISITI TECNICI
+================================================================================
+
+- Browser moderno (Chrome, Firefox, Edge, Safari).
+- JavaScript attivo.
+- Connessione internet per immagini esterne e caricamento dati.
+- Per test in locale: usare un server (es. Live Server).
+
+================================================================================
+8. RISOLUZIONE PROBLEMI
+================================================================================
+
+Il gioco non parte / schermata vuota:
+  - Apri il sito da server locale o GitHub Pages, non con file://
+  - Controlla che data/questions.json e data/characters.json esistano.
+
+Immagini mancanti:
+  - Verifica gli URL nelle immagini dei personaggi.
+  - Controlla che i file in assets/ siano presenti.
+
+Classifica vuota:
+  - È normale se non hai ancora vinto una partita.
+  - È salvata nel browser (localStorage). Cambiare browser cancella la classifica.
+
+================================================================================
+9. NOTE FINALI
+================================================================================
+
+Genio Indovino è un progetto didattico PCTO.
+Per supporto o modifiche, aggiorna i JSON o il codice in app.js.
+
+© 2026 - Tutti i diritti riservati
+================================================================================

@@ -1,0 +1,40 @@
+mkdir LaboratorioF2
+mkdir MR
+
+cd LaboratorioF2
+mkdir AulaMagna
+cd AulaMagna
+mkdir AulaSorriso
+mkdir Vicepresidenza
+cd ..
+
+type nul > Verifica.xls
+
+cd AulaMagna\AulaSorriso
+type nul > PC.cpp
+type nul > Stampanti.txt
+
+cd ..\Vicepresidenza
+type nul > Credenziali.txt
+
+cd ..\..\..
+cd MR
+mkdir M1
+cd M1
+type nul > Lab.txt
+type nul > Sicurezza.doc
+
+cd ..\..\LaboratorioF2\AulaMagna
+move AulaSorriso\Stampanti.txt ..\..\MR
+copy ..\..\MR\M1\Lab.txt Vicepresidenza
+
+cd ..\..\MR\M1
+del Sicurezza.doc
+ren Lab.txt LabM1.txt
+
+move C:\LaboratorioF1\LaboratorioF2\AulaMagna\AulaSorriso\PC.cpp C:\LaboratorioF1\LaboratorioF2\AulaMagna\Vicepresidenza
+
+cd ..
+rd /s M1
+
+del /s ..\LaboratorioF2\AulaMagna\Vicepresidenza\*.txt

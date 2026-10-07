@@ -1,0 +1,39 @@
+<!-- HTML -->
+
+<!-- Elementi di input per HTML per richiedere dati all'utente direttamente in pagina.
+Ovviamente il placeholder si può togliere se non serve e magari
+inserire un etichetta -->
+
+<input type="text" placeholder="Inserire un testo" id="testo">
+<input type="number" placeholder="Inserire un numero" id="num">
+
+<!-- Bottone per richiamare una funzione javascript (nell'esempio la funzione esegui() )-->
+<input type="button" value="go" onclick="esegui()">
+
+<!-- paragrafo vuoto per visualizzare dinamicamente dati in pagina-->
+<p id="dati"></p>
+
+<!-- Con span è possibile andare a "isolare" una parte di testo
+che desideriamo modificare sfruttando javascript -->
+<p> Ciao ho <span id="anni">12</span> anni</p>
+
+
+// JAVASCRIPT
+
+// Richiesta dati all'utente tramite finestra del browser
+let nome = prompt("Come ti chiami?");
+let numero = prompt("Dammi un numero")*1;
+
+// Visualizzazione dati su finestra dl browser
+alert("Ciao " +nome);
+alert("Benvenuto nel mio sito");
+
+// Recupero dati inseriti dall'utente nei campi input dell'html
+let testoUtente = document.getElementById("testo").value;
+let numero = document.getElementById("num").value;
+
+// Visualizzazione dinamica di dati nella pagina html
+document.getElementById("dati").innerHTML = testoUtente + " "+numero;
+
+// Visualizzazione dinamica di dati nella pagina html senza sovrascrivere il contenuto
+document.getElementById("dati").innerHTML = document.getElementById("dati").innerHTML +"<br>"+ testoUtente + " "+numero;
