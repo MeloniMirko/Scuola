@@ -1,12 +1,12 @@
 {
   "app_version": "2.6.3",
   "data_branch": "master",
-  "data_head": "f9bfd368ae0d7c1fb43507fb79cb7157e989a5f5",
+  "data_head": "3335589ad5465169739ac1cbff5ff438aeabce90",
   "device_id": "a8ea6d92d8cf4a0498f9d0d2e2457a0f",
-  "last_seen_utc": "2026-10-11T19:23:26+00:00",
-  "local_pending": 17,
+  "last_seen_utc": "2026-10-11T19:24:36+00:00",
+  "local_pending": 0,
   "name": "Pc Portatile",
   "remote_pending": 0,
   "schema": 1,
-  "state": "upload"
+  "state": "updated"
 }
