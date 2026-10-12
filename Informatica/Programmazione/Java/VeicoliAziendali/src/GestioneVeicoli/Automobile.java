@@ -1,5 +1,5 @@
 
-package gestioneveicoli;
+package GestioneVeicoli;
 
 public class Automobile extends Veicolo implements Motorizzato, Ricaricabile {
     private int numeroPorte;
