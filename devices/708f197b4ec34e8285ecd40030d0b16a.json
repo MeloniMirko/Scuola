@@ -1,12 +1,13 @@
 {
-  "app_version": "2.6.3",
+  "app_version": "2.6.4",
   "data_branch": "master",
+  "data_fingerprint": "c70a309b8af458ae64fd4c25dbbc5a9d60b5eaf5f8f534975d14d89112cedb3c",
   "data_head": "c40b80a63d61531b6539c69620f3fd9c99ffc2a2",
   "device_id": "708f197b4ec34e8285ecd40030d0b16a",
-  "last_seen_utc": "2026-10-12T07:10:14+00:00",
+  "last_seen_utc": "2026-10-12T07:13:23+00:00",
   "local_pending": 0,
   "name": "Lab MR",
   "remote_pending": 0,
-  "schema": 1,
-  "state": "updated"
+  "schema": 2,
+  "state": "unknown"
 }
