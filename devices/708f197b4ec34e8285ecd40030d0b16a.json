@@ -3,10 +3,10 @@
   "data_branch": "master",
   "data_head": "3335589ad5465169739ac1cbff5ff438aeabce90",
   "device_id": "708f197b4ec34e8285ecd40030d0b16a",
-  "last_seen_utc": "2026-10-12T06:40:09+00:00",
-  "local_pending": 0,
+  "last_seen_utc": "2026-10-12T06:41:43+00:00",
+  "local_pending": 333,
   "name": "Lab MR",
   "remote_pending": 0,
   "schema": 1,
-  "state": "unknown"
+  "state": "upload"
 }
