@@ -1,12 +1,12 @@
 {
   "app_version": "2.6.4",
   "data_branch": "master",
-  "data_fingerprint": "a3c79d44ffbe44eba53c6af9b8a08c85b1d6c116681437b3d09b2a1e6636fc73",
+  "data_fingerprint": "c70a309b8af458ae64fd4c25dbbc5a9d60b5eaf5f8f534975d14d89112cedb3c",
   "data_head": "c40b80a63d61531b6539c69620f3fd9c99ffc2a2",
   "device_id": "37e0008dc75242149921ee9acfa355b6",
-  "last_seen_utc": "2026-10-15T06:53:56+00:00",
+  "last_seen_utc": "2026-10-15T07:35:10+00:00",
   "local_pending": 0,
-  "name": "Dispositivo 37E000",
+  "name": "Cyber Lab",
   "remote_pending": 0,
   "schema": 2,
   "state": "unknown"
