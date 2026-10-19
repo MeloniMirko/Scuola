@@ -3,13 +3,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "MyClient",
-      "request": "launch",
-      "mainClass": "it_fermi_asproni_reti_socket_base.MyClient",
-      "projectName": "Scuola_a0be6738"
-    },
-    {
-      "type": "java",
       "name": "Main",
       "request": "launch",
       "mainClass": "Main",
