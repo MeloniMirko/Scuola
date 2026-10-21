@@ -1,12 +1,13 @@
 {
-  "app_version": "2.6.3",
+  "app_version": "2.6.4",
   "data_branch": "master",
+  "data_fingerprint": "65e9e6893c6a61776b5d26510f5caf0855ddb5fc826b124df556cdf623801fea",
   "data_head": "8d6a46dddf22e82236b24df00b4e3976e39db8be",
   "device_id": "a8ea6d92d8cf4a0498f9d0d2e2457a0f",
-  "last_seen_utc": "2026-10-21T06:41:35+00:00",
+  "last_seen_utc": "2026-10-21T06:44:31+00:00",
   "local_pending": 0,
   "name": "Pc Portatile",
   "remote_pending": 0,
-  "schema": 1,
+  "schema": 2,
   "state": "unknown"
 }
